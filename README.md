@@ -1,1 +1,1 @@
-# Isercom
+Welcome to the official repository for Isercom, a modern and user-friendly clinic website built by CodeNest. This project aims to provide patients with a seamless way to access healthcare information, book appointments, and connect with medical professionals online.
