@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Appointments - Doctor Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            padding: 30px 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            color: #2d3748;
+            font-size: 2.2em;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+        }
+
+        .btn-secondary:hover {
+            box-shadow: 0 5px 15px rgba(238, 90, 36, 0.4);
+        }
+
+        .filters-section {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .filters-title {
+            color: #2d3748;
+            font-size: 1.3em;
+            margin-bottom: 20px;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .filter-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            border-left: 4px solid #667eea;
+        }
+
+        .stat-number {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #2d3748;
+        }
+
+        .stat-label {
+            color: #718096;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .appointments-section {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .appointments-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .appointments-header h2 {
+            font-size: 1.8em;
+            margin-bottom: 10px;
+        }
+
+        .appointments-content {
+            padding: 0;
+        }
+
+        .appointment-item {
+            border-bottom: 1px solid #e2e8f0;
+            padding: 20px 25px;
+            transition: background 0.3s ease;
+            display: grid;
+            grid-template-columns: 2fr 2fr 1fr 1fr 1fr;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .appointment-item:hover {
+            background: #f8f9fa;
+        }
+
+        .appointment-item:last-child {
+            border-bottom: none;
+        }
+
+        .patient-info h4 {
+            color: #2d3748;
+            margin-bottom: 5px;
+            font-size: 1.1em;
+        }
+
+        .patient-info p {
+            color: #718096;
+            margin-bottom: 3px;
+        }
+
+        .appointment-details h5 {
+            color: #2d3748;
+            margin-bottom: 5px;
+        }
+
+        .appointment-details p {
+            color: #718096;
+            margin-bottom: 3px;
+        }
+
+        .date-time {
+            text-align: center;
+        }
+
+        .date-time .date {
+            color: #2d3748;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .date-time .time {
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .notes-section {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            border-left: 4px solid #667eea;
+        }
+
+        .notes-section strong {
+            color: #495057;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .notes-section p {
+            margin: 0;
+            color: #6c757d;
+            font-style: italic;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .status-scheduled {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-confirmed {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .status-completed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-cancelled {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .actions {
+            display: flex;
+            gap: 5px;
+            flex-direction: column;
+        }
+
+        .action-btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8em;
+            transition: all 0.3s ease;
+        }
+
+        .btn-confirm {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-complete {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .btn-cancel {
+            background: #dc3545;
+            color: white;
+        }
+
+        .action-btn:hover {
+            opacity: 0.8;
+            transform: scale(1.05);
+        }
+
+        .no-appointments {
+            text-align: center;
+            padding: 50px;
+            color: #718096;
+            font-size: 1.2em;
+        }
+
+        .appointments-table-header {
+            background: #f8f9fa;
+            padding: 15px 25px;
+            border-bottom: 2px solid #e2e8f0;
+            display: grid;
+            grid-template-columns: 2fr 2fr 1fr 1fr 1fr;
+            gap: 20px;
+            font-weight: bold;
+            color: #2d3748;
+        }
+
+        @media (max-width: 1024px) {
+            .appointment-item,
+            .appointments-table-header {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+
+            .filter-buttons {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div>
+                <h1>📋 My Appointments</h1>
+                <p>{{ doctor.full_name }} - {{ doctor.speciality }}</p>
+            </div>
+            <div class="nav-buttons">
+                <a href="{% url 'home' %}" class="btn">🏠 Dashboard</a>
+                <a href="/admin/" class="btn">⚙️ Admin</a>
+                <form method="POST" action="{% url 'logout' %}" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-secondary">🚪 Sign Out</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="filters-section">
+            <h3 class="filters-title">Filter Appointments</h3>
+            
+            <div class="filter-buttons">
+                <a href="?status=all" class="filter-btn {% if current_filter == 'all' %}active{% endif %}">
+                    All ({{ stats.all }})
+                </a>
+                <a href="?status=scheduled" class="filter-btn {% if current_filter == 'scheduled' %}active{% endif %}">
+                    Scheduled ({{ stats.scheduled }})
+                </a>
+                <a href="?status=confirmed" class="filter-btn {% if current_filter == 'confirmed' %}active{% endif %}">
+                    Confirmed ({{ stats.confirmed }})
+                </a>
+                <a href="?status=completed" class="filter-btn {% if current_filter == 'completed' %}active{% endif %}">
+                    Completed ({{ stats.completed }})
+                </a>
+                <a href="?status=cancelled" class="filter-btn {% if current_filter == 'cancelled' %}active{% endif %}">
+                    Cancelled ({{ stats.cancelled }})
+                </a>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">{{ stats.all }}</div>
+                    <div class="stat-label">Total</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">{{ stats.scheduled }}</div>
+                    <div class="stat-label">Scheduled</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">{{ stats.confirmed }}</div>
+                    <div class="stat-label">Confirmed</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">{{ stats.completed }}</div>
+                    <div class="stat-label">Completed</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">{{ stats.cancelled }}</div>
+                    <div class="stat-label">Cancelled</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="appointments-section">
+            <div class="appointments-header">
+                <h2>
+                    {% if current_filter == 'all' %}
+                        All Appointments
+                    {% else %}
+                        {{ current_filter|title }} Appointments
+                    {% endif %}
+                </h2>
+                <p>Manage your patient appointments</p>
+            </div>
+
+            {% if appointments %}
+                <div class="appointments-table-header">
+                    <div>Patient Information</div>
+                    <div>Appointment Details</div>
+                    <div>Date & Time</div>
+                    <div>Status</div>
+                    <div>Actions</div>
+                </div>
+
+                <div class="appointments-content">
+                    {% for appointment in appointments %}
+                    <div class="appointment-item">
+                        <div class="patient-info">
+                            <h4>{{ appointment.patient.first_name }} {{ appointment.patient.last_name }}</h4>
+                            <p><strong>Email:</strong> {{ appointment.patient.email }}</p>
+                            <p><strong>Phone:</strong> {{ appointment.patient.phone }}</p>
+                        </div>
+
+                        <div class="appointment-details">
+                            <h5>{{ appointment.service.name }}</h5>
+                            <p>{{ appointment.service.description|truncatewords:10 }}</p>
+                        </div>
+
+                        <div class="date-time">
+                            <div class="date">{{ appointment.date|date:"M d, Y" }}</div>
+                            <div class="time">{{ appointment.time|time:"g:i A" }}</div>
+                        </div>
+
+                        {% if appointment.notes %}
+                        <div class="notes-section">
+                            <strong>📝 Patient Notes:</strong>
+                            <p>{{ appointment.notes }}</p>
+                        </div>
+                        {% endif %}
+
+                        <div>
+                            <span class="status-badge status-{{ appointment.status }}">
+                                {{ appointment.status|title }}
+                            </span>
+                        </div>
+
+                        <div class="actions">
+                            {% if appointment.status == 'scheduled' %}
+                                <form method="POST" action="{% url 'update_appointment_status' appointment.id %}" style="display: inline;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="status" value="confirmed">
+                                    <button type="submit" class="action-btn btn-confirm">✅ Confirm</button>
+                                </form>
+                            {% endif %}
+                            
+                            {% if appointment.status == 'confirmed' %}
+                                <form method="POST" action="{% url 'update_appointment_status' appointment.id %}" style="display: inline;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="status" value="completed">
+                                    <button type="submit" class="action-btn btn-complete">✅ Complete</button>
+                                </form>
+                            {% endif %}
+                            
+                            {% if appointment.status in 'scheduled,confirmed' %}
+                                <form method="POST" action="{% url 'update_appointment_status' appointment.id %}" style="display: inline;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="status" value="cancelled">
+                                    <button type="submit" class="action-btn btn-cancel" onclick="return confirm('Are you sure you want to cancel this appointment?')">❌ Cancel</button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="no-appointments">
+                    <p>No appointments found for the selected filter.</p>
+                    <p>{% if current_filter != 'all' %}<a href="?status=all">View all appointments</a>{% endif %}</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

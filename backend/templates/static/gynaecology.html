@@ -1,0 +1,133 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/fertility.css' %}?v={% now 'U' %}">
+    <link rel="stylesheet" href="{% static 'css/header_footer.css' %}?v={% now 'U' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v={% now 'U' %}">
+    <link rel="stylesheet" href="{% static 'css/body.css' %}?v={% now 'U' %}">
+    <!-- <link rel="stylesheet" href="CSS/appoint.css"> -->
+    <script src="{% static 'js/animations.js' %}?v={% now 'U' %}" defer></script>
+    <script src="{% static 'js/script.js' %}?v={% now 'U' %}" defer></script>
+    <script src="{% static 'js/menu.js' %}?v={% now 'U' %}" defer></script>
+    <script src="JS/animations.js"></script>
+    <script src="JS/menu.js" defer></script>
+</head>
+<body>
+    <header>
+        <div class="top-bar">
+            <div class="top-fill"></div>
+          </div>
+    
+      <nav class="navbar">
+          <div class="nav-logo">
+            <img src="{% static 'images/logo.png' %}" alt="iSercom" />
+            </div>
+            <button class="hamburger" id="hamburger">&#9776;</button>
+            <div class="nav-links" id="navLinks">
+              <a href="{% url 'home' %}">Home</a>
+              <a href="{% url 'about_us' %}">About Us</a>
+              <a href="{% url 'contact' %}">Contact Us</a>
+              <a href="{% url 'services' %}">Services</a>
+              <a href="{% url 'create_appointment' %}" class="appointment">Appointment</a>
+          </div>
+      </nav>
+    </header>
+    <main class="fertility-page">
+       <section class="section" style="  background-image: url('/static/images/gynaecology/gyna.webp');">
+        <h1 style="color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); font-size: 60px;">Obsterics And Gynaecological Services</h1>
+       </section>
+       <div class="fer">
+        <h1>Obsterics And Gynaecological Services</h1>
+        <p>At ISECORM Clinic, we are committed to providing comprehensive, confidential, and compassionate obstetric and gynaecological care to women at every stage of life. From adolescence to menopause and beyond, our services are tailored to meet the evolving health needs of women with sensitivity, professionalism, and clinical excellence.
+          <br>
+          <br>
+          Our experienced team of obstetricians and gynaecologists delivers patient-focused care using the latest diagnostic tools and treatment techniques. We prioritize both preventive and therapeutic services, ensuring that women receive the right care—whether they’re managing a condition, seeking routine screening, or preparing for motherhood.
+          <br>
+          <br>
+          Our services include:
+          <br>
+          <li>Routine pelvic exams and Pap smears</li>
+          <li>Menstrual health evaluations and treatment</li>
+          <li>Management of fibroids, cysts, and endometriosis</li>
+          <li>Diagnosis and treatment of sexually transmitted infections (STIs)</li>
+          <li>Family planning and contraceptive counseling</li>
+          <li>Menopause support and hormone therapy</li>
+          <li>Prenatal and postnatal care</li>
+          <li>Fertility assessments and guidance</li>
+          <li>Surgical procedures (as needed), such as dilation and curettage (D&C)
+
+          </li>
+          <br>
+          
+        </p>
+       </div>
+       <div class="ferimg">
+        <img src="/static/images/gynaecology/gyna2.webp" alt="gyna">
+       </div>
+       <div style="margin: 20px;">
+        <p>
+            Personalized, Private, and Supportive Care
+            We understand that reproductive health can be a deeply personal matter. That’s why we foster an environment of trust, confidentiality, and respect—where every patient feels safe, heard, and empowered in their healthcare decisions.<br>
+            Whether you're coming in for a routine check-up, managing a chronic condition, or facing a sensitive concern, our team is here to support you with discretion, expertise, and empathy.
+Your health, your comfort, your confidence — that’s our priority at ISECORM.
+        </p>
+       </div>
+      
+      <button class="ferbtn" id="connect">Talk to doctor</button>
+    <footer class="footer">
+      <div class="footer-top">
+        <img src="{% static 'images/logo.png' %}" alt="iSecorm Logo" class="logo" />
+        <button class="back-to-top" onclick="scrollToTop()">Back to top</button>
+      </div>
+
+      <div class="footer-content">
+        <div class="related-pages">
+          <h3>Related Pages</h3>
+          <ul>
+            <li><a href="{% url 'about_us' %}">About Us</a></li>
+            <li><a href="{% url 'contact' %}">Contact Us</a></li>
+            <li><a href="#">Learn More</a></li>
+          </ul>
+        </div>
+
+        <div class="quick-links">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="{% url 'gynaecology' %}">Obstetrics and Gynaecological Services</a></li>
+            <li><a href="{% url 'consultation' %}">Consultation & Specialised Clinics</a></li>
+            <li><a href="{% url 'antenatal' %}">Antenatal Care</a></li>
+            <li><a href="{% url 'fertility' %}">Fertility</a></li>
+            <li><a href="#">IVF</a></li>
+          </ul>
+        </div>
+
+        <div class="follow-us">
+          <h3>Follow Us</h3>
+          <div class="icons">
+            <a href="#"><img src="{% static 'images/facebook.png' %}" alt="Facebook" /></a>
+            <a href="#"><img src="{% static 'images/Tiktok.png' %}" alt="TikTok" /></a>
+            <a href="#"><img src="{% static 'images/instagram.png' %}" alt="Instagram" /></a>
+            <a href="#"><img src="{% static 'images/X.png' %}" alt="X" /></a>
+          </div>
+
+          <form class="feedback-form">
+            <textarea placeholder="Feedback"></textarea>
+            <div class="form-row">
+              <input type="text" placeholder="Name" />
+              <input type="email" placeholder="Email" />
+            </div>
+            <button type="submit">Submit</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2025 iSecorm Clinic. All rights reserved.</p>
+      </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Appointment - iSecorm Clinic</title>
+    <link rel="stylesheet" href="/frontend/css/header_footer.css">
+    <link rel="stylesheet" href="/fronend/css/style.css">
+    <link rel="stylesheet" href="/frontend/css/body.css">
+    <link rel="stylesheet" href="../css/appointment_form.css">
+    <script src="../js/script.js" defer></script>
+    <script src="../js/appointment.js" defer></script>
+    <script src="../js/api-client.js" defer></script>
+</head>
+<body>
+    <!-- Messages Display -->
+    <div id="messageContainer" style="position: fixed; top: 20px; right: 20px; z-index: 9999;"></div>
+    
+    <header>
+      <div class="top-bar">
+        <div class="top-fill"></div>
+      </div>
+
+      <nav class="navbar">
+        <div class="nav-logo">
+          <img src="../images/logo.png" alt="iSercom" />
+        </div>
+        <button class="hamburger" id="hamburger">&#9776;</button>
+        <div class="nav-links" id="navLinks">
+          <a href="../index.html">Home</a>
+          <a href="../pages/about_us.html">About Us</a>
+          <a href="../pages/contact.html">Contact Us</a>
+          <a href="">Services</a>
+
+          <div id="authNavigation">
+            <!-- Navigation will be updated based on authentication status -->
+            <a href="appointment_form.html" class="appointment">Appointment</a>
+          </div>
+          
+        </div>
+      </nav>
+    </header>
+
+    <main style="height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: Arial, sans-serif; background-color: #D9D9D9;">
+        <form class="select" id="appointmentForm">
+            <h1>Book Your Appointment</h1>
+            
+            <div id="formErrors" style="margin-bottom: 20px; display: none;">
+                <!-- Form errors will be displayed here -->
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="id_date">Select Date</label>
+                    <input type="date" id="id_date" name="date" required>
+                </div>
+                <div class="form-group">
+                    <label for="id_time">Select Time</label>
+                    <input type="time" id="id_time" name="time" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="id_doctor">Select Doctor</label>
+                    <select id="id_doctor" name="doctor" required>
+                        <option value="">Choose a doctor...</option>
+                        <!-- Doctors will be loaded dynamically -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="id_service">Select Service</label>
+                    <select id="id_service" name="service" required>
+                        <option value="">Choose a service...</option>
+                        <!-- Services will be loaded dynamically -->
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="id_notes">Notes/Message</label>
+                    <textarea id="id_notes" name="notes" placeholder="Enter your name, notes, or any specific concerns for this appointment" rows="4"></textarea>
+                </div>
+            </div>
+            
+            <div class="pick-container">
+                <button type="submit" class="pick" id="sent">Book Appointment</button>
+                <a href="/frontend/index.html" class="pick" id="appbook" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center;">Cancel</a>
+            </div>
+        </form>
+    </main>
+    <footer class="footer">
+      <div class="footer-top">
+        <img src="../images/logo.png" alt="iSecorm Logo" class="logo" />
+        <button class="back-to-top" onclick="scrollToTop()">Back to top</button>
+      </div>
+
+      <div class="footer-content">
+        <div class="related-pages">
+          <h3>Related Pages</h3>
+          <ul>
+            <li><a href="../pages/about_us.html">About Us</a></li>
+            <li><a href="../pages/contact.html">Contact Us</a></li>
+            <li><a href="#">Learn More</a></li>
+          </ul>
+        </div>
+
+        <div class="quick-links">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="../pages/gynaecology.html">Obstetrics and Gynaecological Services</a></li>
+            <li><a href="../pages/consultation.html">Consultation & Specialised Clinics</a></li>
+            <li><a href="../pages/Antenatal.html">Antenatal Care</a></li>
+            <li><a href="../pages/fertility.html">Fertility</a></li>
+            <li><a href="#">IVF</a></li>
+          </ul>
+        </div>
+
+        <div class="follow-us">
+          <h3>Follow Us</h3>
+          <div class="icons">
+            <a href="#"><img src="../images/facebook.png" alt="Facebook" /></a>
+            <a href="#"><img src="../images/Tiktok.png" alt="TikTok" /></a>
+            <a href="#"><img src="../images/instagram.png" alt="Instagram" /></a>
+            <a href="#"><img src="../images/X.png" alt="X" /></a>
+          </div>
+
+          <form class="feedback-form">
+            <textarea placeholder="Feedback"></textarea>
+            <div class="form-row">
+              <input type="text" placeholder="Name" />
+              <input type="email" placeholder="Email" />
+            </div>
+            <button type="submit">Submit</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2025 iSecorm Clinic. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script src="/frontend/js/book_appointment.js">
+    </script>
+
+</body>
+</html>

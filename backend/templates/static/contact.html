@@ -1,0 +1,142 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us</title>
+    <link rel="stylesheet" href="{% static 'css/header_footer.css' %}?v={% now 'U' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v={% now 'U' %}">
+    <link rel="stylesheet" href="{% static 'css/body.css' %}?v={% now 'U' %}">
+    <link rel="stylesheet" href="{% static 'css/contact.css' %}?v={% now 'U' %}">
+    <script src="{% static 'js/script.js' %}?v={% now 'U' %}" defer></script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <!-- Header -->
+    <header>
+      <div class="top-bar">
+        <div class="top-fill"></div>
+      </div>
+
+      <nav class="navbar">
+          <div class="nav-logo">
+            <img src="{% static 'images/logo.png' %}" alt="iSercom" />
+            </div>
+            <button class="hamburger" id="hamburger">&#9776;</button>
+            <div class="nav-links" id="navLinks">
+              <a href="{% url 'home' %}">Home</a>
+              <a href="{% url 'about_us' %}">About Us</a>
+              <a href="{% url 'contact' %}">Contact Us</a>
+              <a href="{% url 'services' %}">Services</a>
+              <a href="{% url 'create_appointment' %}" class="appointment">Appointment</a>
+          </div>
+      </nav>
+    </header>
+    <div class="contact-background">
+  <section class="contact-section">
+    <!-- contact-left and contact-right content here -->
+  </section>
+</div>
+
+    <div class="hero"></div>        
+  <div class="contact-wrapper">
+    <section class="contact-section">
+        
+      <div class="contact-left">
+        <h3>CONTACT US</h3>
+        <p><strong>Email:</strong> info@example.com</p>
+        <p><strong>Phone:</strong> 001985512-854</p>
+        <p><strong>Address:</strong><br>John Smith 123 Main Street<br>Amsterdam, NH 1000 Netherlands</p>
+        <p><strong>Social</strong></p>
+        <ul>
+          <li>@exampleAcount</li>
+          <li>@exampleAcount</li>
+          <li>@exampleAcount</li>
+          <li>@exampleAcount</li>
+        </ul>
+        <p><strong>Hours:</strong><br>08:00 - 12:00 Uhr<br>13:00 - 17:00 Uhr</p>
+      </div>
+
+      <div class="contact-right">
+        <h3>KEEP IN TOUCH</h3>
+        <p>
+          We would love to hear from you and answer any questions you may have. You can contact us by filling out the form below,
+          sending us an email, or calling our phone number. We will get back to you as soon as possible. You can also follow us
+          on our social media platforms and subscribe to our newsletter to stay updated on our latest news and offers. Thank you
+          for your interest and support.
+        </p>
+        <form id="contactForm">
+          <input type="text" placeholder="Name" required />
+          <input type="email" placeholder="Email" required />
+          <input type="text" placeholder="Subject" required />
+          <textarea placeholder="Some placeholder text here..." required></textarea>
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+    </section>
+  </div>
+
+  <div class="map-container">
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3970.38091004273!2d-0.26050912429728457!3d5.657919232614924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xfdf9fb0c36950cd%3A0x12579bffa3c57d9e!2siSercorm%20Medical%20and%20Fertility%20Centre!5e0!3m2!1sen!2sgh!4v1753423992001!5m2!1sen!2sgh" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+  </div>
+
+  
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-top">
+        <img src="{% static 'images/logo.png' %}" alt="iSecorm Logo" class="logo" />
+        <button class="back-to-top" onclick="scrollToTop()">Back to top</button>
+      </div>
+
+      <div class="footer-content">
+        <div class="related-pages">
+          <h3>Related Pages</h3>
+          <ul>
+            <li><a href="{% url 'about_us' %}">About Us</a></li>
+            <li><a href="{% url 'contact' %}">Contact Us</a></li>
+            <li><a href="#">Learn More</a></li>
+          </ul>
+        </div>
+
+        <div class="quick-links">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="{% url 'gynaecology' %}">Obstetrics and Gynaecological Services</a></li>
+            <li><a href="{% url 'consultation' %}">Consultation & Specialised Clinics</a></li>
+            <li><a href="{% url 'antenatal' %}">Antenatal Care</a></li>
+            <li><a href="{% url 'fertility' %}">Fertility</a></li>
+            <li><a href="#">IVF</a></li>
+          </ul>
+        </div>
+
+        <div class="follow-us">
+          <h3>Follow Us</h3>
+          <div class="icons">
+            <a href="#"><img src="{% static 'images/facebook.png' %}" alt="Facebook" /></a>
+            <a href="#"><img src="{% static 'images/Tiktok.png' %}" alt="TikTok" /></a>
+            <a href="#"><img src="{% static 'images/instagram.png' %}" alt="Instagram" /></a>
+            <a href="#"><img src="{% static 'images/X.png' %}" alt="X" /></a>
+          </div>
+
+          <form class="feedback-form">
+            <textarea placeholder="Feedback"></textarea>
+            <div class="form-row">
+              <input type="text" placeholder="Name" />
+              <input type="email" placeholder="Email" />
+            </div>
+            <button type="submit">Submit</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2025 iSecorm Clinic. All rights reserved.</p>
+      </div>
+    </footer>
+</body>
+</html>

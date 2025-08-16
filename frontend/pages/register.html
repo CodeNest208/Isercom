@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Isercom Clinic</title>
+    <link rel="stylesheet" href="/frontend/css/register.css">
+    <link rel="stylesheet" href="/frontend/css/body.css">
+    <script src="/frontend/js/api-client.js" defer></script>
+    <style>
+
+    </style>
+</head>
+<body>
+    <div class="login-wrapper">
+        <div class="login-form-section">
+            <h1 class="form-title">Create your account</h1>
+
+            <!-- {# Django messages block #}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="{% if message.tags == 'success' %}success-message{% else %}error-message{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %} -->
+
+            <form method="post" id="registerForm">
+                <div class="message-container" id="messageContainer"></div>
+
+                <!-- {# First Name Field #} -->
+                <div class="form-group">
+                    <label for="first_name">First Name:</label>
+                    <input type="text" id="first_name" name="first_name" required>
+                    <div class="field-error" id="firstNameError"></div>
+                </div>
+
+                <!-- {# Last Name Field #} -->
+                <div class="form-group">
+                    <label for="last_name">Last Name:</label>
+                    <input type="text" id="last_name" name="last_name" required>
+                    <div class="field-error" id="lastNameError"></div>
+                </div>
+
+                <!-- {# Email Field #} -->
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                    <div class="field-error" id="emailError"></div>
+                </div>
+
+                <!-- {# Phone Field #} -->
+                <div class="form-group">
+                    <label for="phone">Phone:</label>
+                    <input type="text" id="phone" name="phone" required>
+                    <div class="field-error" id="phoneError"></div>
+                </div>
+
+                <!-- {# Date of birth Field #} -->
+                <div class="form-group">
+                    <label for="date_of_birth">Date of Birth:</label>
+                    <input type="date" id="date_of_birth" name="date_of_birth" required>
+                    <div class="field-error" id="dateOfBirthError"></div>
+                </div>
+
+                <!-- {# Password Fields #} -->
+                <div class="form-group">
+                    <label for="password1">Password:</label>
+                    <input type="password" id="password1" name="password1" required>
+                    <div class="field-error" id="password1Error"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password2">Confirm Password:</label>
+                    <input type="password" id="password2" name="password2" required>
+                    <div class="field-error" id="password2Error"></div>
+                </div>
+
+                <!-- {# Terms and Conditions Checkbox #} -->
+                <div class="form-group checkbox-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="terms_agreement" name="terms_agreement" required>
+                        <span class="checkmark"></span>
+                        <span class="checkbox-text">
+                            Do you agree with the <a href="#" target="_blank">terms and conditions</a>?
+                        </span>
+                    </label>
+                    <div class="field-error" id="termsError"></div>
+                </div>
+
+                <button type="submit" class="login-btn">Create Account</button>
+
+                
+            </form>
+            
+            <div class="social-login mobile-social">
+                <div class="social-text">or Sign up with</div>
+                <div class="social-icons">
+                    <div class="social-icon google">G</div>
+                    <div class="social-icon facebook">f</div>
+                    <div class="social-icon twitter">t</div>
+                </div>
+                <div class="social-text">
+                    <p>Already have an account?</p>
+                    <a href="/frontend/pages/login.html">Sign in</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="logo-section">
+            <div class="isercom-logo">
+                <img src="/frontend/images/logo.png" alt="Isercom Medical and Fertility Centre">
+                <div class="desktop-social">
+                    <div class="social-text">or sign up with</div>
+                    <div class="social-icons">
+                        <div class="social-icon google">G</div>
+                        <div class="social-icon facebook">f</div>
+                        <div class="social-icon twitter">t</div>
+                    </div>
+                    <div class="social-text">
+                        <p>Already have an account?</p>
+                        <a href="/frontend/pages/login.html">Sign in</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- API Integration Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const registerForm = document.getElementById('registerForm');
+            
+            registerForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                // Clear previous errors
+                const errorElements = document.querySelectorAll('.field-error');
+                errorElements.forEach(el => el.textContent = '');
+                
+                // Get form data
+                const formData = {
+                    first_name: document.getElementById('first_name').value,
+                    last_name: document.getElementById('last_name').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    date_of_birth: document.getElementById('date_of_birth').value,
+                    password1: document.getElementById('password1').value,
+                    password2: document.getElementById('password2').value,
+                    terms_agreement: document.getElementById('terms_agreement').checked
+                };
+                
+                // Disable submit button
+                const submitBtn = registerForm.querySelector('.login-btn');
+                const originalText = submitBtn.textContent;
+                submitBtn.textContent = 'Creating Account...';
+                submitBtn.disabled = true;
+                
+                try {
+                    const response = await window.apiClient.register(formData);
+                    
+                    if (response.success) {
+                        let successMessage;
+                        if (response.user && response.user.is_authenticated) {
+                            // User is automatically logged in
+                            successMessage = `🎉 Welcome to iSercom Clinic, ${response.user.first_name}! Your account has been created successfully and you are now signed in. You can now book appointments and access all our services.`;
+                        } else {
+                            // User created but not logged in
+                            successMessage = `✅ Welcome to iSercom Clinic${response.user && response.user.first_name ? ', ' + response.user.first_name : ''}! Your account has been created successfully. You will be redirected to complete your sign-in.`;
+                        }
+                        
+                        // Show message both in the form and as a notification
+                        const messageContainer = document.getElementById('messageContainer');
+                        if (messageContainer) {
+                            messageContainer.innerHTML = `<div class="success-message">${successMessage}</div>`;
+                        }
+                        window.showMessage(successMessage, 'success');
+                        
+                        setTimeout(() => {
+                            window.location.href = '/';
+                        }, 2500);
+                    } else {
+                        // Display field-specific errors
+                        if (response.errors) {
+                            Object.keys(response.errors).forEach(field => {
+                                const errorElement = document.getElementById(field + 'Error');
+                                if (errorElement) {
+                                    errorElement.textContent = response.errors[field].join(', ');
+                                }
+                            });
+                            
+                            if (response.errors.non_field_errors) {
+                                const errorMessage = response.errors.non_field_errors.join(', ');
+                                const messageContainer = document.getElementById('messageContainer');
+                                if (messageContainer) {
+                                    messageContainer.innerHTML = `<div class="error-message">${errorMessage}</div>`;
+                                }
+                                window.showMessage(errorMessage, 'error');
+                            }
+                        } else {
+                            const errorMessage = response.message || 'Registration failed';
+                            const messageContainer = document.getElementById('messageContainer');
+                            if (messageContainer) {
+                                messageContainer.innerHTML = `<div class="error-message">${errorMessage}</div>`;
+                            }
+                            window.showMessage(errorMessage, 'error');
+                        }
+                    }
+                } catch (error) {
+                    console.error('Registration error:', error);
+                    const errorMessage = 'Network error. Please check your connection and try again.';
+                    const messageContainer = document.getElementById('messageContainer');
+                    if (messageContainer) {
+                        messageContainer.innerHTML = `<div class="error-message">${errorMessage}</div>`;
+                    }
+                    window.showMessage(errorMessage, 'error');
+                } finally {
+                    // Re-enable submit button
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

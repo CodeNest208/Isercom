@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logout - Isercom Clinic</title>
+    <link rel="stylesheet" href="/frontend/css/login.css">
+    <link rel="stylesheet" href="/frontend/css/body.css">
+    <script src="/frontend/js/api-client.js" defer></script>
+</head>
+<body>
+    <div class="login-wrapper">
+        <div class="login-form-section">
+            <h1 class="form-title">Sign Out</h1>
+            
+            <div class="logout-content">
+                <div class="message-container" id="messageContainer"></div>
+                
+                <p>Are you sure you want to sign out?</p>
+                
+                <div class="logout-buttons">
+                    <button type="button" class="login-btn" id="logoutBtn">Sign Out</button>
+                    <a href="/frontend/index.html" class="cancel-btn">Cancel</a>
+                </div>
+                
+                <div class="social-text">
+                    <p>Want to sign in again?</p>
+                    <a href="/frontend/pages/login.html">Sign in</a> | 
+                    <a href="/frontend/index.html">Go to Home</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="logo-section">
+            <div class="isercom-logo">
+                <img src="/frontend/images/logo.png" alt="Isercom Medical and Fertility Centre">
+                <div class="desktop-social">
+                    <div class="social-text">Need help?</div>
+                    <div class="social-text">
+                        <p>Go back to</p>
+                        <a href="/frontend/index.html">Home</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- API Integration Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const logoutBtn = document.getElementById('logoutBtn');
+            const messageContainer = document.getElementById('messageContainer');
+            
+            // Function to show messages
+            function showMessage(message, type = 'info') {
+                messageContainer.innerHTML = `<div class="message ${type}">${message}</div>`;
+                setTimeout(() => {
+                    messageContainer.innerHTML = '';
+                }, 5000);
+            }
+            
+            logoutBtn.addEventListener('click', async function() {
+                // Disable button
+                const originalText = logoutBtn.textContent;
+                logoutBtn.textContent = 'Signing out...';
+                logoutBtn.disabled = true;
+                
+                try {
+                    // Try API logout first
+                    if (window.apiClient) {
+                        const response = await window.apiClient.logout();
+                        
+                        if (response.success) {
+                            showMessage('Logged out successfully! Redirecting to homepage...', 'success');
+                            setTimeout(() => {
+                                window.location.href = '/frontend/index.html';
+                            }, 1500);
+                            return;
+                        } else {
+                            showMessage(response.message || 'Logout failed', 'error');
+                        }
+                    }
+                } catch (error) {
+                    console.error('API logout error:', error);
+                    
+                    // Fallback: Try direct logout request
+                    try {
+                        const response = await fetch('/api/auth/logout/', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-Requested-With': 'XMLHttpRequest'
+                            },
+                            credentials: 'same-origin'
+                        });
+                        
+                        if (response.ok) {
+                            const data = await response.json();
+                            if (data.success) {
+                                showMessage('Logged out successfully! Redirecting to homepage...', 'success');
+                                setTimeout(() => {
+                                    window.location.href = '/frontend/index.html';
+                                }, 1500);
+                                return;
+                            }
+                        }
+                        
+                        // If both methods fail, still redirect but show warning
+                        showMessage('Session ended. Redirecting to homepage...', 'warning');
+                        setTimeout(() => {
+                            window.location.href = '/frontend/index.html';
+                        }, 2000);
+                        
+                    } catch (fallbackError) {
+                        console.error('Fallback logout error:', fallbackError);
+                        // Even if logout fails, redirect to clear session client-side
+                        showMessage('Redirecting to homepage...', 'info');
+                        setTimeout(() => {
+                            window.location.href = '/frontend/index.html';
+                        }, 1500);
+                    }
+                } finally {
+                    // Re-enable button after a delay if still on page
+                    setTimeout(() => {
+                        if (logoutBtn) {
+                            logoutBtn.textContent = originalText;
+                            logoutBtn.disabled = false;
+                        }
+                    }, 3000);
+                }
+            });
+        });
+    </script>
+
+    <style>
+        .logout-content {
+            text-align: center;
+            padding: 2rem 0;
+        }
+        
+        .logout-content p {
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+            color: #666;
+        }
+        
+        .logout-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .cancel-btn {
+            background-color: #f5f5f5;
+            color: #333;
+            border: 1px solid #ddd;
+            padding: 0.75rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .cancel-btn:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .login-btn {
+            background-color: #dc3545;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .login-btn:hover {
+            background-color: #c82333;
+        }
+        
+        .login-btn:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+        }
+        
+        .message-container {
+            margin-bottom: 1rem;
+            min-height: 20px;
+        }
+        
+        .message {
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        
+        .message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .message.warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        
+        .message.info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        
+        @media (max-width: 768px) {
+            .logout-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .cancel-btn, .login-btn {
+                width: 200px;
+                text-align: center;
+            }
+        }
+    </style>
+</body>
+</html>

@@ -1,0 +1,298 @@
+/* @import url(header.css); */
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+@media (max-width: 600px) {
+  .doc-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .doc {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 0;
+    padding: 0;
+    position: relative;
+  }
+  .docimg {
+    width: 40%;
+    min-width: 120px;
+    max-width: 160px;
+    margin-right: 0;
+    margin-left: 0;
+    /* Ensure image stays left */
+    align-self: flex-start;
+  }
+  .doc ul {
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-start;
+    margin-left: auto;
+    margin-top: 0;
+    gap: 10px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    /* Make sure buttons are vertically centered next to image */
+    display: flex;
+  }
+  .doc ul li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+}
+
+.back {
+    
+    background-image:
+      linear-gradient(45deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.4) 50%, rgba(0, 0, 0, 0.1) 100%),
+      url('../images/nur1.webp');
+    background-size: cover;
+    background-position: center;
+    height: 90vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding-left: 5vh;
+    padding-top: 10vh;
+    padding-right: 5vh;
+    overflow: hidden;
+    box-sizing: border-box;
+   
+}
+body {
+  background-color: white;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+    z-index: 1000;
+}
+
+main {
+    margin-top: 0;
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 auto;
+    min-height: 0;
+}
+
+.doc-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+    gap: 40px;
+}
+
+.docpic {
+    flex: 1;
+    min-width: 0; /* Allows text to wrap properly */
+}
+
+.doc {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 0; /* Allows text to wrap properly */
+}
+
+.docimg {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 1024px) {
+    .doc-container {
+        gap: 30px;
+    }
+    
+    .docpic h1 {
+        font-size: 40px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .doc-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+    }
+    
+    .docpic, .doc {
+        width: 100%;
+        max-width: 600px;
+    }
+    
+    .docpic h1 {
+        font-size: 36px !important;
+        text-align: center !important;
+    }
+    
+    .docpic p {
+        font-size: 16px;
+        margin: 10px 0 !important;
+    }
+    
+    .talk {
+        margin: 20px auto;
+        display: block;
+    }
+}
+
+@media (max-width: 480px) {
+    .doc-container {
+        padding: 0 15px;
+        gap: 25px;
+    }
+    
+    .docpic h1 {
+        font-size: 32px !important;
+        line-height: 1.2;
+    }
+    
+    .docpic p {
+        font-size: 15px;
+        line-height: 1.5;
+    }
+    
+    .doc ul {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .doc ul li {
+        margin: 5px;
+    }
+}
+.talk{
+    background-color: #04332A;
+    color: white;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.talk:hover{
+    background-color: #006b50;
+}
+
+.talk,
+.reach-1,
+.reach-2,
+.reach-3,
+.reach-4 {
+  outline: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.talk:focus,
+.reach-1:focus,
+.reach-2:focus,
+.reach-3:focus,
+.reach-4:focus {
+  outline: 2px solid #006b50;
+}
+
+.doc ul {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
+  padding: 0;
+  margin-top: 16px;
+}
+
+.doc ul li {
+  display: flex;
+  align-items: center;
+}
+
+.reach-1,
+.reach-2,
+.reach-3,
+.reach-4 {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: none;
+  background: #006b50;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+}
+
+.reach-1:hover,
+.reach-2:hover,
+.reach-3:hover,
+.reach-4:hover {
+  background: #004d36;
+  transform: translateY(-2px);
+}
+
+.back {
+    padding: 40px 20px;
+    background-size: cover;
+    background-position: center;
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+@media (max-width: 768px) {
+    .back {
+        min-height: 300px;
+        padding: 30px 15px;
+    }
+    
+    .back h1 {
+        font-size: 28px !important;
+        margin-bottom: 10px !important;
+    }
+    
+    .per p {
+        font-size: 16px !important;
+        line-height: 1.5;
+    }
+}
+
+@media (max-width: 480px) {
+    .back {
+        min-height: 250px;
+    }
+    
+    .back h1 {
+        font-size: 24px !important;
+    }
+    
+    .per p {
+        font-size: 15px !important;
+    }
+}
+
+.nav-links a:hover {
+    color: #04332A;
+}

@@ -1,0 +1,369 @@
+
+*{
+    margin: 0;
+    padding: 0;
+}
+
+/* Override footer margin to remove space */
+.footer {
+    margin-top: 0 !important;
+}
+
+/* Progress Bar Styles */
+.progress-container {
+    width: 100%;
+    max-width: 600px;
+    margin-bottom: 30px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background-color: #e0e0e0;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #033528, #033528);
+    border-radius: 4px;
+    width: 33.33%;
+    transition: width 0.5s ease-in-out;
+}
+
+.progress-steps {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+.step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    flex: 1;
+    position: relative;
+}
+
+.step-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #e0e0e0;
+    color: #666;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 8px;
+    transition: all 0.3s ease;
+    border: 3px solid #e0e0e0;
+}
+
+.step-label {
+    font-size: 12px;
+    color: #666;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.step.active .step-circle {
+    background-color: #033528;
+    color: white;
+    border-color: #033528;
+    transform: scale(1.1);
+}
+
+.step.active .step-label {
+    color: #033528;
+    font-weight: 600;
+}
+
+.step.completed .step-circle {
+    background-color: #033528;
+    color: white;
+    border-color: #033528;
+}
+
+.step.completed .step-circle::before {
+    content: "✓";
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.step.completed .step-label {
+    color: #033528;
+}
+/* General fade-in animation */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 1s ease, transform 1s ease;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Button hover effect */
+button.talk {
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+button.talk:hover {
+  background-color: #007a5e;
+  transform: scale(1.05);
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Footer fade in */
+.footer, .footer-top, .footer-content, .footer-bottom {
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+.footer.visible,
+.footer-top.visible,
+.footer-content.visible,
+.footer-bottom.visible {
+  opacity: 1;
+}
+
+/* Footer */
+.footer {
+    background-color: #003f2d;
+    color: #fff;
+    margin-top: 0;
+  }
+  
+  .footer-top {
+    background-color: #fce0b5;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .footer-top .logo {
+    height: 60px;
+    width: 150px;
+  }
+  
+  .back-to-top {
+    background-color: #004d33;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  
+  .footer-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 40px 20px;
+  }
+  
+  .footer-content h3 {
+    margin-bottom: 10px;
+    font-size: 18px;
+  }
+  
+  .footer-content ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .footer-content li {
+    margin-bottom: 8px;
+  }
+  
+  .footer-content a {
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  
+  .footer-content a:hover {
+    color: #E5C285;
+  }
+  
+  .related-pages,
+  .quick-links,
+  .follow-us {
+    flex: 1;
+    min-width: 200px;
+    margin-right: 20px;
+  }
+  
+  /* Social Icons */
+  .icons a {
+    margin-right: 10px;
+  }
+  
+  .icons img {
+    width: 30px;
+    height: 30px;
+  }
+  
+  /* Feedback Form */
+  .feedback-form {
+    margin-top: 10px;
+  }
+  
+  .feedback-form textarea {
+    width: 100%;
+    height: 60px;
+    padding: 5px;
+    resize: none;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    border: none;
+  }
+  
+  .form-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .form-row input {
+    flex: 1;
+    padding: 6px;
+    border-radius: 6px;
+    border: none;
+  }
+  
+  .feedback-form button {
+    background-color: #003f2d;
+    color: #fff;
+    border: 1px solid #fff;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  .footer-bottom {
+    text-align: center;
+    padding: 10px;
+    font-size: 14px;
+    border-top: 1px solid gray;
+  }
+  /* Top Header Bar */
+  .top-bar {
+   background-color: #E5C285;
+    height: 40px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 11;
+  }
+  
+  /* Navbar */
+  .navbar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 10vh;
+    justify-content: space-between;
+    background-color: #fff;
+    padding: 10px 32px;
+    position: fixed;
+    z-index: 10;
+    box-shadow: 0 0px 10px rgba(0, 0, 0, 0.1);
+    min-height: 60px;
+    width: 97%;
+    position: fixed;
+    top: 40px;
+    left: 0;
+  }
+  
+  .nav-logo {
+    display: flex;
+    align-items: center;;
+  }
+  .nav-logo img {
+    height: 60px;
+    width: 100px;
+  }
+  
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+  
+  .nav-links a {
+    text-decoration: none;
+    color: #04332A;
+    font-weight: 500;
+    font-size: 14px;
+    transition: color 0.3s;
+  }
+  
+  .nav-links a:hover {
+    color: whitesmoke;
+    background-color: #007a5e;
+  }
+  
+  .nav-links .appointment {
+    background-color: #04332A;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    display: flex;
+  }
+  
+  /* Hamburger Menu */
+  .hamburger {
+    display: none;
+    font-size: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #04332A;
+  }
+  
+  /* Responsive Navigation */
+  @media (max-width: 768px) {
+    .hamburger {
+      display: block;
+    }
+  
+    .nav-links {
+      display: none;
+      flex-direction: column;
+      position: absolute;
+      top: 60px;
+      right: 20px;
+      background-color: #fff;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+  
+    .nav-links.active {
+      display: flex;
+    }
+  
+    .nav-links a {
+      padding: 8px 0;
+    }
+  }

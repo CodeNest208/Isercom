@@ -1,0 +1,386 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service - Isercom Clinic</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            min-height: 100vh;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 60px 0;
+            background: white;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            color: #204F3F;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .content {
+            background: white;
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+        }
+
+        .content h2 {
+            font-size: 2rem;
+            color: #204F3F;
+            margin: 30px 0 20px 0;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .content h3 {
+            font-size: 1.5rem;
+            color: #667eea;
+            margin: 25px 0 15px 0;
+        }
+
+        .content p {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        .content ul {
+            margin: 15px 0;
+            padding-left: 30px;
+        }
+
+        .content li {
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+
+        .highlight-box {
+            background: #e6f3ff;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #007bff;
+            margin: 20px 0;
+        }
+
+        .important-note {
+            background: #fff3cd;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #ffc107;
+            margin: 20px 0;
+        }
+
+        .warning-box {
+            background: #f8d7da;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #dc3545;
+            margin: 20px 0;
+        }
+
+        .acceptance-section {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .acceptance-section h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .acceptance-section p {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .nav-buttons {
+            text-align: center;
+            margin: 50px 0;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            margin: 10px;
+            background: #204F3F;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #2d6752;
+            transform: translateY(-2px);
+        }
+
+        .btn-white {
+            background: white;
+            color: #28a745;
+        }
+
+        .btn-white:hover {
+            background: #f8f9fa;
+            color: #20c997;
+        }
+
+        .btn-secondary {
+            background: #667eea;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6fd8;
+        }
+
+        .last-updated {
+            text-align: center;
+            font-style: italic;
+            color: #666;
+            margin-top: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .header h1 {
+                font-size: 2.5rem;
+            }
+
+            .content {
+                padding: 30px 20px;
+            }
+
+            .content h2 {
+                font-size: 1.7rem;
+            }
+
+            .acceptance-section {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Terms of Service</h1>
+            <p>Please read these terms carefully before using our services. By using our services, you agree to these terms.</p>
+        </div>
+
+        <div class="content">
+            <div class="important-note">
+                <strong>Important:</strong> These terms of service govern your use of Isercom Clinic's services and website. Please read them carefully.
+            </div>
+
+            <h2>1. Acceptance of Terms</h2>
+            <p>By accessing or using any services provided by Isercom Clinic, including our website, online portal, and medical services, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service.</p>
+
+            <div class="highlight-box">
+                <strong>Agreement:</strong> Your use of our services constitutes acceptance of these terms. If you do not agree to these terms, please do not use our services.
+            </div>
+
+            <h2>2. Medical Services</h2>
+            <h3>Healthcare Delivery</h3>
+            <p>Isercom Clinic provides medical services including but not limited to:</p>
+            <ul>
+                <li>Primary care and general medicine</li>
+                <li>Fertility and reproductive health services</li>
+                <li>Specialized medical consultations</li>
+                <li>Diagnostic testing and imaging</li>
+                <li>Preventive care and health screenings</li>
+            </ul>
+
+            <h3>Patient Responsibilities</h3>
+            <p>As a patient, you agree to:</p>
+            <ul>
+                <li>Provide accurate and complete medical information</li>
+                <li>Follow prescribed treatment plans and instructions</li>
+                <li>Attend scheduled appointments or provide adequate notice of cancellation</li>
+                <li>Pay for services rendered according to our billing policies</li>
+                <li>Treat staff and other patients with respect and courtesy</li>
+            </ul>
+
+            <h2>3. Appointment Policies</h2>
+            <h3>Scheduling</h3>
+            <ul>
+                <li><strong>Online Booking:</strong> Available 24/7 through our website</li>
+                <li><strong>Confirmation:</strong> All appointments require confirmation</li>
+                <li><strong>Availability:</strong> Subject to provider schedules and availability</li>
+            </ul>
+
+            <h3>Cancellation Policy</h3>
+            <ul>
+                <li><strong>Notice Required:</strong> 24 hours advance notice for cancellations</li>
+                <li><strong>No-Show Fee:</strong> May apply for appointments missed without notice</li>
+                <li><strong>Rescheduling:</strong> Available subject to provider availability</li>
+            </ul>
+
+            <div class="warning-box">
+                <strong>Important:</strong> Repeated no-shows or late cancellations may result in termination of the patient-provider relationship.
+            </div>
+
+            <h2>4. Payment and Billing</h2>
+            <h3>Payment Terms</h3>
+            <ul>
+                <li>Payment is due at the time of service unless other arrangements have been made</li>
+                <li>We accept cash, credit cards, and most insurance plans</li>
+                <li>Copayments and deductibles are due at the time of service</li>
+                <li>Returned payment fees may apply for declined transactions</li>
+            </ul>
+
+            <h3>Insurance</h3>
+            <ul>
+                <li>Insurance verification is the patient's responsibility</li>
+                <li>We will file insurance claims as a courtesy to patients</li>
+                <li>Patients are responsible for any amounts not covered by insurance</li>
+                <li>Prior authorization requirements must be met when applicable</li>
+            </ul>
+
+            <h2>5. Website and Online Services</h2>
+            <h3>Account Security</h3>
+            <p>You are responsible for:</p>
+            <ul>
+                <li>Maintaining the confidentiality of your account credentials</li>
+                <li>All activities that occur under your account</li>
+                <li>Immediately notifying us of any unauthorized access</li>
+                <li>Using strong passwords and updating them regularly</li>
+            </ul>
+
+            <h3>Prohibited Uses</h3>
+            <p>You may not use our website or services to:</p>
+            <ul>
+                <li>Violate any applicable laws or regulations</li>
+                <li>Transmit harmful or malicious code</li>
+                <li>Attempt to gain unauthorized access to our systems</li>
+                <li>Share your account credentials with others</li>
+                <li>Use automated systems to access our services</li>
+            </ul>
+
+            <h2>6. Privacy and Confidentiality</h2>
+            <p>We are committed to protecting your privacy and maintaining the confidentiality of your health information in accordance with:</p>
+            <ul>
+                <li>HIPAA (Health Insurance Portability and Accountability Act)</li>
+                <li>State privacy laws and regulations</li>
+                <li>Our comprehensive Privacy Policy</li>
+                <li>Professional medical ethics standards</li>
+            </ul>
+
+            <div class="highlight-box">
+                <strong>Privacy Policy:</strong> Please review our Privacy Policy for detailed information about how we collect, use, and protect your personal information.
+            </div>
+
+            <h2>7. Limitation of Liability</h2>
+            <h3>Medical Treatment</h3>
+            <p>While we strive to provide the highest quality medical care, you understand that:</p>
+            <ul>
+                <li>No medical treatment can guarantee specific outcomes</li>
+                <li>All medical procedures carry inherent risks</li>
+                <li>Individual results may vary</li>
+                <li>Emergency situations may require immediate action</li>
+            </ul>
+
+            <h3>Website and Technology</h3>
+            <ul>
+                <li>Our website and online services are provided "as is"</li>
+                <li>We do not guarantee uninterrupted or error-free service</li>
+                <li>Technical issues may occasionally affect service availability</li>
+                <li>We are not liable for damages resulting from technical problems</li>
+            </ul>
+
+            <h2>8. Intellectual Property</h2>
+            <p>All content on our website, including text, graphics, logos, and software, is the property of Isercom Clinic and is protected by copyright and other intellectual property laws. You may not:</p>
+            <ul>
+                <li>Copy, reproduce, or distribute our content without permission</li>
+                <li>Use our trademarks or logos without authorization</li>
+                <li>Create derivative works based on our content</li>
+                <li>Reverse engineer or attempt to extract source code</li>
+            </ul>
+
+            <h2>9. Termination</h2>
+            <h3>Patient-Initiated</h3>
+            <p>You may terminate your relationship with our clinic at any time by providing written notice.</p>
+
+            <h3>Clinic-Initiated</h3>
+            <p>We may terminate the patient-provider relationship for reasons including:</p>
+            <ul>
+                <li>Non-payment of fees</li>
+                <li>Failure to follow treatment recommendations</li>
+                <li>Inappropriate behavior toward staff or other patients</li>
+                <li>Violation of clinic policies</li>
+            </ul>
+
+            <div class="warning-box">
+                <strong>Notice:</strong> In case of termination, we will provide appropriate notice and assist with transfer of care when medically appropriate.
+            </div>
+
+            <h2>10. Changes to Terms</h2>
+            <p>We reserve the right to modify these terms at any time. Changes will be effective when posted on our website. Continued use of our services after changes are posted constitutes acceptance of the new terms.</p>
+
+            <h2>11. Contact Information</h2>
+            <p>If you have questions about these terms, please contact us:</p>
+            <ul>
+                <li><strong>Email:</strong> legal@isercomclinic.com</li>
+                <li><strong>Phone:</strong> (555) 123-4567</li>
+                <li><strong>Mail:</strong> 123 Medical Center Drive, City, State 12345</li>
+            </ul>
+
+            <div class="last-updated">
+                <strong>Last Updated:</strong> August 11, 2025
+            </div>
+        </div>
+
+        <div class="acceptance-section">
+            <h2>Agreement Acknowledgment</h2>
+            <p>By using our services, you acknowledge that you have read and agree to these Terms of Service.</p>
+            <a href="{% url 'register' %}" class="btn btn-white">Create Account</a>
+        </div>
+
+        <div class="nav-buttons">
+            <a href="{% url 'privacy_policy' %}" class="btn">Privacy Policy</a>
+            <a href="{% url 'contact' %}" class="btn btn-secondary">Contact</a>
+            <a href="{% url 'home' %}" class="btn">Back to Home</a>
+        </div>
+    </div>
+</body>
+</html>

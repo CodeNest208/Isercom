@@ -1,0 +1,85 @@
+@import url(header.css);
+*{
+
+    margin: 0;
+    padding: 0;
+}
+.confirmation-container {
+    text-align: center;
+    font-family: Arial, sans-serif;
+    padding: 40px 20px;
+    min-height: 80vh;
+    margin-top: 30vh;
+
+  }
+  
+  .confirmation-container h2 {
+    font-weight: 600;
+    margin-bottom: 30px;
+  }
+  
+  .check-circle {
+    display: inline-block;
+    background-color: #e0e0e0;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    position: relative;
+    margin-bottom: 30px;
+  }
+  
+  .checkmark {
+    width: 52px;
+    height: 52px;
+    stroke: #18a0a6;
+    stroke-width: 4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+    animation: draw 1s ease forwards;
+    position: absolute;
+    top: 24px;
+    left: 24px;
+  }
+  
+  @keyframes draw {
+    0% {
+      stroke-dasharray: 50;
+      stroke-dashoffset: 50;
+    }
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+  
+  .confirmation-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  .confirmation-buttons button {
+    background-color: #003b2b;
+    color: white;
+    font-size: 14px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .confirmation-buttons button:hover {
+    background-color: #025c45;
+  }
+  .main{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+    background-color: #D9D9D9;
+    margin-top: 10vh;
+  }
+  

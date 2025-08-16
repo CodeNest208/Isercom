@@ -1,0 +1,142 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Consultation & Specialized Clinics</title>
+  <link rel="stylesheet" href="{% static 'css/consultation.css' %}?v={% now 'U' %}" />
+    <link rel="stylesheet" href="{% static 'css/header_footer.css' %}?v={% now 'U' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v={% now 'U' %}">
+    <link rel="stylesheet" href="{% static 'css/body.css' %}?v={% now 'U' %}">
+
+  <script src="{% static 'js/script.js' %}?v={% now 'U' %}" defer></script>
+</head>
+<body>
+     <!-- Header -->
+    <header>
+      <div class="top-bar">
+        <div class="top-fill"></div>
+      </div>
+
+      <nav class="navbar">
+          <div class="nav-logo">
+            <img src="{% static 'images/logo.png' %}" alt="iSercom" />
+            </div>
+            <button class="hamburger" id="hamburger">&#9776;</button>
+            <div class="nav-links" id="navLinks">
+              <a href="{% url 'home' %}">Home</a>
+              <a href="{% url 'about_us' %}">About Us</a>
+              <a href="{% url 'contact' %}">Contact Us</a>
+              <a href="{% url 'services' %}">Services</a>
+              <a href="{% url 'create_appointment' %}" class="appointment">Appointment</a>
+          </div>
+      </nav>
+    </header>
+
+    <div class="hero">
+    <div class="hero-overlay">
+      <h1>Consultation & Specialized Clinics</h1>
+      <p>Expert care begins with the right conversation</p>
+    </div>
+  </div>
+
+ 
+
+  <main class="container">
+    <!-- General Consultation Section -->
+    <section class="section">
+      <h2>General Consultation Section</h2>
+      <div class="content-row">
+        <div class="text">
+          <p>At iSecorm Clinic, we believe that quality healthcare begins with a thorough consultation. Our skilled medical professionals are dedicated to understanding your health concerns through careful listening, detailed assessment, and personalized recommendations.</p>
+          <p>During each consultation, we take the time to:</p>
+          <ul>
+            <li>Understand your medical history and current symptoms</li>
+            <li>Perform physical evaluations and request diagnostic tests</li>
+            <li>Educate you about your condition and available treatment options</li>
+            <li>Refer you to a specialized clinic when appropriate</li>
+          </ul>
+          <p>We ensure every patient receives comprehensive care in a comfortable, confidential setting. Well-being begins with a consultation — book yours today.</p>
+        </div>
+        <div class="placeholder"></div>
+      </div>
+    </section>
+
+    <!-- Specialized Clinics Section -->
+    <section class="section">
+      <h2>Specialized Clinics Section</h2>
+      <div class="content-row">
+        <div class="text">
+          <p>At iSecorm Clinic, we recognize that every healthcare journey begins with a meaningful consultation. Our Outpatient Department (OPD) serves as the first point of contact — offering convenient consultations for a wide range of health concerns.</p>
+          <p>Patients may be referred to our specialized clinics covering respiratory disorders, cardiovascular care, metabolic diseases, and more. Our experienced doctors ensure best-in-class care in a collaborative, patient-centered environment.</p>
+        </div>
+        <div class="placeholder"></div>
+      </div>
+    </section>
+
+    <div class="cta">
+      <button onclick="talkToDoctor()">Talk to Doctor</button>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+
+
+  
+      <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-top">
+        <img src="{% static 'images/logo.png' %}" alt="iSecorm Logo" class="logo" />
+        <button class="back-to-top" onclick="scrollToTop()">Back to top</button>
+      </div>
+
+      <div class="footer-content">
+        <div class="related-pages">
+          <h3>Related Pages</h3>
+          <ul>
+            <li><a href="{% url 'about_us' %}">About Us</a></li>
+            <li><a href="{% url 'contact' %}">Contact Us</a></li>
+            <li><a href="#">Learn More</a></li>
+          </ul>
+        </div>
+
+        <div class="quick-links">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="{% url 'gynaecology' %}">Obstetrics and Gynaecological Services</a></li>
+            <li><a href="{% url 'consultation' %}">Consultation & Specialised Clinics</a></li>
+            <li><a href="{% url 'antenatal' %}">Antenatal Care</a></li>
+            <li><a href="{% url 'fertility' %}">Fertility</a></li>
+            <li><a href="#">IVF</a></li>
+          </ul>
+        </div>
+
+        <div class="follow-us">
+          <h3>Follow Us</h3>
+          <div class="icons">
+            <a href="#"><img src="{% static 'images/facebook.png' %}" alt="Facebook" /></a>
+            <a href="#"><img src="{% static 'images/Tiktok.png' %}" alt="TikTok" /></a>
+            <a href="#"><img src="{% static 'images/instagram.png' %}" alt="Instagram" /></a>
+            <a href="#"><img src="{% static 'images/X.png' %}" alt="X" /></a>
+          </div>
+
+          <form class="feedback-form">
+            <textarea placeholder="Feedback"></textarea>
+            <div class="form-row">
+              <input type="text" placeholder="Name" />
+              <input type="email" placeholder="Email" />
+            </div>
+            <button type="submit">Submit</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2025 iSecorm Clinic. All rights reserved.</p>
+      </div>
+    </footer>
+ 
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Isercom Clinic</title>
+    <link rel="stylesheet" href="/frontend/css/login.css">
+    <link rel="stylesheet" href="/frontend/css/body.css">
+    <script src="/frontend/js/api-client.js" defer></script>
+    <script src="/frontend/js/login.js"></script>
+
+</head>
+<body>
+    <div class="login-wrapper">
+        <div class="login-form-section">
+            <h1 class="form-title">Sign into your account</h1>
+
+            <form method="post" id="loginForm">
+                <div class="message-container" id="messageContainer"></div>
+
+                <!-- {# Email Field #} -->
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                    <div class="field-error" id="emailError"></div>
+                </div>
+
+                <!-- {# Password Field #} -->
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+                    <div class="field-error" id="passwordError"></div>
+                </div>
+
+                <button type="submit" class="login-btn">Sign in</button>
+            </form>
+            
+            <div class="social-login mobile-social">
+                <div class="social-text">or Sign in with</div>
+                <div class="social-icons">
+                    <div class="social-icon google">G</div>
+                    <div class="social-icon facebook">f</div>
+                    <div class="social-icon twitter">t</div>
+                </div>
+                <div class="social-text">
+                    <p>Don't have an account?</p>
+                    <a href="/frontend/pages/register.html">Sign up</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="logo-section">
+            <div class="isercom-logo">
+                <img src="/frontend/images/logo.png" alt="Isercom Medical and Fertility Centre">
+                <div class="desktop-social">
+                    <div class="social-text">or sign in with</div>
+                    <div class="social-icons">
+                        <div class="social-icon google">G</div>
+                        <div class="social-icon facebook">f</div>
+                        <div class="social-icon twitter">t</div>
+                    </div>
+                    <div class="social-text">
+                        <p>Don't have an account?</p>
+                        <a href="/frontend/pages/register.html">Sign up</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- API Integration Script -->
+
+</body>
+</html>

@@ -1,0 +1,585 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Isercom Clinic</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f8f9fa;
+            min-height: 100vh;
+            display: flex;
+            margin: 0;
+            padding: 0;
+        }
+
+        .login-wrapper {
+            display: flex;
+            width: 100%;
+            min-height: 100vh;
+        }
+
+        .login-form-section {
+            flex: 1;
+            max-width: 50%;
+            padding: 80px 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: #f8f9fa;
+        }
+
+        .logo-section {
+            flex: 1;
+            max-width: 50%;
+            background: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .clinic-logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .clinic-logo h1 {
+            color: #4a5568;
+            font-size: 2em;
+            margin-bottom: 5px;
+        }
+
+        .clinic-logo p {
+            color: #718096;
+            font-size: 0.9em;
+        }
+
+        h2 {
+            color: #2d3748;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #4a5568;
+            font-weight: 500;
+            font-size: 0.9em;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background-color: #f7fafc;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #667eea;
+            background-color: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .login-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .error-message {
+            background-color: #fed7d7;
+            color: #742a2a;
+            border: 1px solid #fc8181;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 0.9em;
+            text-align: left;
+        }
+
+        .success-message {
+            background-color: #c6f6d5;
+            color: #22543d;
+            border: 1px solid #68d391;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 0.9em;
+        }
+
+        .field-error {
+            color: #c53030;
+            font-size: 0.85em;
+            margin-top: 6px;
+        }
+
+        .note {
+            color: #718096;
+            font-size: 0.9em;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .form-title {
+            color: #333;
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 40px;
+            line-height: 1.2;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #666;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            /* padding: 14px 16px; */
+            border-radius: 10px;
+            font-size: 16px;
+            background-color: #fff;
+            transition: border-color 0.2s ease;
+            font-family: inherit;
+            outline: none;
+            border: none;
+        }
+
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            outline: none;
+            border: none;
+        }
+
+        input[type="email"]::placeholder,
+        input[type="password"]::placeholder {
+            color: #999;
+            font-size: 14px;
+
+        }
+
+
+        .login-btn {
+            width: 100%;
+            background: #204F3F;
+            color: white;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            margin-top: 16px;
+            font-family: inherit;
+        }
+
+        .login-btn:hover {
+            background: #218838;
+        }
+
+        .isercom-logo {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .isercom-logo img {
+            max-width: 350px;
+            width: 80%;
+            height: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+        }
+
+        .isercom-text {
+            font-size: 42px;
+            font-weight: 700;
+            color: #e91e63;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .isercom-tagline {
+            font-size: 14px;
+            color: #666;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .social-login {
+            margin-top: 32px;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+        }
+
+        /* Desktop social icons - hidden by default, will be shown in logo section */
+        .desktop-social {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .mobile-social {
+            display: none;
+        }
+
+        .social-text {
+            margin-top: 15px;
+            display: flex;
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .social-text p{
+            margin-right: 10px;
+        }
+        .social-text a{
+            color: #204F3F;
+            text-decoration: none;
+        }
+
+        .social-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .google { 
+            background: #db4437; 
+            color: white; 
+        }
+        .facebook { 
+            background: #3b5998; 
+            color: white; 
+        }
+        .twitter { 
+            background: #1da1f2; 
+            color: white; 
+        }
+
+        .social-icon:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            padding: 12px 16px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            padding: 12px 16px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .field-error {
+            color: #dc3545;
+            font-size: 13px;
+            margin-top: 6px;
+        }
+        .form-title{
+            font-size: 50px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+                background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            }
+            
+            .login-wrapper {
+                flex-direction: column;
+                min-height: 100vh;
+            }
+            
+            .logo-section {
+                order: 1;
+                min-height: 250px;
+                max-width: 100%;
+                border-left: none;
+                border-bottom: 1px solid #f0f0f0;
+            }
+            
+            .login-form-section {
+                order: 2;
+                padding: 40px 20px;
+                max-width: 100%;
+                margin: 0;
+                background: white;
+            }
+            
+            .form-title {
+                font-size: 32px;
+                margin-bottom: 30px;
+            }
+
+            input[type="email"],
+            input[type="password"] {
+                padding: 16px 20px;
+                font-size: 16px;
+                border-radius: 12px;
+            }
+
+            .login-btn {
+                padding: 16px;
+                font-size: 18px;
+                border-radius: 12px;
+                margin-top: 20px;
+            }
+            
+            .isercom-logo img {
+                max-width: 250px;
+                width: 70%;
+            }
+            
+            .desktop-social {
+                display: none;
+            }
+
+            .mobile-social {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin-top: 32px;
+                background: white;
+                padding: 20px;
+                border-radius: 15px;
+                border: 1px solid #e2e8f0;
+            }
+            }
+            
+            .social-login {
+                width: 100%;
+                text-align: center;
+            }
+
+            .social-text {
+                color: #2d3748;
+                text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            }
+
+            .social-text a {
+                color: #204F3F;
+                font-weight: 600;
+                text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            }
+
+        @media (max-width: 480px) {
+            .logo-section {
+                min-height: 200px;
+            }
+            
+            .login-form-section {
+                padding: 30px 15px;
+                max-width: 95%;
+                margin: 20px auto;
+            }
+            
+            .form-title {
+                font-size: 30px;
+            }
+
+            /* Even wider fields and button for small phones */
+            input[type="email"],
+            input[type="password"] {
+                padding: 18px 20px;
+                font-size: 16px;
+                border-radius: 12px;
+            }
+
+            .login-btn {
+                padding: 18px;
+                font-size: 18px;
+                border-radius: 12px;
+                margin-top: 24px;
+            }
+            
+            .isercom-logo img {
+                max-width: 200px;
+                width: 60%;
+            }
+
+            .mobile-social {
+                margin-top: 20px;
+                padding: 15px;
+                margin-bottom: 30px;
+            }
+        }
+
+        /* Add extra padding to bottom of form section for scroll space */
+        @media (max-width: 768px) {
+            .login-form-section {
+                padding-bottom: 50px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-wrapper">
+        <div class="login-form-section">
+            <h1 class="form-title">Sign into your account</h1>
+<!-- 
+            {# Django messages block #}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="{% if message.tags == 'success' %}success-message{% else %}error-message{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %} -->
+
+            <form method="post">
+                {% csrf_token %}
+                {# Non-field errors (e.g., invalid credentials) #}
+                {% if form.non_field_errors %}
+                    <div class="error-message">
+                        {% for error in form.non_field_errors %}
+                            <div>{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                {# Email Field #}
+                <div class="form-group">
+                    {{ form.username.label_tag }}
+                    {{ form.username }}
+                    {% if form.username.errors %}
+                        <div class="field-error">
+                            {% for error in form.username.errors %}{{ error }}{% if not forloop.last %}<br>{% endif %}{% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                {# Password Field #}
+                <div class="form-group">
+                    {{ form.password.label_tag }}
+                    {{ form.password }}
+                    {% if form.password.errors %}
+                        <div class="field-error">
+                            {% for error in form.password.errors %}{{ error }}{% if not forloop.last %}<br>{% endif %}{% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <button type="submit" class="login-btn">Sign in</button>
+            </form>
+            
+            <div class="social-login mobile-social">
+                <div class="social-text">or Sign in with</div>
+                <div class="social-icons">
+                    <div class="social-icon google">G</div>
+                    <div class="social-icon facebook">f</div>
+                    <div class="social-icon twitter">t</div>
+                </div>
+                <div class="social-text">
+                    <p>Don't have an account?</p>
+                    <a href="{% url 'register' %}">Sign up</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="logo-section">
+            <div class="isercom-logo">
+                <img src="{% static 'image.png' %}" alt="Isercom Medical and Fertility Centre">
+                <div class="desktop-social">
+                    <div class="social-text">or sign in with</div>
+                    <div class="social-icons">
+                        <div class="social-icon google">G</div>
+                        <div class="social-icon facebook">f</div>
+                        <div class="social-icon twitter">t</div>
+                    </div>
+                    <div class="social-text">
+                        <p>Don't have an account?</p>
+                        <a href="{% url 'register' %}">Sign up</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
