@@ -10,6 +10,7 @@ from .models import Patient, Doctor, Service, Appointment
 from .forms import CustomUserCreationForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.middleware.csrf import get_token
+from .email_utils import send_appointment_emails_async
 
 
 @require_http_methods(["GET"])
@@ -455,13 +456,20 @@ def appointments_api(request):
             status='scheduled'
         )
 
+
+        try:
+            send_appointment_emails_async(appointment)
+        except Exception as e:
+            print(f"Email notification error: {str(e)}")
+        
+
         return JsonResponse({
             'success': True,
             'message': 'Appointment booked successfully',
             'data': {
                 'id': appointment.pk,
-                'date': appointment.date.strftime('%Y-%m-%d'),
-                'time': appointment.time.strftime('%H:%M'),
+                'date': appointment.date,
+                'time': appointment.time,
                 'status': appointment.status
             }
         })

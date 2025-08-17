@@ -223,6 +223,7 @@ async function handleFormSubmit(event) {
         service: formData.get('service'),
         notes: formData.get('notes') || ''
     };
+    console.log(appointmentData);
 
     // Validate form data
     if (!validateFormData(appointmentData)) {
@@ -245,8 +246,10 @@ async function handleFormSubmit(event) {
             },
             body: JSON.stringify(appointmentData)
         });
-
+        
         const result = await response.json();
+        console.log(response);
+        console.log(result);
 
         if (response.ok && result.success) {
             // Success

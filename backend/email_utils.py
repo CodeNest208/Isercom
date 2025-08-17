@@ -142,11 +142,11 @@ def send_appointment_notification_to_doctor(appointment, async_send=True):
                         </tr>
                         <tr>
                             <td style="padding: 8px 0; font-weight: bold;">Date:</td>
-                            <td style="padding: 8px 0;">{appointment.date.strftime('%A, %B %d, %Y')}</td>
+                            <td style="padding: 8px 0;">{appointment.date}</td>
                         </tr>
                         <tr>
                             <td style="padding: 8px 0; font-weight: bold;">Time:</td>
-                            <td style="padding: 8px 0;">{appointment.time.strftime('%I:%M %p')}</td>
+                            <td style="padding: 8px 0;">{appointment.time}</td>
                         </tr>
                         <tr>
                             <td style="padding: 8px 0; font-weight: bold;">Service:</td>
@@ -187,8 +187,8 @@ def send_appointment_notification_to_doctor(appointment, async_send=True):
         A new appointment has been booked with you:
         
         Patient: {patient_name}
-        Date: {appointment.date.strftime('%A, %B %d, %Y')}
-        Time: {appointment.time.strftime('%I:%M %p')}
+        Date: {appointment.date}
+        Time: {appointment.time}
         Service: {appointment.service.name}
         Status: {appointment.status.title()}
         
@@ -263,11 +263,11 @@ def send_appointment_confirmation_to_patient(appointment, async_send=True):
                         </tr>
                         <tr>
                             <td style="padding: 8px 0; font-weight: bold;">Date:</td>
-                            <td style="padding: 8px 0;">{appointment.date.strftime('%A, %B %d, %Y')}</td>
+                            <td style="padding: 8px 0;">{appointment.date}</td>
                         </tr>
                         <tr>
                             <td style="padding: 8px 0; font-weight: bold;">Time:</td>
-                            <td style="padding: 8px 0;">{appointment.time.strftime('%I:%M %p')}</td>
+                            <td style="padding: 8px 0;">{appointment.time}</td>
                         </tr>
                         <tr>
                             <td style="padding: 8px 0; font-weight: bold;">Service:</td>
@@ -308,8 +308,8 @@ def send_appointment_confirmation_to_patient(appointment, async_send=True):
         
         Doctor: {doctor_name}
         Specialty: {getattr(appointment.doctor, 'speciality', 'General Practice')}
-        Date: {appointment.date.strftime('%A, %B %d, %Y')}
-        Time: {appointment.time.strftime('%I:%M %p')}
+        Date: {appointment.date}
+        Time: {appointment.time}
         Service: {appointment.service.name}
         
         Important Reminders:

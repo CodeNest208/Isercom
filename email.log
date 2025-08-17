@@ -40,3 +40,81 @@ INFO 2025-08-15 02:15:25,474 email_utils 25388 12156 Email queued for async send
 INFO 2025-08-15 02:15:25,475 email_utils 25388 12156 Both appointment emails queued for appointment 16
 INFO 2025-08-15 02:15:28,750 email_utils 25388 34360 Email sent successfully to williams@gmail.com in 3.28s
 INFO 2025-08-15 02:15:29,035 email_utils 25388 34868 Email sent successfully to odimer@gmail.com in 3.56s
+ERROR 2025-08-17 16:06:46,004 email_utils 17832 19896 Failed to send doctor notification: 'str' object has no attribute 'strftime'
+ERROR 2025-08-17 16:06:46,004 email_utils 17832 19896 Failed to send patient confirmation: 'str' object has no attribute 'strftime'
+ERROR 2025-08-17 16:06:46,005 email_utils 17832 19896 Failed to queue emails for appointment 27
+ERROR 2025-08-17 16:10:32,371 email_utils 20452 47872 Failed to send doctor notification: 'str' object has no attribute 'strftime'
+ERROR 2025-08-17 16:10:32,372 email_utils 20452 47872 Failed to send patient confirmation: 'str' object has no attribute 'strftime'
+ERROR 2025-08-17 16:10:32,372 email_utils 20452 47872 Failed to queue emails for appointment 28
+INFO 2025-08-17 16:20:55,635 email_utils 4612 53012 Email queued for async sending to felixasante2005@gmail.com
+ERROR 2025-08-17 16:20:55,636 email_utils 4612 53012 Failed to send patient confirmation: 'str' object has no attribute 'strftime'
+WARNING 2025-08-17 16:20:55,636 email_utils 4612 53012 Only doctor email queued for appointment 29
+INFO 2025-08-17 16:20:58,809 email_utils 4612 51476 Email sent successfully to felixasante2005@gmail.com in 3.17s
+INFO 2025-08-17 16:23:15,384 email_utils 48940 1212 Email queued for async sending to felixasante2005@gmail.com
+INFO 2025-08-17 16:23:15,385 email_utils 48940 1212 Email queued for async sending to odimer@gmail.com
+INFO 2025-08-17 16:23:15,385 email_utils 48940 1212 Both appointment emails queued for appointment 30
+ERROR 2025-08-17 16:23:15,392 email_utils 48940 42700 Error sending email to odimer@gmail.com: [Errno 11001] getaddrinfo failed
+ERROR 2025-08-17 16:23:15,392 email_utils 48940 42292 Error sending email to felixasante2005@gmail.com: [Errno 11001] getaddrinfo failed
+INFO 2025-08-17 16:30:03,277 email_utils 48940 13152 Email queued for async sending to felixasante2005@gmail.com
+INFO 2025-08-17 16:30:03,277 email_utils 48940 13152 Email queued for async sending to odimer@gmail.com
+INFO 2025-08-17 16:30:03,279 email_utils 48940 13152 Both appointment emails queued for appointment 31
+INFO 2025-08-17 16:30:06,492 email_utils 48940 42700 Email sent successfully to felixasante2005@gmail.com in 3.21s
+INFO 2025-08-17 16:30:06,788 email_utils 48940 42292 Email sent successfully to odimer@gmail.com in 3.51s
+INFO 2025-08-17 16:37:33,054 email_utils 48940 43860 Email queued for async sending to felixasante2005@gmail.com
+INFO 2025-08-17 16:37:33,055 email_utils 48940 43860 Email queued for async sending to odimer@gmail.com
+INFO 2025-08-17 16:37:33,055 email_utils 48940 43860 Both appointment emails queued for appointment 32
+INFO 2025-08-17 16:37:36,765 email_utils 48940 42700 Email sent successfully to felixasante2005@gmail.com in 3.71s
+INFO 2025-08-17 16:37:36,998 email_utils 48940 42292 Email sent successfully to odimer@gmail.com in 3.94s
+INFO 2025-08-17 16:39:23,067 email_utils 48940 43860 Email queued for async sending to felixasante2005@gmail.com
+INFO 2025-08-17 16:39:23,067 email_utils 48940 43860 Email queued for async sending to odimer@gmail.com
+INFO 2025-08-17 16:39:23,068 email_utils 48940 43860 Both appointment emails queued for appointment 33
+INFO 2025-08-17 16:39:26,369 email_utils 48940 42292 Email sent successfully to odimer@gmail.com in 3.30s
+INFO 2025-08-17 16:39:26,569 email_utils 48940 42700 Email sent successfully to felixasante2005@gmail.com in 3.50s
+INFO 2025-08-17 16:39:54,454 email_utils 48940 43860 Email queued for async sending to felixasante2005@gmail.com
+INFO 2025-08-17 16:39:54,454 email_utils 48940 43860 Email queued for async sending to odimer@gmail.com
+INFO 2025-08-17 16:39:54,455 email_utils 48940 43860 Both appointment emails queued for appointment 34
+INFO 2025-08-17 16:39:57,964 email_utils 48940 42700 Email sent successfully to odimer@gmail.com in 3.51s
+INFO 2025-08-17 16:39:58,211 email_utils 48940 42292 Email sent successfully to felixasante2005@gmail.com in 3.76s
+ERROR 2025-08-17 16:42:59,770 email_utils 21512 47148 Failed to send doctor notification: 'str' object has no attribute 'strftime'
+ERROR 2025-08-17 16:42:59,770 email_utils 21512 47148 Failed to send patient confirmation: 'str' object has no attribute 'strftime'
+ERROR 2025-08-17 16:42:59,771 email_utils 21512 47148 Failed to queue emails for appointment 35
+INFO 2025-08-17 16:44:09,581 email_utils 43060 28236 Email queued for async sending to felixasante2005@gmail.com
+INFO 2025-08-17 16:44:09,582 email_utils 43060 28236 Email queued for async sending to odimer@gmail.com
+INFO 2025-08-17 16:44:09,582 email_utils 43060 28236 Both appointment emails queued for appointment 36
+INFO 2025-08-17 16:44:14,847 email_utils 43060 23004 Email sent successfully to odimer@gmail.com in 5.26s
+INFO 2025-08-17 16:44:15,105 email_utils 43060 33992 Email sent successfully to felixasante2005@gmail.com in 5.52s
+INFO 2025-08-17 16:45:20,587 email_utils 43060 28236 Email queued for async sending to felixasante2005@gmail.com
+INFO 2025-08-17 16:45:20,587 email_utils 43060 28236 Email queued for async sending to odimer@gmail.com
+INFO 2025-08-17 16:45:20,588 email_utils 43060 28236 Both appointment emails queued for appointment 37
+INFO 2025-08-17 16:45:23,658 email_utils 43060 33992 Email sent successfully to odimer@gmail.com in 3.07s
+INFO 2025-08-17 16:45:23,847 email_utils 43060 23004 Email sent successfully to felixasante2005@gmail.com in 3.26s
+INFO 2025-08-17 16:50:09,345 email_utils 43060 32332 Email queued for async sending to felixasante2005@gmail.com
+INFO 2025-08-17 16:50:09,346 email_utils 43060 32332 Email queued for async sending to odimer@gmail.com
+INFO 2025-08-17 16:50:09,346 email_utils 43060 32332 Both appointment emails queued for appointment 38
+INFO 2025-08-17 16:50:14,615 email_utils 43060 33992 Email sent successfully to felixasante2005@gmail.com in 5.27s
+INFO 2025-08-17 16:50:14,955 email_utils 43060 23004 Email sent successfully to odimer@gmail.com in 5.61s
+INFO 2025-08-17 16:52:34,457 email_utils 43060 32332 Email queued for async sending to felixasante2005@gmail.com
+INFO 2025-08-17 16:52:34,457 email_utils 43060 32332 Email queued for async sending to odimer@gmail.com
+INFO 2025-08-17 16:52:34,458 email_utils 43060 32332 Both appointment emails queued for appointment 39
+INFO 2025-08-17 16:52:37,916 email_utils 43060 33992 Email sent successfully to felixasante2005@gmail.com in 3.46s
+INFO 2025-08-17 16:52:38,110 email_utils 43060 23004 Email sent successfully to odimer@gmail.com in 3.65s
+INFO 2025-08-17 16:52:42,229 email_utils 43060 32332 Email queued for async sending to felixasante2005@gmail.com
+INFO 2025-08-17 16:52:42,230 email_utils 43060 32332 Email queued for async sending to odimer@gmail.com
+INFO 2025-08-17 16:52:42,231 email_utils 43060 32332 Both appointment emails queued for appointment 40
+INFO 2025-08-17 16:52:45,273 email_utils 43060 23004 Email sent successfully to odimer@gmail.com in 3.04s
+INFO 2025-08-17 16:52:45,482 email_utils 43060 33992 Email sent successfully to felixasante2005@gmail.com in 3.25s
+INFO 2025-08-17 16:57:32,575 email_utils 43060 32332 Email queued for async sending to felixasante2005@gmail.com
+INFO 2025-08-17 16:57:32,576 email_utils 43060 32332 Email queued for async sending to odimer@gmail.com
+INFO 2025-08-17 16:57:32,576 email_utils 43060 32332 Both appointment emails queued for appointment 41
+INFO 2025-08-17 16:57:35,618 email_utils 43060 33992 Email sent successfully to odimer@gmail.com in 3.04s
+INFO 2025-08-17 16:57:35,902 email_utils 43060 23004 Email sent successfully to felixasante2005@gmail.com in 3.33s
+INFO 2025-08-17 16:57:49,286 email_utils 43060 45080 Email queued for async sending to felixasante2005@gmail.com
+INFO 2025-08-17 16:57:49,286 email_utils 43060 45080 Email queued for async sending to odimer@gmail.com
+INFO 2025-08-17 16:57:49,287 email_utils 43060 45080 Both appointment emails queued for appointment 42
+INFO 2025-08-17 16:57:52,177 email_utils 43060 23004 Email sent successfully to odimer@gmail.com in 2.89s
+INFO 2025-08-17 16:57:52,512 email_utils 43060 33992 Email sent successfully to felixasante2005@gmail.com in 3.23s
+INFO 2025-08-17 17:00:26,821 email_utils 43060 32644 Email queued for async sending to felixasante2005@gmail.com
+INFO 2025-08-17 17:00:26,822 email_utils 43060 32644 Email queued for async sending to odimer@gmail.com
+INFO 2025-08-17 17:00:26,822 email_utils 43060 32644 Both appointment emails queued for appointment 43
+INFO 2025-08-17 17:00:30,045 email_utils 43060 33992 Email sent successfully to odimer@gmail.com in 3.22s
+INFO 2025-08-17 17:00:30,353 email_utils 43060 23004 Email sent successfully to felixasante2005@gmail.com in 3.53s
