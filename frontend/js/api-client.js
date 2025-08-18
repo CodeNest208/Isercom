@@ -2,38 +2,77 @@
 class APIClient {
     constructor() {
         this.baseURL = '/api';
-        this.csrfToken = this.getCSRFToken();
+        this.csrfToken = null;
+        this.initializeCSRF();
     }
 
-    // Get CSRF token from cookie
-    getCSRFToken() {
+    // Initialize CSRF token
+    async initializeCSRF() {
+        this.csrfToken = await this.getCSRFToken();
+        console.log('CSRF token initialized:', this.csrfToken ? 'Present' : 'Missing');
+    }
+
+    // Get CSRF token from cookie or API
+    async getCSRFToken() {
+        // First try to get from cookie
         const cookie = document.cookie
             .split(';')
             .find(row => row.trim().startsWith('csrftoken='));
-        return cookie ? cookie.split('=')[1] : null;
+        
+        if (cookie) {
+            return cookie.split('=')[1];
+        }
+        
+        // If no cookie, get from API
+        try {
+            const response = await fetch('/api/csrf-token/', {
+                credentials: 'same-origin'
+            });
+            if (response.ok) {
+                const data = await response.json();
+                return data.csrfToken;
+            }
+        } catch (error) {
+            console.error('Error getting CSRF token from API:', error);
+        }
+        
+        return null;
     }
 
     // Generic API request method
     async request(endpoint, options = {}) {
         const url = `${this.baseURL}${endpoint}`;
+        console.log(`Making API request to: ${url}`);
+        
+        // Ensure CSRF token is available
+        if (!this.csrfToken) {
+            this.csrfToken = await this.getCSRFToken();
+        }
+        
         const defaultOptions = {
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRFToken': this.csrfToken,
+                'X-CSRFToken': this.csrfToken || '',
             },
             credentials: 'same-origin',
         };
 
         const finalOptions = { ...defaultOptions, ...options };
+        console.log('Request options:', finalOptions);
         
         try {
             const response = await fetch(url, finalOptions);
+            console.log(`Response status: ${response.status}`);
             
             if (!response.ok) {
+                const errorText = await response.text();
+                console.error(`HTTP error! status: ${response.status}, body: ${errorText}`);
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             
-            return await response.json();
+            const result = await response.json();
+            console.log('Response data:', result);
+            return result;
         } catch (error) {
             console.error('API Request failed:', error);
             throw error;
@@ -71,6 +110,19 @@ class APIClient {
         return this.request('/auth/logout/', {
             method: 'POST'
         });
+    }
+
+    // Get doctor appointments
+    async getDoctorAppointments() {
+        try {
+            console.log('Calling API endpoint: /api/doctor/appointments/');
+            const result = await this.request('/doctor/appointments/');
+            console.log('API result received:', result);
+            return result;
+        } catch (error) {
+            console.error('Error fetching doctor appointments:', error);
+            return { success: false, appointments: [], error: error.message };
+        }
     }
 }
 
@@ -196,3 +248,8 @@ window.updateAuthUI = function(isAuthenticated, userData = null) {
         }
     }
 };
+
+// Create global instance
+console.log('Creating global API client instance...');
+window.apiClient = new APIClient();
+console.log('API client created:', window.apiClient);

@@ -494,3 +494,71 @@ def csrf_token_api(request):
     return JsonResponse({
         'csrfToken': get_token(request)
     })
+
+
+@require_http_methods(["GET"])
+def doctor_appointments_api(request):
+    """
+    API endpoint to get appointments for the logged-in doctor
+    """
+    try:
+        if not request.user.is_authenticated:
+            return JsonResponse({
+                'success': False,
+                'message': 'Authentication required'
+            }, status=401)
+
+        # Check if user is a doctor
+        try:
+            doctor = Doctor.objects.get(user=request.user)
+        except Doctor.DoesNotExist:
+            return JsonResponse({
+                'success': False,
+                'message': 'Only doctors can access this endpoint'
+            }, status=403)
+
+        # Get appointments for this doctor
+        appointments = Appointment.objects.filter(doctor=doctor).select_related('patient__user', 'service').order_by('-date', '-time')
+        
+        appointments_data = []
+        for appointment in appointments:
+            try:
+                appointments_data.append({
+                    'id': appointment.pk,
+                    'patient': {
+                        'first_name': appointment.patient.first_name,
+                        'last_name': appointment.patient.last_name,
+                        'email': appointment.patient.email,
+                        'phone': appointment.patient.phone,
+                        'full_name': appointment.patient.full_name
+                    },
+                    'service': {
+                        'id': appointment.service.pk,
+                        'name': appointment.service.name,
+                        'description': appointment.service.description
+                    },
+                    'doctor': {
+                        'first_name': appointment.doctor.first_name,
+                        'last_name': appointment.doctor.last_name,
+                        'full_name': appointment.doctor.full_name,
+                        'speciality': appointment.doctor.speciality
+                    },
+                    'date': str(appointment.date),
+                    'time': str(appointment.time),
+                    'status': appointment.status,
+                    'notes': appointment.notes or ''
+                })
+            except Exception as appt_error:
+                print(f"Error processing appointment {appointment.pk}: {appt_error}")
+                continue
+
+        return JsonResponse({
+            'success': True,
+            'appointments': appointments_data
+        })
+
+    except Exception as e:
+        return JsonResponse({
+            'success': False,
+            'message': f'Error loading appointments: {str(e)}'
+        }, status=500)

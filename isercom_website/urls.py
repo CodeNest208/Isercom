@@ -21,6 +21,7 @@ from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.conf.urls.static import static
 from pathlib import Path
+from django.shortcuts import redirect
 
 # Get BASE_DIR for serving frontend files
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -30,6 +31,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', views.CustomLoginView.as_view(), name='login'),
     path('logout/', views.logout_view, name='logout'),
+    path('',lambda request: redirect('frontend/index.html')),
     
     # Include all backend URLs (including home and static pages)
     # path('',include('backend.urls')),

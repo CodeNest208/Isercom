@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Appointments - Doctor Dashboard</title>
-    <script src="/frontend/js/api-client.js" defer></script>
     <style>
         * {
             margin: 0;
@@ -12,6 +11,136 @@
             box-sizing: border-box;
         }
 
+             @media (max-width: 768px) {
+            .nav-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        /* Enhanced Message Styling */
+        .message-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            max-width: 400px;
+        }
+        
+        .message, .alert, .notification {
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            animation: slideInRight 0.3s ease-out;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .message:hover, .alert:hover, .notification:hover {
+            transform: translateX(-5px);
+        }
+        
+        .message.success, .alert.success, .notification.success {
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            color: #155724;
+            border-left: 5px solid #28a745;
+        }
+        
+        .message.error, .alert.error, .notification.error {
+            background: linear-gradient(135deg, #f8d7da 0%, #f1aeb5 100%);
+            color: #721c24;
+            border-left: 5px solid #dc3545;
+        }
+        
+        .message.info, .alert.info, .notification.info {
+            background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
+            color: #0c5460;
+            border-left: 5px solid #17a2b8;
+        }
+        
+        .message.warning, .alert.warning, .notification.warning {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+            color: #856404;
+            border-left: 5px solid #ffc107;
+        }
+        
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        /* Error states in content */
+        .error-message {
+            background: linear-gradient(135deg, #f8d7da 0%, #f1aeb5 100%);
+            color: #721c24;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 5px solid #dc3545;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .success-message {
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            color: #155724;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 5px solid #28a745;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        /* Loading and empty states */
+        .loading-message {
+            text-align: center;
+            padding: 40px;
+            color: #667eea;
+            font-size: 1.1em;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px;
+            border-left: 5px solid #667eea;
+        }
+        
+        .no-appointments {
+            text-align: center;
+            padding: 50px;
+            color: #6c757d;
+            font-size: 1.2em;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px;
+            border: 2px dashed #dee2e6;
+        }
+        
+        .no-appointments a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .no-appointments a:hover {
+            text-decoration: underline;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
 
         .container {
             max-width: 1400px;
@@ -48,152 +177,149 @@
             border-radius: 8px;
             font-weight: bold;
             transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
         }
 
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
         .btn-secondary {
-            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-        }
-
-        .btn-secondary:hover {
-            box-shadow: 0 5px 15px rgba(238, 90, 36, 0.4);
+            background: linear-gradient(135deg, #6c757d, #495057);
         }
 
         .filters-section {
             background: white;
-            padding: 25px;
-            border-radius: 12px;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             margin-bottom: 30px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
         .filters-title {
             color: #2d3748;
-            font-size: 1.3em;
             margin-bottom: 20px;
+            font-size: 1.5em;
         }
 
         .filter-buttons {
             display: flex;
             gap: 10px;
+            margin-bottom: 30px;
             flex-wrap: wrap;
         }
 
         .filter-btn {
-            padding: 8px 16px;
-            border: 2px solid #667eea;
+            padding: 10px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
             background: white;
-            color: #667eea;
+            color: #4a5568;
             text-decoration: none;
-            border-radius: 6px;
             font-weight: bold;
             transition: all 0.3s ease;
         }
 
-        .filter-btn.active {
-            background: #667eea;
+        .filter-btn:hover, .filter-btn.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
-        }
-
-        .filter-btn:hover {
-            background: #667eea;
-            color: white;
+            border-color: #667eea;
         }
 
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
         }
 
         .stat-item {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
             text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
             border-left: 4px solid #667eea;
         }
 
         .stat-number {
-            font-size: 1.8em;
+            font-size: 2em;
             font-weight: bold;
-            color: #2d3748;
+            color: #667eea;
         }
 
         .stat-label {
-            color: #718096;
+            color: #6c757d;
             font-size: 0.9em;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            margin-top: 5px;
         }
 
         .appointments-section {
             background: white;
             border-radius: 15px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             overflow: hidden;
         }
 
         .appointments-header {
+            padding: 30px 40px;
             background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
-            padding: 25px;
-            text-align: center;
         }
 
         .appointments-header h2 {
             font-size: 1.8em;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
         }
 
-        .appointments-content {
-            padding: 0;
-        }
-
-        .appointment-item {
-            border-bottom: 1px solid #e2e8f0;
-            padding: 20px 25px;
-            transition: background 0.3s ease;
+        .appointments-table-header {
+            background: #f8f9fa;
+            padding: 15px 25px;
+            border-bottom: 2px solid #e2e8f0;
             display: grid;
             grid-template-columns: 2fr 2fr 1fr 1fr 1fr;
             gap: 20px;
-            align-items: center;
+            font-weight: bold;
+            color: #2d3748;
+        }
+
+        .appointments-content {
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .appointment-item {
+            display: grid;
+            grid-template-columns: 2fr 2fr 1fr 1fr 1fr;
+            gap: 20px;
+            padding: 25px;
+            border-bottom: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
         }
 
         .appointment-item:hover {
             background: #f8f9fa;
         }
 
-        .appointment-item:last-child {
-            border-bottom: none;
-        }
-
         .patient-info h4 {
             color: #2d3748;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             font-size: 1.1em;
         }
 
         .patient-info p {
             color: #718096;
-            margin-bottom: 3px;
+            font-size: 0.9em;
+            margin: 3px 0;
         }
 
         .appointment-details h5 {
-            color: #2d3748;
+            color: #4a5568;
             margin-bottom: 5px;
         }
 
         .appointment-details p {
             color: #718096;
-            margin-bottom: 3px;
+            font-size: 0.9em;
         }
 
         .date-time {
@@ -217,6 +343,7 @@
             background: #f8f9fa;
             border-radius: 5px;
             border-left: 4px solid #667eea;
+            grid-column: span 5;
         }
 
         .notes-section strong {
@@ -267,7 +394,7 @@
         }
 
         .action-btn {
-            padding: 5px 10px;
+            padding: 8px 12px;
             border: none;
             border-radius: 4px;
             cursor: pointer;
@@ -302,15 +429,11 @@
             font-size: 1.2em;
         }
 
-        .appointments-table-header {
-            background: #f8f9fa;
-            padding: 15px 25px;
-            border-bottom: 2px solid #e2e8f0;
-            display: grid;
-            grid-template-columns: 2fr 2fr 1fr 1fr 1fr;
-            gap: 20px;
-            font-weight: bold;
-            color: #2d3748;
+        .loading-message {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            font-size: 1.1em;
         }
 
         @media (max-width: 1024px) {
@@ -361,42 +484,42 @@
             <h3 class="filters-title">Filter Appointments</h3>
             
             <div class="filter-buttons">
-                <a href="?status=all" class="filter-btn {% if current_filter == 'all' %}active{% endif %}">
-                    All ({{ stats.all }})
-                </a>
-                <a href="?status=scheduled" class="filter-btn {% if current_filter == 'scheduled' %}active{% endif %}">
-                    Scheduled ({{ stats.scheduled }})
-                </a>
-                <a href="?status=confirmed" class="filter-btn {% if current_filter == 'confirmed' %}active{% endif %}">
-                    Confirmed ({{ stats.confirmed }})
-                </a>
-                <a href="?status=completed" class="filter-btn {% if current_filter == 'completed' %}active{% endif %}">
-                    Completed ({{ stats.completed }})
-                </a>
-                <a href="?status=cancelled" class="filter-btn {% if current_filter == 'cancelled' %}active{% endif %}">
-                    Cancelled ({{ stats.cancelled }})
-                </a>
+                <button class="filter-btn active" onclick="filterAppointments('all', this)">
+                    All (<span id="totalAll">0</span>)
+                </button>
+                <button class="filter-btn" onclick="filterAppointments('scheduled', this)">
+                    Scheduled (<span id="totalScheduled">0</span>)
+                </button>
+                <button class="filter-btn" onclick="filterAppointments('confirmed', this)">
+                    Confirmed (<span id="totalConfirmed">0</span>)
+                </button>
+                <button class="filter-btn" onclick="filterAppointments('completed', this)">
+                    Completed (<span id="totalCompleted">0</span>)
+                </button>
+                <button class="filter-btn" onclick="filterAppointments('cancelled', this)">
+                    Cancelled (<span id="totalCancelled">0</span>)
+                </button>
             </div>
 
             <div class="stats-grid">
                 <div class="stat-item">
-                    <div class="stat-number">{{ stats.all }}</div>
+                    <div class="stat-number" id="statAll">0</div>
                     <div class="stat-label">Total</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-number">{{ stats.scheduled }}</div>
+                    <div class="stat-number" id="statScheduled">0</div>
                     <div class="stat-label">Scheduled</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-number">{{ stats.confirmed }}</div>
+                    <div class="stat-number" id="statConfirmed">0</div>
                     <div class="stat-label">Confirmed</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-number">{{ stats.completed }}</div>
+                    <div class="stat-number" id="statCompleted">0</div>
                     <div class="stat-label">Completed</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-number">{{ stats.cancelled }}</div>
+                    <div class="stat-number" id="statCancelled">0</div>
                     <div class="stat-label">Cancelled</div>
                 </div>
             </div>
@@ -404,40 +527,118 @@
 
         <div class="appointments-section">
             <div class="appointments-header">
-                <h2>
-                    {% if current_filter == 'all' %}
-                        All Appointments
-                    {% else %}
-                        {{ current_filter|title }} Appointments
-                    {% endif %}
-                </h2>
+                <h2 id="appointmentsTitle">All Appointments</h2>
                 <p>Manage your patient appointments</p>
             </div>
 
-            {% if appointments %}
-                <div class="appointments-table-header">
-                    <div>Patient Information</div>
-                    <div>Appointment Details</div>
-                    <div>Date & Time</div>
-                    <div>Status</div>
-                    <div>Actions</div>
-                </div>
+            <div class="appointments-table-header">
+                <div>Patient Information</div>
+                <div>Appointment Details</div>
+                <div>Date & Time</div>
+                <div>Status</div>
+                <div>Actions</div>
+            </div>
 
-                <div class="appointments-content" id="appointmentsList">
-                    <!-- Appointments will be loaded here via JavaScript -->
-                    <div class="loading-message">
-                        <p>Loading appointments...</p>
-                    </div>
+            <div class="appointments-content" id="appointmentsList">
+                <div class="loading-message">
+                    <p>Loading appointments...</p>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', async function() {
+        console.log('Doctor appointments page loading...');
+        
+        // Global variables
+        let allAppointments = [];
+        let currentFilter = 'all';
+
+        // Simple API client - self-contained
+        class SimpleAPIClient {
+            constructor() {
+                this.baseURL = '/api';
+                this.csrfToken = null;
+            }
+
+            async getCSRFToken() {
+                try {
+                    // Try to get from cookie first
+                    const cookie = document.cookie
+                        .split(';')
+                        .find(row => row.trim().startsWith('csrftoken='));
+                    
+                    if (cookie) {
+                        return cookie.split('=')[1];
+                    }
+
+                    // Get from API if no cookie
+                    const response = await fetch('/api/csrf-token/', {
+                        credentials: 'same-origin'
+                    });
+                    if (response.ok) {
+                        const data = await response.json();
+                        return data.csrfToken;
+                    }
+                } catch (error) {
+                    console.error('CSRF token error:', error);
+                }
+                return null;
+            }
+
+            async request(endpoint, options = {}) {
+                try {
+                    if (!this.csrfToken) {
+                        this.csrfToken = await this.getCSRFToken();
+                    }
+
+                    const url = `${this.baseURL}${endpoint}`;
+                    const defaultOptions = {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': this.csrfToken || ''
+                        },
+                        credentials: 'same-origin'
+                    };
+
+                    const finalOptions = { ...defaultOptions, ...options };
+                    console.log(`API Request: ${url}`);
+
+                    const response = await fetch(url, finalOptions);
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    }
+
+                    const data = await response.json();
+                    return data;
+
+                } catch (error) {
+                    console.error(`API Error: ${error.message}`);
+                    throw error;
+                }
+            }
+
+            async checkAuth() {
+                return await this.request('/auth/check/');
+            }
+
+            async getDoctorAppointments() {
+                return await this.request('/doctor/appointments/');
+            }
+        }
+
+        // Create API client instance
+        const apiClient = new SimpleAPIClient();
+        
+        // Initialize application
+        async function initializeApp() {
             try {
-                // Check authentication and get user info
-                const authResponse = await window.apiClient.checkAuth();
+                console.log('Initializing doctor appointments...');
+                
+                // Check authentication
+                const authResponse = await apiClient.checkAuth();
+                console.log('Auth response:', authResponse);
                 
                 if (authResponse.is_authenticated && authResponse.user.user_type === 'doctor') {
                     // Update doctor info in header
@@ -448,117 +649,205 @@
                     }
                     
                     // Load appointments
-                    loadAppointments();
+                    await loadAppointments();
                     
                 } else if (authResponse.is_authenticated && authResponse.user.user_type === 'patient') {
-                    // Redirect patients to home page
+                    // Redirect patients
+                    console.log('Patient user detected, redirecting...');
                     window.location.href = '/frontend/index.html';
                 } else {
-                    // Redirect unauthenticated users to login
+                    // Redirect unauthenticated users
+                    console.log('User not authenticated, redirecting to login...');
                     window.location.href = '/frontend/pages/login.html';
                 }
+                
             } catch (error) {
-                console.error('Error loading doctor appointments:', error);
-                // Redirect to login on error
-                window.location.href = '/frontend/pages/login.html';
-            }
-        });
-        
-        // Function to load appointments
-        function loadAppointments() {
-            const appointmentsList = document.getElementById('appointmentsList');
-            
-            // Sample appointments data - replace with actual API call
-            const sampleAppointments = [
-                {
-                    id: 1,
-                    patient: { first_name: 'Sarah', last_name: 'Johnson', email: 'sarah@example.com', phone: '555-0123' },
-                    service: { name: 'General Consultation', description: 'Routine health checkup and consultation' },
-                    date: '2025-08-17',
-                    time: '10:00 AM',
-                    status: 'scheduled',
-                    notes: 'First visit - general checkup'
-                },
-                {
-                    id: 2,
-                    patient: { first_name: 'Michael', last_name: 'Brown', email: 'michael@example.com', phone: '555-0456' },
-                    service: { name: 'Follow-up Visit', description: 'Follow-up after previous treatment' },
-                    date: '2025-08-17',
-                    time: '2:30 PM',
-                    status: 'confirmed',
-                    notes: 'Follow-up on blood pressure medication'
-                },
-                {
-                    id: 3,
-                    patient: { first_name: 'Emily', last_name: 'Davis', email: 'emily@example.com', phone: '555-0789' },
-                    service: { name: 'Prenatal Care', description: 'Prenatal examination and care' },
-                    date: '2025-08-16',
-                    time: '9:15 AM',
-                    status: 'completed',
-                    notes: '20-week prenatal checkup'
-                }
-            ];
-            
-            if (sampleAppointments.length > 0) {
-                appointmentsList.innerHTML = sampleAppointments.map(appointment => `
-                    <div class="appointment-item">
-                        <div class="patient-info">
-                            <h4>${appointment.patient.first_name} ${appointment.patient.last_name}</h4>
-                            <p><strong>Email:</strong> ${appointment.patient.email}</p>
-                            <p><strong>Phone:</strong> ${appointment.patient.phone}</p>
-                        </div>
-
-                        <div class="appointment-details">
-                            <h5>${appointment.service.name}</h5>
-                            <p>${appointment.service.description}</p>
-                        </div>
-
-                        <div class="date-time">
-                            <div class="date">${appointment.date}</div>
-                            <div class="time">${appointment.time}</div>
-                        </div>
-
-                        ${appointment.notes ? `
-                        <div class="notes-section">
-                            <strong>📝 Patient Notes:</strong>
-                            <p>${appointment.notes}</p>
-                        </div>
-                        ` : ''}
-
-                        <div>
-                            <span class="status-badge status-${appointment.status}">
-                                ${appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1)}
-                            </span>
-                        </div>
-
-                        <div class="actions">
-                            ${appointment.status === 'scheduled' ? `
-                                <button class="action-btn btn-confirm" onclick="updateAppointmentStatus(${appointment.id}, 'confirmed')">✅ Confirm</button>
-                            ` : ''}
-                            
-                            ${appointment.status === 'confirmed' ? `
-                                <button class="action-btn btn-complete" onclick="updateAppointmentStatus(${appointment.id}, 'completed')">✅ Complete</button>
-                            ` : ''}
-                            
-                            ${(appointment.status === 'scheduled' || appointment.status === 'confirmed') ? `
-                                <button class="action-btn btn-cancel" onclick="confirmCancelAppointment(${appointment.id})">❌ Cancel</button>
-                            ` : ''}
-                        </div>
-                    </div>
-                `).join('');
-            } else {
-                appointmentsList.innerHTML = `
-                    <div class="no-appointments">
-                        <p>No appointments found.</p>
-                        <p><a href="/frontend/pages/doctor_home.html">Back to Dashboard</a></p>
-                    </div>
-                `;
+                console.error('Error initializing app:', error);
+                showError(`Failed to load application: ${error.message}`);
             }
         }
         
-        // Function to update appointment status
+        // Load appointments for the logged-in doctor
+        async function loadAppointments() {
+            const appointmentsList = document.getElementById('appointmentsList');
+            appointmentsList.innerHTML = '<div class="loading-message"><p>Loading appointments...</p></div>';
+
+            try {
+                console.log('Fetching doctor appointments...');
+                const response = await apiClient.getDoctorAppointments();
+                console.log('API Response:', response);
+                
+                if (response.success && response.appointments) {
+                    allAppointments = response.appointments;
+                    console.log('Found appointments:', allAppointments.length);
+                    
+                    if (allAppointments.length > 0) {
+                        // Update statistics
+                        updateAppointmentStats(allAppointments);
+                        
+                        // Display appointments
+                        displayAppointments(allAppointments);
+                        
+                        // Show success message
+                        showSuccess(`Successfully loaded ${allAppointments.length} appointments`);
+                    } else {
+                        appointmentsList.innerHTML = `
+                            <div class="no-appointments">
+                                <h3>📅 No Appointments Yet</h3>
+                                <p>You don't have any appointments scheduled at this time.</p>
+                                <p>Appointments will appear here once patients book with you.</p>
+                            </div>
+                        `;
+                    }
+                } else {
+                    console.log('No appointments found or API error:', response);
+                    appointmentsList.innerHTML = `
+                        <div class="no-appointments">
+                            <h3>❌ Unable to Load Appointments</h3>
+                            <p>${response.message || 'There was an error loading your appointments.'}</p>
+                            <p><button onclick="loadAppointments()" class="btn">🔄 Retry</button></p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error loading appointments:', error);
+                showError(`Error loading appointments: ${error.message}`);
+            }
+        }
+        
+        // Display appointments
+        function displayAppointments(appointments) {
+            const appointmentsList = document.getElementById('appointmentsList');
+            
+            if (appointments.length === 0) {
+                appointmentsList.innerHTML = `
+                    <div class="no-appointments">
+                        <p>No appointments found for the current filter.</p>
+                        <a href="../appointment_form.html">Book a new appointment</a>
+                    </div>
+                `;
+                return;
+            }
+            
+            appointmentsList.innerHTML = appointments.map(appointment => `
+                <div class="appointment-item">
+                    <div class="patient-info">
+                        <h4>${appointment.patient.full_name || `${appointment.patient.first_name} ${appointment.patient.last_name}`}</h4>
+                        <p><strong>Email:</strong> ${appointment.patient.email}</p>
+                        <p><strong>Phone:</strong> ${appointment.patient.phone || 'N/A'}</p>
+                    </div>
+
+                    <div class="appointment-details">
+                        <h5>${appointment.service.name}</h5>
+                        <p>${appointment.service.description}</p>
+                    </div>
+
+                    <div class="date-time">
+                        <div class="date">${formatDate(appointment.date)}</div>
+                        <div class="time">${formatTime(appointment.time)}</div>
+                    </div>
+
+                    <div>
+                        <span class="status-badge status-${appointment.status}">
+                            ${appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1)}
+                        </span>
+                    </div>
+
+                    <div class="actions">
+                        ${appointment.status === 'scheduled' ? `
+                            <button class="action-btn btn-confirm" onclick="updateAppointmentStatus(${appointment.id}, 'confirmed')">✅ Confirm</button>
+                        ` : ''}
+                        
+                        ${appointment.status === 'confirmed' ? `
+                            <button class="action-btn btn-complete" onclick="updateAppointmentStatus(${appointment.id}, 'completed')">✅ Complete</button>
+                        ` : ''}
+                        
+                        ${(appointment.status === 'scheduled' || appointment.status === 'confirmed') ? `
+                            <button class="action-btn btn-cancel" onclick="confirmCancelAppointment(${appointment.id})">❌ Cancel</button>
+                        ` : ''}
+                    </div>
+                    
+                    ${appointment.notes ? `
+                    <div class="notes-section">
+                        <strong>📝 Patient Notes:</strong>
+                        <p>${appointment.notes}</p>
+                    </div>
+                    ` : ''}
+                </div>
+            `).join('');
+        }
+        
+        // Update appointment statistics
+        function updateAppointmentStats(appointments) {
+            const stats = {
+                all: appointments.length,
+                scheduled: appointments.filter(a => a.status === 'scheduled').length,
+                confirmed: appointments.filter(a => a.status === 'confirmed').length,
+                completed: appointments.filter(a => a.status === 'completed').length,
+                cancelled: appointments.filter(a => a.status === 'cancelled').length
+            };
+            
+            // Update filter buttons
+            document.getElementById('totalAll').textContent = stats.all;
+            document.getElementById('totalScheduled').textContent = stats.scheduled;
+            document.getElementById('totalConfirmed').textContent = stats.confirmed;
+            document.getElementById('totalCompleted').textContent = stats.completed;
+            document.getElementById('totalCancelled').textContent = stats.cancelled;
+            
+            // Update stats grid
+            document.getElementById('statAll').textContent = stats.all;
+            document.getElementById('statScheduled').textContent = stats.scheduled;
+            document.getElementById('statConfirmed').textContent = stats.confirmed;
+            document.getElementById('statCompleted').textContent = stats.completed;
+            document.getElementById('statCancelled').textContent = stats.cancelled;
+        }
+        
+        // Filter appointments
+        function filterAppointments(status, buttonElement) {
+            currentFilter = status;
+            
+            // Update active filter button
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            buttonElement.classList.add('active');
+            
+            // Filter appointments
+            let filteredAppointments;
+            if (status === 'all') {
+                filteredAppointments = allAppointments;
+                document.getElementById('appointmentsTitle').textContent = 'All Appointments';
+            } else {
+                filteredAppointments = allAppointments.filter(a => a.status === status);
+                document.getElementById('appointmentsTitle').textContent = `${status.charAt(0).toUpperCase() + status.slice(1)} Appointments`;
+            }
+            
+            displayAppointments(filteredAppointments);
+        }
+        
+        // Format date for display
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('en-US', { 
+                weekday: 'short',
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+        }
+        
+        // Format time for display
+        function formatTime(timeStr) {
+            if (timeStr.includes('AM') || timeStr.includes('PM')) {
+                return timeStr; // Already formatted
+            }
+            // Convert 24-hour to 12-hour format
+            const [hours, minutes] = timeStr.split(':');
+            const hour12 = hours % 12 || 12;
+            const ampm = hours < 12 ? 'AM' : 'PM';
+            return `${hour12}:${minutes} ${ampm}`;
+        }
+        
+        // Update appointment status
         function updateAppointmentStatus(appointmentId, newStatus) {
-            // Show confirmation for certain actions
             let confirmMessage = '';
             if (newStatus === 'completed') {
                 confirmMessage = 'Mark this appointment as completed?';
@@ -570,23 +859,87 @@
                 return;
             }
             
-            // Placeholder function - implement actual API call here
+            // TODO: Implement actual API call to update status
             console.log(`Updating appointment ${appointmentId} to status: ${newStatus}`);
             
-            // Show success message
+            // For now, just show success message and reload
             const statusText = newStatus.charAt(0).toUpperCase() + newStatus.slice(1);
-            alert(`Appointment ${appointmentId} has been ${statusText.toLowerCase()}!`);
+            showSuccess(`Appointment has been ${statusText.toLowerCase()}!`);
             
-            // Reload appointments after update
-            loadAppointments();
+            // Reload appointments after a short delay
+            setTimeout(() => {
+                loadAppointments();
+            }, 1500);
         }
         
-        // Function to confirm cancellation
+        // Confirm cancellation
         function confirmCancelAppointment(appointmentId) {
-            if (confirm('Are you sure you want to cancel this appointment?')) {
+            if (confirm('Are you sure you want to cancel this appointment? This action cannot be undone.')) {
                 updateAppointmentStatus(appointmentId, 'cancelled');
             }
         }
+        
+        // Show error message
+        function showError(message) {
+            showMessage(message, 'error');
+            
+            // Also display in main content area for critical errors
+            const appointmentsList = document.getElementById('appointmentsList');
+            appointmentsList.innerHTML = `
+                <div class="error-message">
+                    <h3>❌ Error</h3>
+                    <p><strong>Error:</strong> ${message}</p>
+                    <p><button onclick="loadAppointments()" class="btn">🔄 Retry</button></p>
+                    <p><a href="/frontend/pages/doctor_home.html" class="btn btn-secondary">🏠 Back to Dashboard</a></p>
+                </div>
+            `;
+        }
+
+        // Show success message
+        function showSuccess(message) {
+            showMessage(message, 'success');
+        }
+        
+        // Universal message display function
+        function showMessage(message, type = 'info') {
+            // Create message container if it doesn't exist
+            let container = document.querySelector('.message-container');
+            if (!container) {
+                container = document.createElement('div');
+                container.className = 'message-container';
+                document.body.appendChild(container);
+            }
+            
+            // Create message element
+            const messageEl = document.createElement('div');
+            messageEl.className = `message ${type}`;
+            messageEl.textContent = message;
+            
+            // Add close functionality
+            messageEl.addEventListener('click', () => {
+                messageEl.style.animation = 'slideInRight 0.3s ease-out reverse';
+                setTimeout(() => messageEl.remove(), 300);
+            });
+            
+            // Auto-remove after 5 seconds
+            setTimeout(() => {
+                if (messageEl.parentNode) {
+                    messageEl.style.animation = 'slideInRight 0.3s ease-out reverse';
+                    setTimeout(() => messageEl.remove(), 300);
+                }
+            }, 5000);
+            
+            container.appendChild(messageEl);
+        }
+        
+        // Initialize when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM loaded, initializing app...');
+            initializeApp().catch(error => {
+                console.error('Failed to initialize app:', error);
+                showError(error.message);
+            });
+        });
     </script>
 </body>
 </html>

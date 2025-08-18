@@ -1,8 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('sent').addEventListener('click', function () {
-      window.location.href = 'success.html';
-    });
-});
+
 function scrollToTop() {
     window.scrollTo({
       top: 0,

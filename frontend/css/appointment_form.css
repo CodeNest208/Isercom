@@ -165,3 +165,109 @@ main {
         font-size: 15px;
     }
 }
+
+/* Enhanced Message Styling */
+.message-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    max-width: 400px;
+}
+
+.message, .alert, .notification {
+    padding: 15px 20px;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    animation: slideInRight 0.3s ease-out;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.message:hover, .alert:hover, .notification:hover {
+    transform: translateX(-5px);
+}
+
+.message.success, .alert.success, .notification.success {
+    background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+    color: #155724;
+    border-left: 5px solid #28a745;
+}
+
+.message.error, .alert.error, .notification.error {
+    background: linear-gradient(135deg, #f8d7da 0%, #f1aeb5 100%);
+    color: #721c24;
+    border-left: 5px solid #dc3545;
+}
+
+.message.info, .alert.info, .notification.info {
+    background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
+    color: #0c5460;
+    border-left: 5px solid #17a2b8;
+}
+
+.message.warning, .alert.warning, .notification.warning {
+    background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+    color: #856404;
+    border-left: 5px solid #ffc107;
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(100px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Form validation styling */
+#formErrors {
+    background: linear-gradient(135deg, #f8d7da 0%, #f1aeb5 100%);
+    color: #721c24;
+    padding: 20px;
+    border-radius: 12px;
+    border-left: 5px solid #dc3545;
+    margin: 20px 0;
+}
+
+.success-message {
+    background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+    color: #155724;
+    padding: 20px;
+    border-radius: 12px;
+    border-left: 5px solid #28a745;
+    margin: 20px 0;
+    text-align: center;
+}
+
+.error-message {
+    background: linear-gradient(135deg, #f8d7da 0%, #f1aeb5 100%);
+    color: #721c24;
+    padding: 20px;
+    border-radius: 12px;
+    border-left: 5px solid #dc3545;
+    margin: 20px 0;
+    text-align: center;
+}
+
+/* Enhanced form styling */
+.select {
+    transition: all 0.3s ease;
+}
+
+.select:focus-within {
+    box-shadow: 0 8px 30px rgba(102, 126, 234, 0.15);
+}
+
+.pick:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background: #6c757d !important;
+}
