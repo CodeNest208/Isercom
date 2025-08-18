@@ -148,3 +148,13 @@ INFO 2025-08-18 18:50:07,549 email_utils 52444 49792 Email queued for async send
 INFO 2025-08-18 18:50:07,549 email_utils 52444 49792 Both appointment emails queued for appointment 49
 INFO 2025-08-18 18:50:10,260 email_utils 52444 57188 Email sent successfully to akuawiredu@gmail.com in 2.71s
 INFO 2025-08-18 18:50:10,843 email_utils 52444 51312 Email sent successfully to felixasante2005@gmail.com in 3.30s
+INFO 2025-08-18 20:05:43,250 email_utils 51900 41660 Email queued for async sending to felixasante2005@gmail.com
+INFO 2025-08-18 20:05:43,254 email_utils 51900 41660 Email queued for async sending to odimer@gmail.com
+INFO 2025-08-18 20:05:43,255 email_utils 51900 41660 Both appointment emails queued for appointment 17
+INFO 2025-08-18 20:05:47,478 email_utils 51900 31900 Email sent successfully to felixasante2005@gmail.com in 4.23s
+INFO 2025-08-18 20:05:47,707 email_utils 51900 57544 Email sent successfully to odimer@gmail.com in 4.45s
+INFO 2025-08-18 20:14:27,646 email_utils 55536 45864 Email queued for async sending to felixasante2005@gmail.com
+INFO 2025-08-18 20:14:27,651 email_utils 55536 45864 Email queued for async sending to odimer@gmail.com
+INFO 2025-08-18 20:14:27,652 email_utils 55536 45864 Both appointment emails queued for appointment 45
+INFO 2025-08-18 20:14:33,939 email_utils 55536 39404 Email sent successfully to odimer@gmail.com in 6.29s
+INFO 2025-08-18 20:14:34,145 email_utils 55536 55732 Email sent successfully to felixasante2005@gmail.com in 6.50s

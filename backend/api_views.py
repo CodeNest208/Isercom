@@ -562,3 +562,87 @@ def doctor_appointments_api(request):
             'success': False,
             'message': f'Error loading appointments: {str(e)}'
         }, status=500)
+
+
+@require_http_methods(["POST"])
+def update_appointment_status_api(request, appointment_id):
+    """
+    Update appointment status (confirm, complete, cancel)
+    """
+    try:
+        # Check if user is authenticated
+        if not request.user.is_authenticated:
+            return JsonResponse({
+                'success': False,
+                'error': 'Authentication required'
+            }, status=401)
+        
+        # Get the appointment
+        try:
+            appointment = Appointment.objects.get(id=appointment_id)
+        except Appointment.DoesNotExist:
+            return JsonResponse({
+                'success': False,
+                'error': 'Appointment not found'
+            }, status=404)
+        
+        # Check if the user is a doctor and is authorized to update this appointment
+        if hasattr(request.user, 'doctor'):
+            doctor = request.user.doctor
+            if appointment.doctor != doctor:
+                return JsonResponse({
+                    'success': False,
+                    'error': 'You are not authorized to update this appointment'
+                }, status=403)
+        elif not request.user.is_staff:
+            return JsonResponse({
+                'success': False,
+                'error': 'Only doctors or staff can update appointment status'
+            }, status=403)
+        
+        # Parse request data
+        try:
+            data = json.loads(request.body)
+            new_status = data.get('status', '').lower()
+        except json.JSONDecodeError:
+            return JsonResponse({
+                'success': False,
+                'error': 'Invalid JSON data'
+            }, status=400)
+        
+        # Validate status
+        valid_statuses = ['scheduled', 'confirmed', 'completed', 'cancelled']
+        if new_status not in valid_statuses:
+            return JsonResponse({
+                'success': False,
+                'error': f'Invalid status. Must be one of: {", ".join(valid_statuses)}'
+            }, status=400)
+        
+        # Update the appointment status
+        old_status = appointment.status
+        appointment.status = new_status
+        appointment.save()
+        
+        # Send email notification if status changed to confirmed or cancelled
+        if new_status in ['confirmed', 'cancelled'] and old_status != new_status:
+            try:
+                send_appointment_emails_async(appointment)
+            except Exception as email_error:
+                print(f"Warning: Failed to send email notification: {email_error}")
+                # Don't fail the request if email fails
+        
+        return JsonResponse({
+            'success': True,
+            'message': f'Appointment status updated to {new_status}',
+            'appointment': {
+                'id': appointment.pk,
+                'status': appointment.status,
+                'previous_status': old_status
+            }
+        })
+        
+    except Exception as e:
+        return JsonResponse({
+            'success': False,
+            'error': f'Error updating appointment status: {str(e)}'
+        }, status=500)

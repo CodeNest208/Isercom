@@ -19,5 +19,6 @@ urlpatterns = [
     path('services/', api_views.services_api, name='api_services'),
     path('appointments/', api_views.appointments_api, name='api_appointments'),
     path('doctor/appointments/', api_views.doctor_appointments_api, name='api_doctor_appointments'),
+    path('appointments/<int:appointment_id>/update_status/', api_views.update_appointment_status_api, name='api_update_appointment_status'),
     path('csrf-token/', api_views.csrf_token_api, name='api_csrf_token'),
 ]
