@@ -6,4 +6,4 @@ django.setup()
 
 
 from django.core.mail import send_mail
-send_mail('Test', 'Hello', 'felixasante2005@gmail.com', ['felixasante2005@gmail.com'])
+send_mail('Test', 'Hello my name is felix', 'felixasante2005@gmail.com', ['felixasante2005@gmail.com'])

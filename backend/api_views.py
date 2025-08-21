@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
+from django.utils import timezone
 from .models import Patient, Doctor, Service, Appointment
 from .forms import CustomUserCreationForm
 from django.contrib.auth.forms import AuthenticationForm
@@ -645,4 +646,109 @@ def update_appointment_status_api(request, appointment_id):
         return JsonResponse({
             'success': False,
             'error': f'Error updating appointment status: {str(e)}'
+        }, status=500)
+
+
+@csrf_exempt
+@require_http_methods(["POST"])
+def contact_api(request):
+    """
+    API endpoint for contact form submissions
+    Sends email to iSercom clinic
+    """
+    try:
+        from django.core.mail import send_mail
+        from django.conf import settings
+        
+        data = json.loads(request.body)
+        name = data.get('name', '').strip()
+        email = data.get('email', '').strip()
+        subject = data.get('subject', '').strip()
+        message = data.get('message', '').strip()
+        
+        # Validate required fields
+        if not all([name, email, subject, message]):
+            return JsonResponse({
+                'success': False,
+                'message': 'All fields are required.'
+            }, status=400)
+        
+        # Validate email format
+        try:
+            validate_email(email)
+        except ValidationError:
+            return JsonResponse({
+                'success': False,
+                'message': 'Please enter a valid email address.'
+            }, status=400)
+        
+        # Prepare email content for iSercom
+        email_subject = f"Website Contact Form: {subject}"
+        email_message = f"""
+New contact form submission from iSercom website:
+
+Name: {name}
+Email: {email}
+Subject: {subject}
+
+Message:
+{message}
+
+---
+Reply to: {email}
+Submitted on: {timezone.now().strftime('%Y-%m-%d %H:%M:%S')}
+        """
+        
+        # Send email to iSercom
+        try:
+            # Email to iSercom clinic
+            send_mail(
+                subject=email_subject,
+                message=email_message,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[settings.CONTACT_EMAIL],  # Use settings value
+                fail_silently=False,
+            )
+            
+            # Optional: Send confirmation email to user
+            confirmation_subject = "Thank you for contacting iSercom Clinic"
+            confirmation_message = f"""
+Dear {name},
+
+Thank you for contacting iSercom Medical and Fertility Centre. We have received your message regarding "{subject}" and will get back to you as soon as possible.
+
+Our team typically responds within 24-48 hours during business days.
+
+Best regards,
+iSercom Clinic Team
+            """
+            
+            send_mail(
+                subject=confirmation_subject,
+                message=confirmation_message,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[email],
+                fail_silently=True,  # Don't fail if confirmation email fails
+            )
+            
+            return JsonResponse({
+                'success': True,
+                'message': 'Thank you for your message! We will get back to you soon.'
+            })
+            
+        except Exception as e:
+            return JsonResponse({
+                'success': False,
+                'message': 'Failed to send email. Please try again later or contact us directly.'
+            }, status=500)
+            
+    except json.JSONDecodeError:
+        return JsonResponse({
+            'success': False,
+            'message': 'Invalid data format.'
+        }, status=400)
+    except Exception as e:
+        return JsonResponse({
+            'success': False,
+            'message': f'Error processing contact form: {str(e)}'
         }, status=500)

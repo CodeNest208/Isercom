@@ -158,3 +158,33 @@ INFO 2025-08-18 20:14:27,651 email_utils 55536 45864 Email queued for async send
 INFO 2025-08-18 20:14:27,652 email_utils 55536 45864 Both appointment emails queued for appointment 45
 INFO 2025-08-18 20:14:33,939 email_utils 55536 39404 Email sent successfully to odimer@gmail.com in 6.29s
 INFO 2025-08-18 20:14:34,145 email_utils 55536 55732 Email sent successfully to felixasante2005@gmail.com in 6.50s
+INFO 2025-08-18 20:26:00,018 email_utils 58316 53848 Email queued for async sending to felixasante2005@gmail.com
+INFO 2025-08-18 20:26:00,026 email_utils 58316 53848 Email queued for async sending to asantefelix2023@outlook.com
+INFO 2025-08-18 20:26:00,026 email_utils 58316 53848 Both appointment emails queued for appointment 6
+INFO 2025-08-18 20:26:11,790 email_utils 58316 28320 Email sent successfully to asantefelix2023@outlook.com in 11.76s
+INFO 2025-08-18 20:26:11,791 email_utils 58316 50224 Email sent successfully to felixasante2005@gmail.com in 11.77s
+INFO 2025-08-19 13:00:19,709 email_utils 14868 18740 Email queued for async sending to felixasante2005@gmail.com
+INFO 2025-08-19 13:00:19,713 email_utils 14868 18740 Email queued for async sending to christiantano@gmail.com
+INFO 2025-08-19 13:00:19,714 email_utils 14868 18740 Both appointment emails queued for appointment 50
+INFO 2025-08-19 13:00:25,627 email_utils 14868 8472 Email sent successfully to felixasante2005@gmail.com in 5.92s
+INFO 2025-08-19 13:00:26,141 email_utils 14868 7652 Email sent successfully to christiantano@gmail.com in 6.43s
+INFO 2025-08-19 13:02:22,080 email_utils 14868 19968 Email queued for async sending to felixasante2005@gmail.com
+INFO 2025-08-19 13:02:22,082 email_utils 14868 19968 Email queued for async sending to christiantano@gmail.com
+INFO 2025-08-19 13:02:22,083 email_utils 14868 19968 Both appointment emails queued for appointment 50
+ERROR 2025-08-19 13:02:22,122 email_utils 14868 7652 Error sending email to christiantano@gmail.com: [Errno 11001] getaddrinfo failed
+ERROR 2025-08-19 13:02:22,123 email_utils 14868 8472 Error sending email to felixasante2005@gmail.com: [Errno 11001] getaddrinfo failed
+INFO 2025-08-19 13:03:13,760 email_utils 14868 9244 Email queued for async sending to felixasante2005@gmail.com
+INFO 2025-08-19 13:03:13,762 email_utils 14868 9244 Email queued for async sending to odimer@gmail.com
+INFO 2025-08-19 13:03:13,764 email_utils 14868 9244 Both appointment emails queued for appointment 30
+INFO 2025-08-19 13:03:27,166 email_utils 14868 7652 Email sent successfully to felixasante2005@gmail.com in 13.40s
+INFO 2025-08-19 13:03:28,697 email_utils 14868 8472 Email sent successfully to odimer@gmail.com in 14.93s
+INFO 2025-08-20 21:26:40,339 email_utils 21560 24360 Email queued for async sending to felixasante2005@gmail.com
+INFO 2025-08-20 21:26:40,342 email_utils 21560 24360 Email queued for async sending to Theultimategooner@peaches.com
+INFO 2025-08-20 21:26:40,343 email_utils 21560 24360 Both appointment emails queued for appointment 51
+ERROR 2025-08-20 21:26:40,365 email_utils 21560 16852 Error sending email to felixasante2005@gmail.com: [Errno 11001] getaddrinfo failed
+ERROR 2025-08-20 21:26:40,366 email_utils 21560 5104 Error sending email to Theultimategooner@peaches.com: [Errno 11001] getaddrinfo failed
+INFO 2025-08-20 21:27:45,411 email_utils 21560 16824 Email queued for async sending to dr.jones@clinic.com
+INFO 2025-08-20 21:27:45,413 email_utils 21560 16824 Email queued for async sending to Theultimategooner@peaches.com
+INFO 2025-08-20 21:27:45,416 email_utils 21560 16824 Both appointment emails queued for appointment 52
+INFO 2025-08-20 21:27:50,517 email_utils 21560 5104 Email sent successfully to Theultimategooner@peaches.com in 5.10s
+INFO 2025-08-20 21:27:50,722 email_utils 21560 16852 Email sent successfully to dr.jones@clinic.com in 5.31s

@@ -42,58 +42,7 @@ document.querySelectorAll('.nav-links a').forEach(link => {
     }
   });
 });
-// Contact form submission handler
-document.addEventListener("DOMContentLoaded", function () {
-  const form = document.getElementById("contactForm");
 
-  form.addEventListener("submit", function (e) {
-    e.preventDefault();
-
-    // Grab the input values
-    const name = form.querySelector('input[placeholder="Name"]').value.trim();
-    const email = form.querySelector('input[placeholder="Email"]').value.trim();
-    const subject = form.querySelector('input[placeholder="Subject"]').value.trim();
-    const message = form.querySelector('textarea').value.trim();
-
-    // Basic validation
-    if (!name || !email || !subject || !message) {
-      alert("Please fill in all fields.");
-      return;
-    }
-
-    // Simulate sending form (you can replace this with a real request)
-    alert(`Thanks ${name}! Your message has been submitted successfully.`);
-
-    // Optionally clear the form
-    form.reset();
-  });
-});
-// Contact form submission handler
-document.addEventListener("DOMContentLoaded", function () {
-  const form = document.getElementById("contactForm");
-
-  form.addEventListener("submit", function (e) {
-    e.preventDefault();
-
-    // Grab the input values
-    const name = form.querySelector('input[placeholder="Name"]').value.trim();
-    const email = form.querySelector('input[placeholder="Email"]').value.trim();
-    const subject = form.querySelector('input[placeholder="Subject"]').value.trim();
-    const message = form.querySelector('textarea').value.trim();
-
-    // Basic validation
-    if (!name || !email || !subject || !message) {
-      alert("Please fill in all fields.");
-      return;
-    }
-
-    // Simulate sending form (you can replace this with a real request)
-    alert(`Thanks ${name}! Your message has been submitted successfully.`);
-
-    // Optionally clear the form
-    form.reset();
-  });
-});
 
 function talkToDoctor() {
   alert("Redirecting to consultation...");
@@ -192,6 +141,15 @@ async function checkAuthAndRedirect() {
 
 // Initialize appointment button handlers when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
+  // Initialize footer form functionality
+  initializeFooterForm();
+  
+  // Auto-fill footer form if user is authenticated
+  const footerForm = document.querySelector('footer form, .footer form, #footerForm');
+  if (footerForm) {
+    checkAuthAndFillFooterForm(footerForm);
+  }
+  
   // Find all appointment buttons and add click handlers
   const appointmentButtons = document.querySelectorAll('a[href*="appointment_form.html"], a.appointment[href*="appointment"]');
   
@@ -257,24 +215,178 @@ function createMessageContainer() {
   }
   return container;
 }
-  // Auto-remove after 5 seconds
-  setTimeout(() => {
-    if (messageDiv.parentNode) {
-      messageDiv.remove();
-    }
-  }, 5000);
 
-
-// Create message container if it doesn't exist
-function createMessageContainer() {
-  let container = document.getElementById('messageContainer');
-  if (!container) {
-    container = document.createElement('div');
-    container.id = 'messageContainer';
-    container.style.cssText = 'position: fixed; top: 20px; right: 20px; z-index: 9999;';
-    document.body.appendChild(container);
+// Footer form email functionality
+function initializeFooterForm() {
+  const footerForm = document.querySelector('footer form, .footer form, #footerForm');
+  
+  if (footerForm) {
+    console.log("Footer form found, initializing email functionality");
+    
+    footerForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      handleFooterFormSubmission(footerForm);
+    });
+  } else {
+    console.log("No footer form found");
   }
-  return container;
+}
+
+async function handleFooterFormSubmission(form) {
+  try {
+    console.log("Footer form submitted");
+    
+    // Get form fields - adapt these selectors based on your footer form structure
+    const nameField = form.querySelector('input[name="name"], input[placeholder*="name" i], input[placeholder*="Name"], #footer_name');
+    const emailField = form.querySelector('input[name="email"], input[type="email"], input[placeholder*="email" i], #footer_email');
+    const messageField = form.querySelector('textarea, input[name="message"], input[placeholder*="message" i], #footer_message');
+    const subjectField = form.querySelector('input[name="subject"], input[placeholder*="subject" i], #footer_subject');
+    
+    // Extract values
+    const name = nameField ? nameField.value.trim() : '';
+    const email = emailField ? emailField.value.trim() : '';
+    const message = messageField ? messageField.value.trim() : '';
+    const subject = subjectField ? subjectField.value.trim() : 'Footer Contact Form Submission';
+    
+    console.log("Footer form data:", { name, email, subject, message });
+    
+    // Validate required fields
+    if (!email || !message) {
+      showMessage('Please fill in at least your email and message.', 'error');
+      return;
+    }
+    
+    // If no name provided, use email as fallback
+    const finalName = name || email.split('@')[0] || 'Website Visitor';
+    
+    // Show loading state
+    const submitBtn = form.querySelector('button[type="submit"], button, input[type="submit"]');
+    let originalText = 'Submit';
+    if (submitBtn) {
+      originalText = submitBtn.textContent || submitBtn.value || 'Submit';
+      if (submitBtn.textContent) {
+        submitBtn.textContent = 'Sending...';
+      } else if (submitBtn.value) {
+        submitBtn.value = 'Sending...';
+      }
+      submitBtn.disabled = true;
+    }
+    
+    console.log("Sending footer form data...");
+    
+    // Send to the same contact API
+    const response = await sendFooterFormData(finalName, email, subject, message);
+    
+    if (response.success) {
+      showMessage('Thank you for your message! We will get back to you soon.', 'success');
+      form.reset();
+      
+      // Check if user is authenticated and auto-fill email again
+      await checkAuthAndFillFooterForm(form);
+    } else {
+      showMessage(response.message || 'Failed to send message. Please try again.', 'error');
+    }
+    
+  } catch (error) {
+    console.error('Footer form submission error:', error);
+    showMessage('Failed to send message. Please try again later.', 'error');
+  } finally {
+    // Reset button state
+    const submitBtn = form.querySelector('button[type="submit"], button, input[type="submit"]');
+    if (submitBtn) {
+      if (submitBtn.textContent && submitBtn.textContent === 'Sending...') {
+        submitBtn.textContent = originalText;
+      } else if (submitBtn.value && submitBtn.value === 'Sending...') {
+        submitBtn.value = originalText;
+      }
+      submitBtn.disabled = false;
+    }
+  }
+}
+
+async function sendFooterFormData(name, email, subject, message) {
+  try {
+    const apiUrl = window.location.origin + '/api/contact/';
+    console.log("Sending footer form to API:", apiUrl);
+    
+    const response = await fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify({
+        name: name,
+        email: email,
+        subject: subject,
+        message: message
+      })
+    });
+    
+    console.log("Footer form API response status:", response.status);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    console.log("Footer form API response data:", data);
+    return data;
+    
+  } catch (error) {
+    console.error("Footer form API error:", error);
+    throw new Error('Network error: ' + error.message);
+  }
+}
+
+async function checkAuthAndFillFooterForm(form) {
+  try {
+    console.log("Checking authentication for footer form auto-fill...");
+    
+    const response = await fetch('/api/auth/check/', {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+    
+    if (response.ok) {
+      const data = await response.json();
+      
+      if (data.is_authenticated && data.user) {
+        console.log("Auto-filling footer form for authenticated user");
+        
+        const nameField = form.querySelector('input[name="name"], input[placeholder*="name" i], #footer_name');
+        const emailField = form.querySelector('input[name="email"], input[type="email"], input[placeholder*="email" i], #footer_email');
+        
+        if (nameField || emailField) {
+          // Fill name field
+          let fullName = '';
+          if (data.user.profile && data.user.profile.full_name) {
+            fullName = data.user.profile.full_name;
+          } else if (data.user.first_name || data.user.last_name) {
+            fullName = `${data.user.first_name || ''} ${data.user.last_name || ''}`.trim();
+          }
+          
+          if (fullName && nameField) {
+            nameField.value = fullName;
+            nameField.style.backgroundColor = '#f0f8ff';
+          }
+          
+          // Fill email field
+          if (data.user.email && emailField) {
+            emailField.value = data.user.email;
+            emailField.style.backgroundColor = '#f0f8ff';
+          }
+          
+          console.log("Footer form auto-filled with user data");
+        }
+      }
+    }
+  } catch (error) {
+    console.log("Footer form auth check failed:", error.message);
+  }
 }
 
 
