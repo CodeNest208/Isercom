@@ -219,6 +219,65 @@
     justify-content: center;
     text-align: center;
   }
+
+  /* Services menu styles for mobile */
+  .services-menu-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 0;
+    border-bottom: 2px solid rgba(4, 51, 42, 0.1);
+    margin-bottom: 10px;
+  }
+
+  .back-to-main-menu {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: none;
+    color: #04332A;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+  }
+
+  .back-to-main-menu:hover {
+    background-color: rgba(4, 51, 42, 0.1);
+  }
+
+  .services-menu-header span {
+    font-weight: 600;
+    color: #04332A;
+    font-size: 18px;
+  }
+
+  .services-menu-content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .services-menu-content a {
+    padding: 15px 0;
+    border-bottom: 1px solid rgba(4, 51, 42, 0.1);
+    width: 100%;
+    text-align: center;
+    color: #04332A;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+
+  .services-menu-content a:hover {
+    background-color: rgba(4, 51, 42, 0.05);
+    color: #006b50;
+  }
+
+  .services-menu-content a:last-child {
+    border-bottom: none;
+  }
 }
 
 

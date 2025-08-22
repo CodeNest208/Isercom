@@ -10,6 +10,40 @@ body {
     display: flex;
     width: 100%;
     min-height: 100vh;
+    position: relative;
+}
+
+.home-button-container {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 100;
+}
+
+.home-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: #04332A;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.home-btn:hover {
+    background: #006b50;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.home-btn svg {
+    width: 16px;
+    height: 16px;
 }
 
 .login-form-section {
