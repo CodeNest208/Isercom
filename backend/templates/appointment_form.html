@@ -81,8 +81,9 @@
                            min="{% now 'Y-m-d' %}" required>
                 </div>
                 <div class="form-group">
-                    <label for="id_time">Select Time</label>
-                    <input type="time" id="id_time" name="time" value="{{ form.time.value|default:'' }}" required>
+                    <label for="id_time">Select Time (6:30 AM - 9:00 PM)</label>
+                    <input type="time" id="id_time" name="time" value="{{ form.time.value|default:'' }}" 
+                           min="06:30" max="21:00" required>
                 </div>
             </div>
 

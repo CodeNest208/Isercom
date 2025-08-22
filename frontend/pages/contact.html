@@ -14,6 +14,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
   <script src="/frontend/js/script.js" defer></script>
+  <script src="/frontend/js/contact.js" defer></script>
 </head>
 <body>
   <!-- Header -->
@@ -72,10 +73,10 @@
           for your interest and support.
         </p>
         <form id="contactForm">
-          <input type="text" placeholder="Name" required />
-          <input type="email" placeholder="Email" required />
-          <input type="text" placeholder="Subject" required />
-          <textarea placeholder="Some placeholder text here..." required></textarea>
+          <input type="text" id="contact_name" name="name" placeholder="Name" required />
+          <input type="email" id="contact_email" name="email" placeholder="Email" required />
+          <input type="text" id="contact_subject" name="subject" placeholder="Subject" required />
+          <textarea id="contact_message" name="message" placeholder="Some placeholder text here..." required></textarea>
           <button type="submit">Submit</button>
         </form>
       </div>
@@ -126,10 +127,10 @@
           </div>
 
           <form class="feedback-form">
-            <textarea placeholder="Feedback"></textarea>
+            <textarea name="message" placeholder="Feedback"></textarea>
             <div class="form-row">
-              <input type="text" placeholder="Name" />
-              <input type="email" placeholder="Email" />
+              <input type="text" name="name" placeholder="Name" />
+              <input type="email" name="email" placeholder="Email" />
             </div>
             <button type="submit">Submit</button>
           </form>

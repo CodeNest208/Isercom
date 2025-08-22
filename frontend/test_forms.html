@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Test - iSercom Clinic</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        button {
+            background-color: #004d33;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0f3322;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        .feedback-form {
+            border: 2px solid #E5C285;
+            background-color: #fefefe;
+        }
+        h1, h2 {
+            color: #004d33;
+        }
+    </style>
+</head>
+<body>
+    <h1>iSercom Clinic - Form Testing</h1>
+    
+    <div class="test-section">
+        <h2>Main Contact Form Test</h2>
+        <form id="contactForm">
+            <div class="form-group">
+                <label for="contact_name">Name:</label>
+                <input type="text" id="contact_name" name="name" placeholder="Name" required>
+            </div>
+            <div class="form-group">
+                <label for="contact_email">Email:</label>
+                <input type="email" id="contact_email" name="email" placeholder="Email" required>
+            </div>
+            <div class="form-group">
+                <label for="contact_subject">Subject:</label>
+                <input type="text" id="contact_subject" name="subject" placeholder="Subject" required>
+            </div>
+            <div class="form-group">
+                <label for="contact_message">Message:</label>
+                <textarea id="contact_message" name="message" placeholder="Message" required></textarea>
+            </div>
+            <button type="submit">Send Message</button>
+        </form>
+    </div>
+
+    <div class="test-section feedback-form">
+        <h2>Footer Feedback Form Test</h2>
+        <form class="feedback-form">
+            <div class="form-group">
+                <label for="feedback_name">Name:</label>
+                <input type="text" id="feedback_name" name="name" placeholder="Your Name" required>
+            </div>
+            <div class="form-group">
+                <label for="feedback_email">Email:</label>
+                <input type="email" id="feedback_email" name="email" placeholder="Your Email" required>
+            </div>
+            <div class="form-group">
+                <label for="feedback_message">Feedback:</label>
+                <textarea id="feedback_message" name="message" placeholder="Your feedback or suggestion" required></textarea>
+            </div>
+            <button type="submit">Submit Feedback</button>
+        </form>
+    </div>
+
+    <div class="test-section">
+        <h2>Authentication Status</h2>
+        <p id="authStatus">Checking authentication...</p>
+        <button onclick="checkAuth()">Refresh Auth Status</button>
+    </div>
+
+    <!-- Include the restored JavaScript files -->
+    <script src="js/script.js"></script>
+    <script src="js/contact.js"></script>
+    
+    <script>
+        // Additional test function
+        async function checkAuth() {
+            const statusElement = document.getElementById('authStatus');
+            statusElement.textContent = 'Checking...';
+            
+            try {
+                const response = await fetch('/api/auth/check/', {
+                    method: 'GET',
+                    credentials: 'same-origin'
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.is_authenticated) {
+                        statusElement.innerHTML = `
+                            <strong>Authenticated:</strong> Yes<br>
+                            <strong>User:</strong> ${data.user.email || 'N/A'}<br>
+                            <strong>Name:</strong> ${data.user.full_name || (data.user.first_name + ' ' + data.user.last_name).trim() || 'N/A'}<br>
+                            <strong>Type:</strong> ${data.user.user_type || 'user'}
+                        `;
+                    } else {
+                        statusElement.innerHTML = '<strong>Authenticated:</strong> No';
+                    }
+                } else {
+                    statusElement.textContent = 'Authentication check failed';
+                }
+            } catch (error) {
+                statusElement.textContent = 'Error checking authentication: ' + error.message;
+            }
+        }
+        
+        // Run auth check on page load
+        document.addEventListener('DOMContentLoaded', checkAuth);
+    </script>
+</body>
+</html>

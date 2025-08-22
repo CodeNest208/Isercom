@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Schedule - Doctor Dashboard</title>
+    <link rel="stylesheet" href="/frontend/css/doctor_schedule.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-info">
+                <h1>📅 My Schedule</h1>
+                <p id="doctorInfo">Doctor Portal</p>
+            </div>
+            <div class="nav-buttons">
+                <a href="/frontend/pages/doctor_home.html" class="btn">🏠 Dashboard</a>
+                <a href="/frontend/pages/doctor_appointments.html" class="btn">📋 All Appointments</a>
+                <a href="/frontend/pages/logout.html" class="btn btn-secondary">🚪 Sign Out</a>
+            </div>
+        </div>
+
+        <div class="schedule-controls">
+            <div class="date-navigation">
+                <button class="nav-btn" onclick="changeDate(-1)" id="prevBtn">◀ Previous Day</button>
+                <div class="current-date">
+                    <input type="date" id="selectedDate" onchange="loadScheduleForDate(this.value)">
+                    <button class="today-btn" onclick="goToToday()">Today</button>
+                </div>
+                <button class="nav-btn" onclick="changeDate(1)" id="nextBtn">Next Day ▶</button>
+            </div>
+            
+            <div class="view-options">
+                <button class="view-btn active" onclick="setView('day', this)">Day View</button>
+                <button class="view-btn" onclick="setView('week', this)">Week View</button>
+            </div>
+        </div>
+
+        <div class="schedule-summary">
+            <div class="summary-item">
+                <span class="summary-number" id="totalToday">0</span>
+                <span class="summary-label">Appointments Today</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-number" id="confirmedToday">0</span>
+                <span class="summary-label">Confirmed</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-number" id="pendingToday">0</span>
+                <span class="summary-label">Pending</span>
+            </div>
+        </div>
+
+        <div class="schedule-container">
+            <div id="dayView" class="schedule-view active">
+                <div class="time-slots">
+                    <!-- Time slots will be generated dynamically -->
+                </div>
+            </div>
+            
+            <div id="weekView" class="schedule-view">
+                <div class="week-header">
+                    <!-- Week days will be generated -->
+                </div>
+                <div class="week-schedule">
+                    <!-- Week schedule will be generated -->
+                </div>
+            </div>
+        </div>
+
+        <div id="loadingMessage" class="loading-message">
+            <p>Loading schedule...</p>
+        </div>
+
+        <div id="noAppointments" class="no-appointments" style="display: none;">
+            <h3>📅 No Appointments</h3>
+            <p>You don't have any appointments scheduled for this day.</p>
+        </div>
+    </div>
+
+    <!-- Appointment Detail Modal -->
+    <div id="appointmentModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Appointment Details</h3>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Appointment details will be populated here -->
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-primary" id="confirmBtn" onclick="confirmAppointment()" style="display: none;">✅ Confirm</button>
+                <button class="btn btn-success" id="completeBtn" onclick="completeAppointment()" style="display: none;">✓ Mark Complete</button>
+                <button class="btn btn-secondary" onclick="closeModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let apiClient;
+        let currentDate = new Date();
+        let currentView = 'day';
+        let allAppointments = [];
+        let selectedAppointment = null;
+
+        // Business hours (6:30 AM to 9:00 PM)
+        const BUSINESS_START = 6.5; // 6:30 AM
+        const BUSINESS_END = 21; // 9:00 PM
+        const TIME_SLOT_DURATION = 0.5; // 30 minutes
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', async function() {
+            initializeAPIClient();
+            await initializePage();
+        });
+
+        // Initialize API client
+        function initializeAPIClient() {
+            apiClient = {
+                async checkAuth() {
+                    const response = await fetch('/api/check_auth/', {
+                        method: 'GET',
+                        credentials: 'include',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    });
+                    return await response.json();
+                },
+
+                async getDoctorAppointments() {
+                    const response = await fetch('/api/doctor/appointments/', {
+                        method: 'GET',
+                        credentials: 'include',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    });
+                    return await response.json();
+                },
+
+                async updateAppointmentStatus(appointmentId, status) {
+                    const response = await fetch(`/api/appointments/${appointmentId}/status/`, {
+                        method: 'POST',
+                        credentials: 'include',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        body: JSON.stringify({ status })
+                    });
+                    return await response.json();
+                }
+            };
+        }
+
+        // Initialize page
+        async function initializePage() {
+            try {
+                // Check authentication
+                const authResponse = await apiClient.checkAuth();
+                
+                if (!authResponse.is_authenticated) {
+                    window.location.href = '/frontend/pages/login.html';
+                    return;
+                }
+
+                if (authResponse.user.user_type !== 'doctor') {
+                    alert('Access denied. This page is for doctors only.');
+                    window.location.href = '/frontend/index.html';
+                    return;
+                }
+
+                // Update doctor info
+                updateDoctorInfo(authResponse.user);
+
+                // Set initial date
+                const today = new Date();
+                document.getElementById('selectedDate').value = today.toISOString().split('T')[0];
+                currentDate = today;
+
+                // Generate time slots
+                generateTimeSlots();
+
+                // Load appointments
+                await loadAppointments();
+
+            } catch (error) {
+                console.error('Error initializing page:', error);
+                showError('Failed to load page. Please refresh and try again.');
+            }
+        }
+
+        // Update doctor info
+        function updateDoctorInfo(user) {
+            const doctorInfo = document.getElementById('doctorInfo');
+            doctorInfo.textContent = `Dr. ${user.first_name} ${user.last_name} - Schedule View`;
+        }
+
+        // Generate time slots for day view
+        function generateTimeSlots() {
+            const timeSlotsContainer = document.querySelector('.time-slots');
+            timeSlotsContainer.innerHTML = '';
+
+            for (let hour = BUSINESS_START; hour <= BUSINESS_END; hour += TIME_SLOT_DURATION) {
+                const timeSlot = document.createElement('div');
+                timeSlot.className = 'time-slot';
+                timeSlot.dataset.time = hour;
+
+                const timeLabel = document.createElement('div');
+                timeLabel.className = 'time-label';
+                timeLabel.textContent = formatHourToTime(hour);
+
+                const appointmentArea = document.createElement('div');
+                appointmentArea.className = 'appointment-area';
+                appointmentArea.id = `slot-${hour}`;
+
+                timeSlot.appendChild(timeLabel);
+                timeSlot.appendChild(appointmentArea);
+                timeSlotsContainer.appendChild(timeSlot);
+            }
+        }
+
+        // Load appointments
+        async function loadAppointments() {
+            showLoading(true);
+            
+            try {
+                const response = await apiClient.getDoctorAppointments();
+                
+                if (response.success && response.appointments) {
+                    allAppointments = response.appointments;
+                    displaySchedule();
+                    updateSummary();
+                } else {
+                    showError(response.message || 'Failed to load appointments');
+                }
+            } catch (error) {
+                console.error('Error loading appointments:', error);
+                showError('Error loading appointments: ' + error.message);
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // Display schedule for current date and view
+        function displaySchedule() {
+            if (currentView === 'day') {
+                displayDayView();
+            } else {
+                displayWeekView();
+            }
+        }
+
+        // Display day view
+        function displayDayView() {
+            // Clear all slots
+            document.querySelectorAll('.appointment-area').forEach(area => {
+                area.innerHTML = '';
+            });
+
+            // Filter appointments for current date
+            const selectedDateStr = currentDate.toISOString().split('T')[0];
+            const dayAppointments = allAppointments.filter(apt => 
+                apt.date === selectedDateStr && (apt.status === 'scheduled' || apt.status === 'confirmed')
+            );
+
+            // Place appointments in time slots
+            dayAppointments.forEach(appointment => {
+                const timeSlot = getTimeSlotForAppointment(appointment.time);
+                const slotElement = document.getElementById(`slot-${timeSlot}`);
+                
+                if (slotElement) {
+                    const appointmentElement = createAppointmentElement(appointment);
+                    slotElement.appendChild(appointmentElement);
+                }
+            });
+
+            // Show/hide no appointments message
+            const noAppointmentsDiv = document.getElementById('noAppointments');
+            if (dayAppointments.length === 0) {
+                noAppointmentsDiv.style.display = 'block';
+            } else {
+                noAppointmentsDiv.style.display = 'none';
+            }
+        }
+
+        // Create appointment element
+        function createAppointmentElement(appointment) {
+            const element = document.createElement('div');
+            element.className = `appointment-item status-${appointment.status}`;
+            element.onclick = () => showAppointmentDetails(appointment);
+
+            element.innerHTML = `
+                <div class="appointment-time">${formatTime(appointment.time)}</div>
+                <div class="appointment-patient">${appointment.patient.full_name || `${appointment.patient.first_name} ${appointment.patient.last_name}`}</div>
+                <div class="appointment-service">${appointment.service.name}</div>
+                <div class="appointment-status">${appointment.status}</div>
+            `;
+
+            return element;
+        }
+
+        // Get time slot for appointment
+        function getTimeSlotForAppointment(timeString) {
+            const [hours, minutes] = timeString.split(':').map(Number);
+            const timeInHours = hours + (minutes / 60);
+            
+            // Find the closest time slot
+            for (let slot = BUSINESS_START; slot <= BUSINESS_END; slot += TIME_SLOT_DURATION) {
+                if (timeInHours >= slot && timeInHours < slot + TIME_SLOT_DURATION) {
+                    return slot;
+                }
+            }
+            
+            return Math.floor(timeInHours * 2) / 2; // Default fallback
+        }
+
+        // Format hour to time string
+        function formatHourToTime(hour) {
+            const hours = Math.floor(hour);
+            const minutes = (hour % 1) * 60;
+            const period = hours >= 12 ? 'PM' : 'AM';
+            const displayHours = hours > 12 ? hours - 12 : (hours === 0 ? 12 : hours);
+            
+            return `${displayHours}:${minutes.toString().padStart(2, '0')} ${period}`;
+        }
+
+        // Format time string
+        function formatTime(timeString) {
+            const [hours, minutes] = timeString.split(':');
+            const hour = parseInt(hours);
+            const period = hour >= 12 ? 'PM' : 'AM';
+            const displayHour = hour > 12 ? hour - 12 : (hour === 0 ? 12 : hour);
+            
+            return `${displayHour}:${minutes} ${period}`;
+        }
+
+        // Format date
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+
+        // Change date
+        function changeDate(days) {
+            if (currentView === 'week') {
+                // Navigate by weeks (7 days)
+                currentDate.setDate(currentDate.getDate() + (days * 7));
+            } else {
+                // Navigate by days
+                currentDate.setDate(currentDate.getDate() + days);
+            }
+            document.getElementById('selectedDate').value = currentDate.toISOString().split('T')[0];
+            displaySchedule();
+            updateSummary();
+        }
+
+        // Go to today
+        function goToToday() {
+            currentDate = new Date();
+            document.getElementById('selectedDate').value = currentDate.toISOString().split('T')[0];
+            displaySchedule();
+            updateSummary();
+        }
+
+        // Load schedule for specific date
+        function loadScheduleForDate(dateValue) {
+            currentDate = new Date(dateValue);
+            displaySchedule();
+            updateSummary();
+        }
+
+        // Set view
+        function setView(view, button) {
+            currentView = view;
+            
+            // Update button states
+            document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            
+            // Update navigation button labels
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            
+            if (view === 'week') {
+                prevBtn.textContent = '◀ Previous Week';
+                nextBtn.textContent = 'Next Week ▶';
+            } else {
+                prevBtn.textContent = '◀ Previous Day';
+                nextBtn.textContent = 'Next Day ▶';
+            }
+            
+            // Show/hide views
+            document.querySelectorAll('.schedule-view').forEach(view => view.classList.remove('active'));
+            document.getElementById(view + 'View').classList.add('active');
+            
+            displaySchedule();
+        }
+
+        // Update summary
+        function updateSummary() {
+            if (currentView === 'day') {
+                const selectedDateStr = currentDate.toISOString().split('T')[0];
+                const dayAppointments = allAppointments.filter(apt => apt.date === selectedDateStr);
+                
+                const total = dayAppointments.length;
+                const confirmed = dayAppointments.filter(apt => apt.status === 'confirmed').length;
+                const pending = dayAppointments.filter(apt => apt.status === 'scheduled').length;
+                
+                document.getElementById('totalToday').textContent = total;
+                document.getElementById('confirmedToday').textContent = confirmed;
+                document.getElementById('pendingToday').textContent = pending;
+                
+                // Update labels for day view
+                document.querySelector('.summary-item:first-child .summary-label').textContent = 'Appointments Today';
+            } else {
+                // Week view summary is handled in displayWeekAppointments
+                displayWeekAppointments();
+            }
+        }
+
+        // Show appointment details
+        function showAppointmentDetails(appointment) {
+            selectedAppointment = appointment;
+            
+            const modalBody = document.getElementById('modalBody');
+            modalBody.innerHTML = `
+                <div class="appointment-details">
+                    <h4>${appointment.patient.full_name || `${appointment.patient.first_name} ${appointment.patient.last_name}`}</h4>
+                    <p><strong>Email:</strong> ${appointment.patient.email}</p>
+                    <p><strong>Phone:</strong> ${appointment.patient.phone || 'N/A'}</p>
+                    <p><strong>Service:</strong> ${appointment.service.name}</p>
+                    <p><strong>Date:</strong> ${formatDate(appointment.date)}</p>
+                    <p><strong>Time:</strong> ${formatTime(appointment.time)}</p>
+                    <p><strong>Status:</strong> <span class="status-badge status-${appointment.status}">${appointment.status}</span></p>
+                    ${appointment.notes ? `<p><strong>Notes:</strong> ${appointment.notes}</p>` : ''}
+                </div>
+            `;
+
+            // Show appropriate action buttons
+            const confirmBtn = document.getElementById('confirmBtn');
+            const completeBtn = document.getElementById('completeBtn');
+            
+            confirmBtn.style.display = appointment.status === 'scheduled' ? 'inline-block' : 'none';
+            completeBtn.style.display = appointment.status === 'confirmed' ? 'inline-block' : 'none';
+
+            document.getElementById('appointmentModal').style.display = 'block';
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('appointmentModal').style.display = 'none';
+            selectedAppointment = null;
+        }
+
+        // Confirm appointment
+        async function confirmAppointment() {
+            if (!selectedAppointment) return;
+            
+            try {
+                const response = await apiClient.updateAppointmentStatus(selectedAppointment.id, 'confirmed');
+                
+                if (response.success) {
+                    // Update local data
+                    selectedAppointment.status = 'confirmed';
+                    const index = allAppointments.findIndex(apt => apt.id === selectedAppointment.id);
+                    if (index !== -1) {
+                        allAppointments[index].status = 'confirmed';
+                    }
+                    
+                    showSuccess('Appointment confirmed successfully');
+                    closeModal();
+                    displaySchedule();
+                    updateSummary();
+                } else {
+                    showError(response.message || 'Failed to confirm appointment');
+                }
+            } catch (error) {
+                showError('Error confirming appointment: ' + error.message);
+            }
+        }
+
+        // Complete appointment
+        async function completeAppointment() {
+            if (!selectedAppointment) return;
+            
+            try {
+                const response = await apiClient.updateAppointmentStatus(selectedAppointment.id, 'completed');
+                
+                if (response.success) {
+                    // Update local data
+                    selectedAppointment.status = 'completed';
+                    const index = allAppointments.findIndex(apt => apt.id === selectedAppointment.id);
+                    if (index !== -1) {
+                        allAppointments[index].status = 'completed';
+                    }
+                    
+                    showSuccess('Appointment marked as completed');
+                    closeModal();
+                    displaySchedule();
+                    updateSummary();
+                } else {
+                    showError(response.message || 'Failed to complete appointment');
+                }
+            } catch (error) {
+                showError('Error completing appointment: ' + error.message);
+            }
+        }
+
+        // Display week view
+        function displayWeekView() {
+            generateWeekView();
+            displayWeekAppointments();
+        }
+
+        // Generate week view structure
+        function generateWeekView() {
+            const weekHeader = document.querySelector('.week-header');
+            const weekSchedule = document.querySelector('.week-schedule');
+            
+            // Get week start (Monday)
+            const weekStart = getWeekStart(currentDate);
+            const weekDays = [];
+            
+            // Generate 7 days starting from Monday
+            for (let i = 0; i < 7; i++) {
+                const day = new Date(weekStart);
+                day.setDate(weekStart.getDate() + i);
+                weekDays.push(day);
+            }
+            
+            // Create week header
+            weekHeader.innerHTML = `
+                <div class="week-day-header time-column">Time</div>
+                ${weekDays.map(day => `
+                    <div class="week-day-header">
+                        <div class="day-name">${day.toLocaleDateString('en-US', { weekday: 'short' })}</div>
+                        <div class="day-date">${day.getDate()}</div>
+                        <div class="day-month">${day.toLocaleDateString('en-US', { month: 'short' })}</div>
+                    </div>
+                `).join('')}
+            `;
+            
+            // Create week schedule grid
+            weekSchedule.innerHTML = '';
+            
+            // Generate time slots for the week
+            for (let hour = BUSINESS_START; hour <= BUSINESS_END; hour += TIME_SLOT_DURATION) {
+                const timeRow = document.createElement('div');
+                timeRow.className = 'week-time-row';
+                timeRow.dataset.time = hour;
+                
+                // Time label column
+                const timeLabel = document.createElement('div');
+                timeLabel.className = 'week-time-label';
+                timeLabel.textContent = formatHourToTime(hour);
+                timeRow.appendChild(timeLabel);
+                
+                // Day columns
+                weekDays.forEach((day, dayIndex) => {
+                    const dayColumn = document.createElement('div');
+                    dayColumn.className = 'week-day-slot';
+                    dayColumn.dataset.date = day.toISOString().split('T')[0];
+                    dayColumn.dataset.time = hour;
+                    dayColumn.id = `week-slot-${dayIndex}-${hour}`;
+                    timeRow.appendChild(dayColumn);
+                });
+                
+                weekSchedule.appendChild(timeRow);
+            }
+        }
+
+        // Display appointments in week view
+        function displayWeekAppointments() {
+            // Clear all week slots
+            document.querySelectorAll('.week-day-slot').forEach(slot => {
+                slot.innerHTML = '';
+            });
+            
+            // Get week start and end dates
+            const weekStart = getWeekStart(currentDate);
+            const weekEnd = new Date(weekStart);
+            weekEnd.setDate(weekStart.getDate() + 6);
+            
+            const weekStartStr = weekStart.toISOString().split('T')[0];
+            const weekEndStr = weekEnd.toISOString().split('T')[0];
+            
+            // Filter appointments for current week
+            const weekAppointments = allAppointments.filter(apt => 
+                apt.date >= weekStartStr && apt.date <= weekEndStr && 
+                (apt.status === 'scheduled' || apt.status === 'confirmed')
+            );
+            
+            // Place appointments in week slots
+            weekAppointments.forEach(appointment => {
+                const appointmentDate = new Date(appointment.date);
+                const dayIndex = (appointmentDate.getDay() + 6) % 7; // Convert to Monday = 0
+                const timeSlot = getTimeSlotForAppointment(appointment.time);
+                const slotElement = document.getElementById(`week-slot-${dayIndex}-${timeSlot}`);
+                
+                if (slotElement) {
+                    const appointmentElement = createWeekAppointmentElement(appointment);
+                    slotElement.appendChild(appointmentElement);
+                }
+            });
+            
+            // Update summary for the week
+            updateWeekSummary(weekAppointments);
+        }
+
+        // Create appointment element for week view (more compact)
+        function createWeekAppointmentElement(appointment) {
+            const element = document.createElement('div');
+            element.className = `week-appointment-item status-${appointment.status}`;
+            element.onclick = () => showAppointmentDetails(appointment);
+            
+            element.innerHTML = `
+                <div class="week-appointment-time">${formatTime(appointment.time)}</div>
+                <div class="week-appointment-patient">${appointment.patient.full_name || `${appointment.patient.first_name} ${appointment.patient.last_name}`}</div>
+                <div class="week-appointment-service">${appointment.service.name}</div>
+            `;
+            
+            return element;
+        }
+
+        // Get week start (Monday)
+        function getWeekStart(date) {
+            const weekStart = new Date(date);
+            const day = weekStart.getDay();
+            const diff = weekStart.getDate() - day + (day === 0 ? -6 : 1); // Adjust when day is Sunday
+            weekStart.setDate(diff);
+            return weekStart;
+        }
+
+        // Update summary for week view
+        function updateWeekSummary(weekAppointments) {
+            const total = weekAppointments.length;
+            const confirmed = weekAppointments.filter(apt => apt.status === 'confirmed').length;
+            const pending = weekAppointments.filter(apt => apt.status === 'scheduled').length;
+            
+            document.getElementById('totalToday').textContent = total;
+            document.getElementById('confirmedToday').textContent = confirmed;
+            document.getElementById('pendingToday').textContent = pending;
+            
+            // Update labels for week view
+            document.querySelector('.summary-item:first-child .summary-label').textContent = 'Appointments This Week';
+        }
+
+        // Show loading
+        function showLoading(show) {
+            document.getElementById('loadingMessage').style.display = show ? 'block' : 'none';
+        }
+
+        // Show success message
+        function showSuccess(message) {
+            // Simple alert for now - can be enhanced with better UI
+            alert('✅ ' + message);
+        }
+
+        // Show error message
+        function showError(message) {
+            // Simple alert for now - can be enhanced with better UI
+            alert('❌ ' + message);
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('appointmentModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>
