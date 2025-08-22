@@ -4,6 +4,51 @@
     box-sizing: border-box;
 }
 
+/* Scroll animations */
+.fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.slide-in-left {
+    opacity: 0;
+    transform: translateX(-50px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.slide-in-left.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.slide-in-right {
+    opacity: 0;
+    transform: translateX(50px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.slide-in-right.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.scale-in {
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.scale-in.visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
 .fertility-page{
     background-color: #f5f5f5;
     height: 100vh;
@@ -25,15 +70,41 @@
 .section h1 {
     color: white;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-    font-size: 2.5rem;
+    font-size: 2.8rem;
     margin: 0;
     padding: 20px 30px;
     position: relative;
     z-index: 2;
+    font-weight: 700;
+    letter-spacing: 1px;
 }
 
 .fer{
     margin: 20px;
+    line-height: 1.6;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.fer h1 {
+    color: #04332A;
+    font-size: 2.2rem;
+    margin-bottom: 20px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.fer p {
+    font-size: 1.1rem;
+    color: #333;
+    text-align: justify;
+    margin-bottom: 15px;
+}
+
+.fer li {
+    font-size: 1rem;
+    color: #444;
+    margin: 8px 0;
+    padding-left: 10px;
 }
 .ferimg{
     height: 50vh;
@@ -62,4 +133,25 @@
 }
 .ferbtn:hover{
     background-color: #006b50;
+}
+
+/* Animation delays for staggered effects */
+.fer h1 {
+    animation-delay: 0.2s;
+}
+
+.fer p {
+    animation-delay: 0.4s;
+}
+
+.fer li {
+    animation-delay: 0.6s;
+}
+
+.ferimg {
+    animation-delay: 0.3s;
+}
+
+.ferbtn {
+    animation-delay: 0.5s;
 }   

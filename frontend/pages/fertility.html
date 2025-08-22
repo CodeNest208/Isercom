@@ -21,6 +21,24 @@
             window.location.href = "/frontend/pages/appointment_form.html";
           });
         }
+
+        // Scroll animation observer
+        const observerOptions = {
+          threshold: 0.1,
+          rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+            }
+          });
+        }, observerOptions);
+
+        // Observe all elements with animation classes
+        const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right, .scale-in');
+        animatedElements.forEach(el => observer.observe(el));
       });
     </script>
 </head>
@@ -59,39 +77,39 @@
        <section class="section" style="background-image: linear-gradient(45deg, rgba(46, 44, 44, 0.95) 0%, rgba(255,255,255,0.0) 60%),url('/frontend/images/fertility/pushfer.webp');">
         <h1 style="color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); font-size: 60px;">Fertility and IVF</h1>
        </section>
-       <div class="fer">
-        <h1>Fertility and IVF</h1>
-        <p>At ISECORM clicinic, we understand that the journey to parenthood can be deeply personal-and sometimes challenging.
+       <div class="fer fade-in">
+        <h1 class="slide-in-left">Fertility and IVF</h1>
+        <p class="fade-in">At ISECORM clicinic, we understand that the journey to parenthood can be deeply personal-and sometimes challenging.
           Our fertility and IVf service are designed to offer hope, expert care, and advanced reproduction solutions to individuals and couples facing fertility concerns.
           <br>
-          We provide comprehensive fertilityevaluations, personalized treatment plans and emotional support in a confidential and compassionate setting. Whether you're just beginning your journey or to explore your fertility options or have been on this journey for some time, our team of experienced fertilityspecialist is here to guide you with care and expertise.
+          We provide comprehensive fertilityevaluations,personalized treatment plans and emotional support in a confidential and compassionate setting. Whether you're just beginning your journey or to explore your fertility options or have been on this journey for some time, our team of experienced fertilityspecialist is here to guide you with care and expertise.
           <br>
           <br>
           Our services include:
           <br>
-          <li>Fertility assessments for both men and women</li>
-          <li>Ovulation monitoring and hormonal evaluation</li>
-          <li>Assisted reproductive technology (ART)</li>
-          <li>Intrauterine insemination (IUI)</li>
-          <li>Counseling and suppport through the treatment process</li>
+          <li class="slide-in-right">Fertility assessments for both men and women</li>
+          <li class="slide-in-right">Ovulation monitoring and hormonal evaluation</li>
+          <li class="slide-in-right">Assisted reproductive technology (ART)</li>
+          <li class="slide-in-right">Intrauterine insemination (IUI)</li>
+          <li class="slide-in-right">Counseling and suppport through the treatment process</li>
           <br>
           
         </p>
        </div>
-       <div class="ferimg">
+       <div class="ferimg scale-in">
         <img src="../images/fertility/fereg.webp" alt="fertility">
        </div>
-       <div style="margin: 20px;">
+       <div style="margin: 20px;" class="fade-in">
         <p>
           At ISECOM Clinic, we conbine medical exelence with a patient-centered approach- because we know this is more than just a procedure; it's about your future, your family, and your 
           dream. Our goal is to offer the most advanced treatment in a setting that values your comfort, trust, and dignity.<br>
           No matter where you are in your fertility journey, we are here to walk with you, offering care, and the confidence to take the next step
         </p>
        </div>
-       <div class="ferimg">
+       <div class="ferimg scale-in">
         <img src="../images/fertility/fue.png" alt="fue">
        </div>
-      <button class="ferbtn">Talk to doctor</button>
+      <button class="ferbtn fade-in">Talk to doctor</button>
     <footer class="footer">
       <div class="footer-top">
         <img src="../images/logo.png" alt="iSecorm Logo" class="logo" />
