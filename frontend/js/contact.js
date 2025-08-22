@@ -1,4 +1,43 @@
 
+/*
+ * contact.js - Contact page specific functionality
+ * 
+ * Handles:
+ * - Main contact form submission
+ * - Contact form validation (including email validation)
+ * - Auto-fill for authenticated users on contact form
+ * - Contact form specific message display
+ * - CSRF token handling for contact form
+ * 
+ * Note: Footer feedback forms are handled in script.js
+ */
+
+// CSRF token helper function
+function getCsrfToken() {
+  const cookieValue = document.cookie
+    .split('; ')
+    .find(row => row.startsWith('csrftoken='))
+    ?.split('=')[1];
+  
+  if (cookieValue) {
+    return cookieValue;
+  }
+  
+  // Fallback: try to get from meta tag
+  const metaToken = document.querySelector('meta[name="csrf-token"]');
+  if (metaToken) {
+    return metaToken.getAttribute('content');
+  }
+  
+  // Fallback: try to get from form input
+  const inputToken = document.querySelector('input[name="csrfmiddlewaretoken"]');
+  if (inputToken) {
+    return inputToken.value;
+  }
+  
+  return '';
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   console.log("Contact.js loaded");
   const form = document.getElementById("contactForm");
@@ -29,6 +68,14 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!name || !email || !subject || !message) {
       console.log("Validation failed - missing fields");
       showMessage('Please fill in all fields.', 'error');
+      return;
+    }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      console.log("Validation failed - invalid email");
+      showMessage('Please enter a valid email address.', 'error');
       return;
     }
 
@@ -184,13 +231,15 @@ async function sendContactForm(name, email, subject, message) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'X-CSRFToken': getCsrfToken()
       },
       body: JSON.stringify({
         name: name,
         email: email,
         subject: subject,
         message: message
-      })
+      }),
+      credentials: 'same-origin'
     });
 
     console.log("Fetch response status:", response.status);

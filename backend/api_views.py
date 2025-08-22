@@ -422,6 +422,19 @@ def appointments_api(request):
             if not data.get(field):
                 errors[field] = ['This field is required']
         
+        # Validate time restrictions (6:30 AM to 9:00 PM)
+        if data.get('time'):
+            try:
+                from datetime import datetime
+                time_obj = datetime.strptime(data['time'], '%H:%M').time()
+                start_time = datetime.strptime('06:30', '%H:%M').time()
+                end_time = datetime.strptime('21:00', '%H:%M').time()
+                
+                if time_obj < start_time or time_obj > end_time:
+                    errors['time'] = ['Appointment time must be between 6:30 AM and 9:00 PM']
+            except ValueError:
+                errors['time'] = ['Invalid time format']
+        
         if errors:
             return JsonResponse({
                 'success': False,

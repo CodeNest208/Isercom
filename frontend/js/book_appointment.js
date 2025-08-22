@@ -318,6 +318,17 @@ function validateFormData(data) {
 
     if (!data.time) {
         errors.push('Please select a time');
+    } else {
+        // Validate time is between 6:30 AM and 9:00 PM
+        const timeValue = data.time;
+        const [hours, minutes] = timeValue.split(':').map(num => parseInt(num));
+        const timeInMinutes = hours * 60 + minutes;
+        const startTime = 6 * 60 + 30; // 6:30 AM in minutes
+        const endTime = 21 * 60; // 9:00 PM in minutes
+        
+        if (timeInMinutes < startTime || timeInMinutes > endTime) {
+            errors.push('Appointment time must be between 6:30 AM and 9:00 PM');
+        }
     }
 
     if (!data.doctor) {

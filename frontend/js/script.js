@@ -1,3 +1,16 @@
+/*
+ * script.js - Global site functionality
+ * 
+ * Handles:
+ * - Navigation (hamburger menu, sticky navbar)
+ * - Footer feedback forms (across all pages)
+ * - Appointment button authentication checks
+ * - General message system
+ * - Back to top functionality
+ * 
+ * Note: Main contact form functionality is handled in contact.js
+ */
+
 // Hamburger toggle for responsive menu
 const hamburger = document.getElementById('hamburger');
 const navLinks = document.getElementById('navLinks');
@@ -42,58 +55,221 @@ document.querySelectorAll('.nav-links a').forEach(link => {
     }
   });
 });
-// Contact form submission handler
+// Footer feedback form submission handler
 document.addEventListener("DOMContentLoaded", function () {
-  const form = document.getElementById("contactForm");
-
-  form.addEventListener("submit", function (e) {
-    e.preventDefault();
-
-    // Grab the input values
-    const name = form.querySelector('input[placeholder="Name"]').value.trim();
-    const email = form.querySelector('input[placeholder="Email"]').value.trim();
-    const subject = form.querySelector('input[placeholder="Subject"]').value.trim();
-    const message = form.querySelector('textarea').value.trim();
-
-    // Basic validation
-    if (!name || !email || !subject || !message) {
-      alert("Please fill in all fields.");
-      return;
-    }
-
-    // Simulate sending form (you can replace this with a real request)
-    alert(`Thanks ${name}! Your message has been submitted successfully.`);
-
-    // Optionally clear the form
-    form.reset();
+  console.log('Script.js: DOM loaded, setting up footer forms...');
+  
+  // Handle all footer feedback forms
+  const footerForms = document.querySelectorAll('form.feedback-form');
+  console.log('Found footer forms:', footerForms.length);
+  
+  footerForms.forEach((footerForm, index) => {
+    console.log(`Setting up footer form ${index + 1}`);
+    
+    footerForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      console.log('Footer form submitted');
+      
+      const nameInput = footerForm.querySelector('input[name="name"], input[placeholder*="Name"]');
+      const emailInput = footerForm.querySelector('input[name="email"], input[placeholder*="Email"]');
+      const messageInput = footerForm.querySelector('textarea[name="message"], textarea[placeholder*="Message"]');
+      
+      if (!nameInput || !emailInput || !messageInput) {
+        showMessage('Form elements not found. Please refresh the page.', 'error');
+        return;
+      }
+      
+      const name = nameInput.value.trim();
+      const email = emailInput.value.trim();
+      const message = messageInput.value.trim();
+      
+      if (!name || !email || !message) {
+        showMessage('Please fill in all fields.', 'error');
+        return;
+      }
+      
+      // Email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        showMessage('Please enter a valid email address.', 'error');
+        return;
+      }
+      
+      const submitButton = footerForm.querySelector('button[type="submit"]');
+      const originalText = submitButton ? submitButton.textContent : 'Submit';
+      
+      try {
+        if (submitButton) {
+          submitButton.disabled = true;
+          submitButton.textContent = 'Sending...';
+        }
+        
+        const response = await fetch('/api/contact/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCsrfToken()
+          },
+          body: JSON.stringify({
+            name: name,
+            email: email,
+            subject: 'Footer Feedback',
+            message: message
+          }),
+          credentials: 'same-origin'
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok && result.success) {
+          showMessage('Thank you for your feedback! We\'ll get back to you soon.', 'success');
+          footerForm.reset();
+          // Re-auto-fill after reset
+          setTimeout(() => autoFillUserInfo(), 100);
+        } else {
+          throw new Error(result.error || 'Failed to send message');
+        }
+      } catch (error) {
+        console.error('Error sending feedback:', error);
+        showMessage('Failed to send feedback. Please try again later.', 'error');
+      } finally {
+        if (submitButton) {
+          submitButton.disabled = false;
+          submitButton.textContent = originalText;
+        }
+      }
+    });
   });
+  
+  // Auto-fill user info for footer forms after a short delay to ensure forms are ready
+  setTimeout(() => {
+    console.log('Auto-filling footer forms...');
+    autoFillUserInfo();
+  }, 500);
 });
-// Contact form submission handler
-document.addEventListener("DOMContentLoaded", function () {
-  const form = document.getElementById("contactForm");
 
-  form.addEventListener("submit", function (e) {
-    e.preventDefault();
+// CSRF token helper function
+function getCsrfToken() {
+  const cookieValue = document.cookie
+    .split('; ')
+    .find(row => row.startsWith('csrftoken='))
+    ?.split('=')[1];
+  
+  if (cookieValue) {
+    return cookieValue;
+  }
+  
+  // Fallback: try to get from meta tag
+  const metaToken = document.querySelector('meta[name="csrf-token"]');
+  if (metaToken) {
+    return metaToken.getAttribute('content');
+  }
+  
+  // Fallback: try to get from form input
+  const inputToken = document.querySelector('input[name="csrfmiddlewaretoken"]');
+  if (inputToken) {
+    return inputToken.value;
+  }
+  
+  return '';
+}
 
-    // Grab the input values
-    const name = form.querySelector('input[placeholder="Name"]').value.trim();
-    const email = form.querySelector('input[placeholder="Email"]').value.trim();
-    const subject = form.querySelector('input[placeholder="Subject"]').value.trim();
-    const message = form.querySelector('textarea').value.trim();
-
-    // Basic validation
-    if (!name || !email || !subject || !message) {
-      alert("Please fill in all fields.");
-      return;
+// Auto-fill footer forms for authenticated users
+async function autoFillUserInfo() {
+  try {
+    const response = await fetch('/api/auth/check/', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'same-origin'
+    });
+    
+    if (response.ok) {
+      const data = await response.json();
+      if (data.is_authenticated && data.user) {
+        console.log('User authenticated, auto-filling footer forms:', data.user);
+        
+        // Auto-fill footer feedback forms only (not main contact forms)
+        const footerForms = document.querySelectorAll('form.feedback-form');
+        console.log('Found footer forms:', footerForms.length);
+        
+        footerForms.forEach((form, index) => {
+          console.log(`Processing footer form ${index + 1}`);
+          
+          const nameInput = form.querySelector('input[name="name"], input[placeholder*="Name"]');
+          const emailInput = form.querySelector('input[name="email"], input[placeholder*="Email"]');
+          
+          console.log('Name input found:', !!nameInput, 'Email input found:', !!emailInput);
+          
+          if (nameInput && !nameInput.value) {
+            const userName = data.user.full_name || 
+                           (data.user.first_name && data.user.last_name ? 
+                            `${data.user.first_name} ${data.user.last_name}`.trim() : 
+                            data.user.first_name || data.user.last_name || '');
+            
+            if (userName) {
+              nameInput.value = userName;
+              nameInput.style.backgroundColor = '#f0f8ff'; // Light blue to indicate auto-filled
+              console.log('Auto-filled name:', userName);
+            }
+          }
+          
+          if (emailInput && !emailInput.value && data.user.email) {
+            emailInput.value = data.user.email;
+            emailInput.style.backgroundColor = '#f0f8ff'; // Light blue to indicate auto-filled
+            console.log('Auto-filled email:', data.user.email);
+          }
+          
+          // Show auto-fill notice if any field was filled
+          if ((nameInput && nameInput.value) || (emailInput && emailInput.value)) {
+            showFooterAutoFillNotice(form);
+          }
+        });
+      } else {
+        console.log('User not authenticated');
+      }
+    } else {
+      console.log('Auth check failed:', response.status);
     }
+  } catch (error) {
+    console.error('Error auto-filling footer forms:', error);
+  }
+}
 
-    // Simulate sending form (you can replace this with a real request)
-    alert(`Thanks ${name}! Your message has been submitted successfully.`);
-
-    // Optionally clear the form
-    form.reset();
-  });
-});
+// Show auto-fill notice for footer forms
+function showFooterAutoFillNotice(form) {
+  // Check if notice already exists for this form
+  if (form.querySelector('.footer-auto-fill-notice')) return;
+  
+  const notice = document.createElement('div');
+  notice.className = 'footer-auto-fill-notice';
+  notice.innerHTML = '✓ Auto-filled from your account';
+  notice.style.cssText = `
+    background-color: #d1ecf1;
+    color: #0c5460;
+    padding: 6px 10px;
+    border-radius: 3px;
+    font-size: 12px;
+    margin-bottom: 10px;
+    border: 1px solid #bee5eb;
+    text-align: center;
+    font-weight: 500;
+  `;
+  
+  // Insert notice before the textarea
+  const textarea = form.querySelector('textarea');
+  if (textarea) {
+    form.insertBefore(notice, textarea);
+    
+    // Auto-remove notice after 4 seconds
+    setTimeout(() => {
+      if (notice.parentNode) {
+        notice.remove();
+      }
+    }, 4000);
+  }
+}
 
 function talkToDoctor() {
   alert("Redirecting to consultation...");

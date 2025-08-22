@@ -188,3 +188,13 @@ INFO 2025-08-20 21:27:45,413 email_utils 21560 16824 Email queued for async send
 INFO 2025-08-20 21:27:45,416 email_utils 21560 16824 Both appointment emails queued for appointment 52
 INFO 2025-08-20 21:27:50,517 email_utils 21560 5104 Email sent successfully to Theultimategooner@peaches.com in 5.10s
 INFO 2025-08-20 21:27:50,722 email_utils 21560 16852 Email sent successfully to dr.jones@clinic.com in 5.31s
+INFO 2025-08-22 00:33:55,167 email_utils 23520 9812 Email queued for async sending to felixasante2005@gmail.com
+INFO 2025-08-22 00:33:55,172 email_utils 23520 9812 Email queued for async sending to odimer@gmail.com
+INFO 2025-08-22 00:33:55,173 email_utils 23520 9812 Both appointment emails queued for appointment 36
+INFO 2025-08-22 00:33:58,796 email_utils 23520 18016 Email sent successfully to odimer@gmail.com in 3.62s
+INFO 2025-08-22 00:33:59,074 email_utils 23520 13640 Email sent successfully to felixasante2005@gmail.com in 3.91s
+INFO 2025-08-22 00:42:23,125 email_utils 23520 15960 Email queued for async sending to felixasante2005@gmail.com
+INFO 2025-08-22 00:42:23,127 email_utils 23520 15960 Email queued for async sending to Theultimategooner@peaches.com
+INFO 2025-08-22 00:42:23,129 email_utils 23520 15960 Both appointment emails queued for appointment 53
+INFO 2025-08-22 00:42:28,316 email_utils 23520 13640 Email sent successfully to Theultimategooner@peaches.com in 5.19s
+INFO 2025-08-22 00:42:30,052 email_utils 23520 18016 Email sent successfully to felixasante2005@gmail.com in 6.93s

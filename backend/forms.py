@@ -193,7 +193,9 @@ class AppointmentForm(forms.ModelForm):
             }),
             'time': forms.TimeInput(attrs={
                 'type': 'time',
-                'step': '3600'  # 1-hour intervals
+                'step': '3600',  # 1-hour intervals
+                'min': '06:30',
+                'max': '21:00'
             }),
             'service': forms.Select(),
             'notes': forms.Textarea(attrs={
@@ -204,6 +206,20 @@ class AppointmentForm(forms.ModelForm):
         labels = {
             'service': 'Select Service',
             'date': 'Appointment Date',
-            'time': 'Appointment Time',
+            'time': 'Appointment Time (6:30 AM - 9:00 PM)',
             'notes': 'Notes/Message'
         }
+    
+    def clean_time(self):
+        """Validate that appointment time is between 6:30 AM and 9:00 PM"""
+        time_value = self.cleaned_data.get('time')
+        if time_value:
+            from datetime import time
+            start_time = time(6, 30)  # 6:30 AM
+            end_time = time(21, 0)    # 9:00 PM
+            
+            if time_value < start_time or time_value > end_time:
+                raise ValidationError(
+                    'Appointment time must be between 6:30 AM and 9:00 PM.'
+                )
+        return time_value
