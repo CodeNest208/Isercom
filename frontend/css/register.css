@@ -240,11 +240,23 @@ input::placeholder {
     transition: all 0.2s ease;
     font-size: 18px;
     font-weight: 600;
+    text-decoration: none;
+    color: inherit;
+    gap: 8px;
+    padding: 8px 16px;
+    width: auto;
+    border-radius: 8px;
+    min-width: 120px;
 }
 
 .google { 
     background: #db4437; 
     color: white; 
+}
+
+.google:hover {
+    background: #c23321;
+    color: white;
 }
 
 .facebook { 
@@ -260,6 +272,7 @@ input::placeholder {
 .social-icon:hover {
     transform: translateY(-1px);
     box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    text-decoration: none;
 }
 
 /* Message styles */

@@ -263,6 +263,9 @@
 
 /* Arrows */
 .prev, .next {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -270,13 +273,33 @@
   color: white;
   cursor: pointer;
   background: rgba(0,0,0,0.4);
-  padding: 10px;
-  border-radius: 50%;
+  border-radius: 10px;
   z-index: 2;
+  transition: all ease 0.3s;
+  height: 70px;
+  width: 50px;
 }
 
 .prev { left: 20px; }
 .next { right: 20px; }
+
+.next:hover{
+  color:#E5C285;
+  height: 75px;
+  width: 55px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.prev:hover{
+  color: #E5C285;
+  height: 75px;
+  width: 55px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 /* Dots */
 .dots {
