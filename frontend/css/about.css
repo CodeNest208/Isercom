@@ -53,7 +53,7 @@
     
     background-image:
       linear-gradient(45deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.4) 50%, rgba(0, 0, 0, 0.1) 100%),
-      url('../images/nur1.webp');
+      url('../images/nur1.jpg');
     background-size: cover;
     background-position: center;
     height: 90vh;
@@ -154,6 +154,7 @@ main {
         margin: 20px auto;
         display: block;
     }
+    
 }
 
 @media (max-width: 480px) {
@@ -266,6 +267,7 @@ main {
     .back {
         min-height: 300px;
         padding: 30px 15px;
+        font-size: 10px;
     }
     
     .back h1 {

@@ -277,4 +277,16 @@ function createMessageContainer() {
   return container;
 }
 
-
+const servicesLink = document.getElementById('services-link');
+const servicesDropdown = document.getElementById('services-dropdown');
+if (servicesLink && servicesDropdown) {
+  servicesLink.addEventListener('click', function(e) {
+    e.preventDefault();
+    servicesDropdown.style.display = servicesDropdown.style.display === 'block' ? 'none' : 'block';
+  });
+  document.addEventListener('click', function(event) {
+    if (!servicesLink.contains(event.target) && !servicesDropdown.contains(event.target)) {
+      servicesDropdown.style.display = 'none';
+    }
+  });
+}
