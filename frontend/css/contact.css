@@ -17,12 +17,16 @@
   z-index: 2;
 }
 
-.hero{
+.hero {
   height: 315px;
-  background-image: url('../images/contact/hero_image.png');
+  background-image: url("/frontend/images/contact/cp.jpg"); /* 👈 put your image path */
+  background-size: cover;   /* makes it fill the section */
+  background-position: center; /* keeps it centered */
+  background-repeat: no-repeat; /* avoids tiling */
   position: relative;
   z-index: 1;
 }
+
 
 /* Left Contact Info Box */
 .contact-left {
