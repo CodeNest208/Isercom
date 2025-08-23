@@ -9,44 +9,40 @@
     flex-direction: column;
     align-items: flex-start;
   }
+  
+  /* Mobile styles for words div */
+  .words {
+    width: 100% !important;
+    font-size: 20px !important;
+  }
+ 
   .doc {
     width: 100%;
     display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: flex-start;
-    gap: 0;
-    padding: 0;
-    position: relative;
-  }
-  .docimg {
-    width: 40%;
-    min-width: 120px;
-    max-width: 160px;
-    margin-right: 0;
-    margin-left: 0;
-    /* Ensure image stays left */
-    align-self: flex-start;
-  }
-  .doc ul {
-    flex-direction: column;
-    align-items: flex-end;
-    justify-content: flex-start;
-    margin-left: auto;
-    margin-top: 0;
-    gap: 10px;
-    position: absolute;
-    right: 0;
-    top: 0;
-    height: 100%;
-    /* Make sure buttons are vertically centered next to image */
-    display: flex;
-  }
-  .doc ul li {
-    display: flex;
+    flex-direction: column; /* stack vertically */
     align-items: center;
-    margin-bottom: 8px;
-  }
+    justify-content: center;
+    padding: 0;
+    gap: 15px;
+    position: relative;
+}
+
+.docimg {
+    width: 100%; /* scale image nicely */
+    max-width: 280px;
+    margin: 0 auto;
+}
+
+.doc ul {
+    flex-direction: row; /* icons in a row below image */
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0 0 0;
+    gap: 15px;
+    position: static; /* no absolute positioning */
+    height: auto;
+}
+
 }
 
 .back {

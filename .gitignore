@@ -1,6 +1,5 @@
 # Environment variables
 .env
-.env.example
 
 # Python cache
 __pycache__/
@@ -12,6 +11,7 @@ __pycache__/
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
+staticfiles/
 
 # Virtual environment
 .venv/
@@ -27,5 +27,3 @@ env/
 # OS files
 .DS_Store
 Thumbs.db
-
-isercom_website/settings.py

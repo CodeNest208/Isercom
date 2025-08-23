@@ -15,9 +15,60 @@
 const hamburger = document.getElementById('hamburger');
 const navLinks = document.getElementById('navLinks');
 
+// State variables for services menu in mobile
+let isServicesMenuActive = false;
+let originalNavContent = '';
+
 hamburger.addEventListener('click', () => {
-  navLinks.classList.toggle('active');
+  if (isServicesMenuActive) {
+    // If services menu is active, restore original nav content
+    restoreOriginalNav();
+  } else {
+    // Normal hamburger toggle
+    navLinks.classList.toggle('active');
+  }
 });
+
+// Function to store original nav content
+function storeOriginalNav() {
+  if (!originalNavContent) {
+    originalNavContent = navLinks.innerHTML;
+  }
+}
+
+// Function to restore original nav content
+function restoreOriginalNav() {
+  navLinks.innerHTML = originalNavContent;
+  isServicesMenuActive = false;
+  navLinks.classList.add('active');
+  // Re-initialize services dropdown after restoring content
+  initializeServicesDropdown();
+}
+
+// Function to show services menu in mobile
+function showServicesMenu() {
+  const servicesMenuHTML = `
+    <div class="services-menu-header">
+      <button class="back-to-main-menu" onclick="restoreOriginalNav()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+        </svg>
+        Back
+      </button>
+      <span>Services</span>
+    </div>
+    <div class="services-menu-content">
+      <a href="/frontend/pages/gynaecology.html">Obstetrics and Gynaecological Services</a>
+      <a href="/frontend/pages/consultation.html">Consultation & Specialised Clinics</a>
+      <a href="/frontend/pages/Antenatal.html">Antenatal Care</a>
+      <a href="/frontend/pages/fertility.html">Fertility/IVF</a>
+    </div>
+  `;
+  
+  navLinks.innerHTML = servicesMenuHTML;
+  isServicesMenuActive = true;
+  navLinks.classList.add('active');
+}
 
 // Sticky navbar functionality
 window.addEventListener('scroll', () => {
@@ -455,14 +506,44 @@ function createMessageContainer() {
 
 const servicesLink = document.getElementById('services-link');
 const servicesDropdown = document.getElementById('services-dropdown');
-if (servicesLink && servicesDropdown) {
-  servicesLink.addEventListener('click', function(e) {
-    e.preventDefault();
-    servicesDropdown.style.display = servicesDropdown.style.display === 'block' ? 'none' : 'block';
-  });
-  document.addEventListener('click', function(event) {
-    if (!servicesLink.contains(event.target) && !servicesDropdown.contains(event.target)) {
-      servicesDropdown.style.display = 'none';
-    }
-  });
+
+// Initialize services dropdown functionality
+function initializeServicesDropdown() {
+  const servicesLink = document.getElementById('services-link');
+  const servicesDropdown = document.getElementById('services-dropdown');
+  
+  if (servicesLink && servicesDropdown) {
+    servicesLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      
+      // Check if we're in mobile view
+      if (window.innerWidth <= 768) {
+        // Store original content and show services menu
+        storeOriginalNav();
+        showServicesMenu();
+      } else {
+        // Desktop behavior - toggle dropdown
+        servicesDropdown.style.display = servicesDropdown.style.display === 'block' ? 'none' : 'block';
+      }
+    });
+    
+    // Desktop click outside to close dropdown
+    document.addEventListener('click', function(event) {
+      if (window.innerWidth > 768 && servicesLink && servicesDropdown) {
+        if (!servicesLink.contains(event.target) && !servicesDropdown.contains(event.target)) {
+          servicesDropdown.style.display = 'none';
+        }
+      }
+    });
+  }
 }
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+  storeOriginalNav();
+  initializeServicesDropdown();
+});
+
+// Make functions available globally
+window.restoreOriginalNav = restoreOriginalNav;
+window.showServicesMenu = showServicesMenu;
