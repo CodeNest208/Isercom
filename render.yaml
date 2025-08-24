@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: isercom-clinic
+    env: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn isercom_website.wsgi:application -c gunicorn.conf.py"
+    envVars:
+      - key: SECRET_KEY
+        value: isercom-clinic-2025-super-secret-key-with-more-than-50-characters-and-unique-symbols!@#$%^&*()_+-=[]{}|;:,.<>?
+      - key: DEBUG
+        value: False
+      - key: EMAIL_HOST_USER
+        value: felixasante2005@gmail.com
+      - key: EMAIL_HOST_PASSWORD
+        value: your_gmail_app_password_here
+      - key: CONTACT_EMAIL
+        value: felixasante2005@gmail.com
+      - key: PYTHON_VERSION
+        value: 3.11.0
+
+databases:
+  - name: isercom-clinic-db
+    databaseName: isercom_clinic
+    user: isercom_user

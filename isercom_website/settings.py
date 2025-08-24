@@ -38,6 +38,7 @@ ALLOWED_HOSTS = ['127.0.0.1',
                 'localhost',
                 '*.isercom.com',
                 '*.herokuapp.com',
+                '*.onrender.com',  # Add Render domains
                 'testserver',
                 '*',
                 ]  # Add your domain in production
