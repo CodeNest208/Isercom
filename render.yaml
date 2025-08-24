@@ -16,7 +16,7 @@ services:
       - key: CONTACT_EMAIL
         value: felixasante2005@gmail.com
       - key: PYTHON_VERSION
-        value: 3.11.0
+        value: 3.11.9
 
 databases:
   - name: isercom-clinic-db
