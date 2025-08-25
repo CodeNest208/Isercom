@@ -31,7 +31,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', views.CustomLoginView.as_view(), name='login'),
     path('logout/', views.logout_view, name='logout'),
-    path('',lambda request: redirect('frontend/index.html')),
+    path('', lambda request: redirect('/frontend/index.html')),
     
     # Include all backend URLs (including home and static pages)
     # path('',include('backend.urls')),
