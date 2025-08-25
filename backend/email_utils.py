@@ -64,16 +64,20 @@ def get_logo_for_email():
 
 def get_logo_html(alt_text="Isercom Clinic"):
     """
-    Get HTML for the logo in emails
+    Get HTML for the logo in emails as a header
     """
     logo_src = get_logo_for_email()
     
-    # If it's base64 or URL, return img tag
+    # If it's base64 or URL, return img tag as header
     if logo_src.startswith('data:') or logo_src.startswith('http'):
-        return f'<img src="{logo_src}" alt="{alt_text}" style="height: 32px; vertical-align: middle; margin-right: 10px;">'
+        return f'''
+        <div style="text-align: center; margin-bottom: 30px; padding: 20px 0; border-bottom: 2px solid #667eea;">
+            <img src="{logo_src}" alt="{alt_text}" style="height: 80px; max-width: 300px; object-fit: contain;">
+        </div>
+        '''
     else:
         # Fallback to emoji if logo couldn't be loaded
-        return logo_src + " "
+        return f'<div style="text-align: center; font-size: 48px; margin-bottom: 20px;">{logo_src}</div>'
 
 def get_email_settings():
     """Get email configuration with fallbacks"""
@@ -179,7 +183,7 @@ def send_appointment_notification_to_doctor(appointment, async_send=True):
         patient_name = appointment.patient.full_name if hasattr(appointment.patient, 'full_name') else f"{appointment.patient.user.first_name} {appointment.patient.user.last_name}"
         doctor_first_name = appointment.doctor.user.first_name
         
-        # Get logo for email
+        # Get logo for email header
         logo_html = get_logo_html("Isercom Clinic")
         
         # Email subject
@@ -190,8 +194,10 @@ def send_appointment_notification_to_doctor(appointment, async_send=True):
         <html>
         <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
             <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
-                <h2 style="color: #667eea; border-bottom: 2px solid #667eea; padding-bottom: 10px;">
-                    {logo_html} New Appointment Notification
+                {logo_html}
+                
+                <h2 style="color: #667eea; margin-top: 0;">
+                    New Appointment Notification
                 </h2>
                 
                 <p>Dear Dr. {doctor_first_name},</p>
@@ -299,7 +305,7 @@ def send_appointment_confirmation_to_patient(appointment, async_send=True):
         patient_name = appointment.patient.user.first_name
         doctor_name = appointment.doctor.full_name if hasattr(appointment.doctor, 'full_name') else f"Dr. {appointment.doctor.user.first_name} {appointment.doctor.user.last_name}"
         
-        # Get logo for email
+        # Get logo for email header
         logo_html = get_logo_html("Isercom Clinic")
         
         # Email subject
@@ -310,8 +316,10 @@ def send_appointment_confirmation_to_patient(appointment, async_send=True):
         <html>
         <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
             <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
-                <h2 style="color: #667eea; border-bottom: 2px solid #667eea; padding-bottom: 10px;">
-                    {logo_html} Appointment Confirmation
+                {logo_html}
+                
+                <h2 style="color: #667eea; margin-top: 0;">
+                    Appointment Confirmation
                 </h2>
                 
                 <p>Dear {patient_name},</p>
