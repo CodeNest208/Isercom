@@ -9,12 +9,12 @@ body {
   color: #333;
   background-color: #f6f6f6;
   line-height: 1.6;
-  padding-top: 120px; /* 40px for top-bar + 80px for navbar */
+  padding-top: 80px; /* Reduced gap - just navbar height */
   transition: padding-top 0.3s ease;
 }
 
 body.scrolled {
-  padding-top: 80px; /* Only navbar height when top-bar is hidden */
+  padding-top: 80px; /* Keep same height when scrolled */
 }
 
 button a{

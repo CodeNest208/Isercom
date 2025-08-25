@@ -86,7 +86,7 @@
     </section>
 
     <div class="cta">
-      <button onclick="talkToDoctor()">Talk to Doctor</button>
+      <button class="ferbtn">Talk to Doctor</button>
     </div>
   </main>
 
@@ -148,5 +148,16 @@
       </div>
     </footer>
  
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Add click event for the Talk to doctor button
+        var talkToDoctorBtn = document.querySelector('.ferbtn');
+        if (talkToDoctorBtn) {
+          talkToDoctorBtn.addEventListener('click', function() {
+            window.location.href = "./appointment_form.html";
+          });
+        }
+      });
+    </script>
 </body>
 </html>

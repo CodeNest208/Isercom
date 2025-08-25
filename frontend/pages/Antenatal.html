@@ -8,6 +8,22 @@
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/body.css">
     <script src="../js/script.js" defer></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Add click event for the Talk to doctor button (if it has .ferbtn class)
+        var talkToDoctorBtn = document.querySelector('.ferbtn');
+        if (talkToDoctorBtn) {
+          talkToDoctorBtn.addEventListener('click', function() {
+            window.location.href = "./appointment_form.html";
+          });
+        }
+      });
+
+      // Function for the Talk to Doctor button with onclick
+      function talkToDoctor() {
+        window.location.href = "./appointment_form.html";
+      }
+    </script>
     <link rel="stylesheet" href="../css/Antenatal.css">
     
     <script src="../css/Antenatal.css" defer></script>
@@ -94,7 +110,7 @@
     </section>
 
     <div class="cta">
-      <button onclick="talkToDoctor()">Talk to Doctor</button>
+      <button class="ferbtn">Talk to Doctor</button>
     </div>
   </main>
     <!-- Footer -->
