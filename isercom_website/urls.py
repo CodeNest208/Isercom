@@ -15,7 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path,include
+from django.urls import path, include, re_path
 from backend import views
 from django.contrib.auth import views as auth_views
 from django.conf import settings
@@ -32,15 +32,13 @@ urlpatterns = [
     path('login/', views.CustomLoginView.as_view(), name='login'),
     path('logout/', views.logout_view, name='logout'),
     path('', lambda request: redirect('/frontend/index.html')),
-    path('frontend/index.html', views.serve_frontend_index, name='frontend_index'),
-    
-    # Include all backend URLs (including home and static pages)
-    # path('',include('backend.urls')),
     
     # Include API URLs
     path('api/', include('backend.api_urls')),
+    
+    # Serve all frontend files with a catch-all pattern
+    re_path(r'^frontend/(?P<file_path>.*)$', views.serve_frontend_file, name='frontend_files'),
 ]
 
-# Serve static files and frontend files
+# Serve static files (for CSS, JS, images that are collected by collectstatic)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-urlpatterns += static('frontend/', document_root=BASE_DIR / 'frontend')

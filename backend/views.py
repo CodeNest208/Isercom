@@ -488,20 +488,37 @@ def faq(request):
 def gynaecology(request):
     return render(request, 'static/gynaecology.html')
 
-def serve_frontend_index(request):
-    """Serve the frontend index.html file"""
-    from django.http import FileResponse
+def serve_frontend_file(request, file_path='index.html'):
+    """Serve any file from the frontend directory"""
+    from django.http import FileResponse, Http404
     from django.conf import settings
     import os
+    import mimetypes
     
-    # Path to the frontend index.html file
-    frontend_path = os.path.join(settings.BASE_DIR, 'frontend', 'index.html')
+    # Construct the full path to the requested file
+    frontend_path = os.path.join(settings.BASE_DIR, 'frontend', file_path)
     
-    if os.path.exists(frontend_path):
-        return FileResponse(open(frontend_path, 'rb'), content_type='text/html')
+    # Security check - ensure the path is within the frontend directory
+    frontend_dir = os.path.join(settings.BASE_DIR, 'frontend')
+    if not os.path.abspath(frontend_path).startswith(os.path.abspath(frontend_dir)):
+        raise Http404("File not found")
+    
+    if os.path.exists(frontend_path) and os.path.isfile(frontend_path):
+        # Determine the content type
+        content_type, _ = mimetypes.guess_type(frontend_path)
+        if not content_type:
+            if file_path.endswith('.html'):
+                content_type = 'text/html'
+            elif file_path.endswith('.css'):
+                content_type = 'text/css'
+            elif file_path.endswith('.js'):
+                content_type = 'application/javascript'
+            else:
+                content_type = 'application/octet-stream'
+        
+        return FileResponse(open(frontend_path, 'rb'), content_type=content_type)
     else:
-        from django.http import HttpResponse
-        return HttpResponse("Frontend index.html not found", status=404)
+        raise Http404("File not found")
 
 def fertility(request):
     return render(request,'static/fertility.html')
