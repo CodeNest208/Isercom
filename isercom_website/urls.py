@@ -32,6 +32,7 @@ urlpatterns = [
     path('login/', views.CustomLoginView.as_view(), name='login'),
     path('logout/', views.logout_view, name='logout'),
     path('', lambda request: redirect('/frontend/index.html')),
+    path('frontend/index.html', views.serve_frontend_index, name='frontend_index'),
     
     # Include all backend URLs (including home and static pages)
     # path('',include('backend.urls')),

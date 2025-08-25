@@ -488,6 +488,21 @@ def faq(request):
 def gynaecology(request):
     return render(request, 'static/gynaecology.html')
 
+def serve_frontend_index(request):
+    """Serve the frontend index.html file"""
+    from django.http import FileResponse
+    from django.conf import settings
+    import os
+    
+    # Path to the frontend index.html file
+    frontend_path = os.path.join(settings.BASE_DIR, 'frontend', 'index.html')
+    
+    if os.path.exists(frontend_path):
+        return FileResponse(open(frontend_path, 'rb'), content_type='text/html')
+    else:
+        from django.http import HttpResponse
+        return HttpResponse("Frontend index.html not found", status=404)
+
 def fertility(request):
     return render(request,'static/fertility.html')
 
