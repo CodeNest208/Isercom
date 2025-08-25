@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Logout - Isercom Clinic</title>
-    <link rel="stylesheet" href="/frontend/css/login.css">
-    <link rel="stylesheet" href="/frontend/css/body.css">
-    <script src="/frontend/js/api-client.js" defer></script>
+    <link rel="stylesheet" href="../css/login.css">
+    <link rel="stylesheet" href="../css/body.css">
+    <script src="../js/api-client.js" defer></script>
 </head>
 <body>
     <div class="login-wrapper">
@@ -20,25 +20,25 @@
                 
                 <div class="logout-buttons">
                     <button type="button" class="login-btn" id="logoutBtn">Sign Out</button>
-                    <a href="/frontend/index.html" class="cancel-btn">Cancel</a>
+                    <a href="../index.html" class="cancel-btn">Cancel</a>
                 </div>
                 
                 <div class="social-text">
                     <p>Want to sign in again?</p>
-                    <a href="/frontend/pages/login.html">Sign in</a> | 
-                    <a href="/frontend/index.html">Go to Home</a>
+                    <a href="./login.html">Sign in</a> | 
+                    <a href="../index.html">Go to Home</a>
                 </div>
             </div>
         </div>
 
         <div class="logo-section">
             <div class="isercom-logo">
-                <img src="/frontend/images/logo.png" alt="Isercom Medical and Fertility Centre">
+                <img src="../images/logo.png" alt="Isercom Medical and Fertility Centre">
                 <div class="desktop-social">
                     <div class="social-text">Need help?</div>
                     <div class="social-text">
                         <p>Go back to</p>
-                        <a href="/frontend/index.html">Home</a>
+                        <a href="../index.html">Home</a>
                     </div>
                 </div>
             </div>
@@ -73,7 +73,7 @@
                         if (response.success) {
                             showMessage('Logged out successfully! Redirecting to homepage...', 'success');
                             setTimeout(() => {
-                                window.location.href = '/frontend/index.html';
+                                window.location.href = '../index.html';
                             }, 1500);
                             return;
                         } else {
@@ -99,7 +99,7 @@
                             if (data.success) {
                                 showMessage('Logged out successfully! Redirecting to homepage...', 'success');
                                 setTimeout(() => {
-                                    window.location.href = '/frontend/index.html';
+                                    window.location.href = '../index.html';
                                 }, 1500);
                                 return;
                             }
@@ -108,7 +108,7 @@
                         // If both methods fail, still redirect but show warning
                         showMessage('Session ended. Redirecting to homepage...', 'warning');
                         setTimeout(() => {
-                            window.location.href = '/frontend/index.html';
+                            window.location.href = '../index.html';
                         }, 2000);
                         
                     } catch (fallbackError) {
@@ -116,7 +116,7 @@
                         // Even if logout fails, redirect to clear session client-side
                         showMessage('Redirecting to homepage...', 'info');
                         setTimeout(() => {
-                            window.location.href = '/frontend/index.html';
+                            window.location.href = '../index.html';
                         }, 1500);
                     }
                 } finally {
