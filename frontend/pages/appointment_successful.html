@@ -70,6 +70,13 @@
             margin-bottom: 25px;
         }
 
+        .clinic-logo img {
+            height: 60px;
+            max-width: 250px;
+            object-fit: contain;
+            margin-bottom: 10px;
+        }
+
         .clinic-logo h2 {
             color: #4a5568;
             font-size: 1.5em;
@@ -169,6 +176,11 @@
                 padding: 40px 30px;
             }
             
+            .clinic-logo img {
+                height: 50px;
+                max-width: 200px;
+            }
+            
             h1 {
                 font-size: 2em;
             }
@@ -185,6 +197,11 @@
             
             .success-container {
                 padding: 30px 20px;
+            }
+            
+            .clinic-logo img {
+                height: 40px;
+                max-width: 180px;
             }
             
             h1 {
@@ -213,7 +230,9 @@
         </div>
 
         <div class="clinic-logo">
-            <h2>🏥 Isercom Clinic</h2>
+            <img src="../images/logo.png" alt="Isercom Clinic" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';">
+            <span style="display: none; font-size: 2em;">🏥</span>
+            <h2>Isercom Clinic</h2>
             <p>Professional Healthcare Services</p>
         </div>
 
