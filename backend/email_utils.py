@@ -2,16 +2,78 @@ from django.core.mail import send_mail, EmailMultiAlternatives
 from django.conf import settings
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
+from django.contrib.staticfiles import finders
+from django.contrib.staticfiles.storage import staticfiles_storage
 import logging
 import threading
 from concurrent.futures import ThreadPoolExecutor
 import time
+import base64
+import os
 
 # Set up logging for email operations
 logger = logging.getLogger(__name__)
 
 # Create a thread pool for async email sending
 email_executor = ThreadPoolExecutor(max_workers=3)
+
+def get_logo_for_email():
+    """
+    Get the Isercom logo for email embedding
+    Returns either a base64 encoded image or a static URL
+    """
+    try:
+        # Try to find the logo file
+        logo_path = finders.find('images/logo.png')
+        
+        # Handle the case where finders.find returns a list or None
+        if isinstance(logo_path, list) and logo_path:
+            logo_path = logo_path[0]
+        
+        if logo_path and isinstance(logo_path, str) and os.path.exists(logo_path):
+            # For development: embed as base64
+            if settings.DEBUG:
+                try:
+                    with open(logo_path, 'rb') as image_file:
+                        encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
+                        return f"data:image/png;base64,{encoded_string}"
+                except Exception as e:
+                    logger.warning(f"Could not encode logo as base64: {e}")
+            
+            # For production: use static URL
+            try:
+                logo_url = staticfiles_storage.url('images/logo.png')
+                # Make it absolute URL if needed
+                if logo_url.startswith('/'):
+                    # Check if we're on Render production server
+                    if (hasattr(settings, 'ALLOWED_HOSTS') and 
+                        any('isercom.onrender.com' in host or 'onrender.com' in host for host in settings.ALLOWED_HOSTS)):
+                        domain = 'https://isercom.onrender.com'
+                    else:
+                        domain = getattr(settings, 'SITE_URL', 'http://localhost:8000')
+                    logo_url = domain + logo_url
+                return logo_url
+            except Exception as e:
+                logger.warning(f"Could not get logo URL: {e}")
+        
+    except Exception as e:
+        logger.warning(f"Could not find logo file: {e}")
+    
+    # Fallback: return hospital emoji
+    return "🏥"
+
+def get_logo_html(alt_text="Isercom Clinic"):
+    """
+    Get HTML for the logo in emails
+    """
+    logo_src = get_logo_for_email()
+    
+    # If it's base64 or URL, return img tag
+    if logo_src.startswith('data:') or logo_src.startswith('http'):
+        return f'<img src="{logo_src}" alt="{alt_text}" style="height: 32px; vertical-align: middle; margin-right: 10px;">'
+    else:
+        # Fallback to emoji if logo couldn't be loaded
+        return logo_src + " "
 
 def get_email_settings():
     """Get email configuration with fallbacks"""
@@ -117,6 +179,9 @@ def send_appointment_notification_to_doctor(appointment, async_send=True):
         patient_name = appointment.patient.full_name if hasattr(appointment.patient, 'full_name') else f"{appointment.patient.user.first_name} {appointment.patient.user.last_name}"
         doctor_first_name = appointment.doctor.user.first_name
         
+        # Get logo for email
+        logo_html = get_logo_html("Isercom Clinic")
+        
         # Email subject
         subject = f'New Appointment Booked - {patient_name}'
         
@@ -126,7 +191,7 @@ def send_appointment_notification_to_doctor(appointment, async_send=True):
         <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
             <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
                 <h2 style="color: #667eea; border-bottom: 2px solid #667eea; padding-bottom: 10px;">
-                    🏥 New Appointment Notification
+                    {logo_html} New Appointment Notification
                 </h2>
                 
                 <p>Dear Dr. {doctor_first_name},</p>
@@ -234,6 +299,9 @@ def send_appointment_confirmation_to_patient(appointment, async_send=True):
         patient_name = appointment.patient.user.first_name
         doctor_name = appointment.doctor.full_name if hasattr(appointment.doctor, 'full_name') else f"Dr. {appointment.doctor.user.first_name} {appointment.doctor.user.last_name}"
         
+        # Get logo for email
+        logo_html = get_logo_html("Isercom Clinic")
+        
         # Email subject
         subject = f'Appointment Confirmation - Isercom Clinic'
         
@@ -243,7 +311,7 @@ def send_appointment_confirmation_to_patient(appointment, async_send=True):
         <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
             <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
                 <h2 style="color: #667eea; border-bottom: 2px solid #667eea; padding-bottom: 10px;">
-                    🏥 Appointment Confirmation
+                    {logo_html} Appointment Confirmation
                 </h2>
                 
                 <p>Dear {patient_name},</p>
