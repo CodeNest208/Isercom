@@ -40,8 +40,6 @@ urlpatterns = [
     path('api/', include('backend.api_urls')),
 ]
 
-# Serve static files during development
-if settings.DEBUG:
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])
-    # Serve frontend files specifically
-    urlpatterns += static('frontend/', document_root=BASE_DIR / 'frontend')
+# Serve static files and frontend files
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+urlpatterns += static('frontend/', document_root=BASE_DIR / 'frontend')

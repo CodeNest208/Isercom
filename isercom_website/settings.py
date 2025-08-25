@@ -170,13 +170,16 @@ STATICFILES_DIRS = [
     BASE_DIR / 'frontend',  # Use frontend directory for serving static files
 ]
 
-# Static files configuration for Heroku
+# Static files configuration for production
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# Use whitenoise storage only when whitenoise is available
+# Use whitenoise storage for production static files
 try:
     import whitenoise
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+    # Add additional directories for whitenoise to serve
+    WHITENOISE_USE_FINDERS = True
+    WHITENOISE_AUTOREFRESH = True
 except ImportError:
     pass
 
