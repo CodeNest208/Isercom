@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Doctor Dashboard - Isercom Clinic</title>
-    <link rel="stylesheet" href="/frontend/css/doctor_home.css"/>
+    <link rel="stylesheet" href="../css/doctor_home.css"/>
 </head>
 <body>
     <div class="container">
@@ -13,7 +13,7 @@
                 <h1>🏥 Isercom Clinic</h1>
                 <p>Doctor Portal</p>
             </div>
-            <a href="/frontend/pages/logout.html" class="logout-btn">🚪 Sign Out</a>
+            <a href="./logout.html" class="logout-btn">🚪 Sign Out</a>
         </div>
 
         <div class="welcome-card">
@@ -47,8 +47,8 @@
         <div class="action-section">
             <h3>Quick Actions</h3>
             <div class="action-buttons">
-                <a href="/frontend/pages/doctor_schedule.html" class="btn btn-primary">📅 View My Schedule</a>
-                <a href="/frontend/pages/doctor_appointments.html" class="btn">📋 All Appointments</a>
+                <a href="./doctor_schedule.html" class="btn btn-primary">📅 View My Schedule</a>
+                <a href="./doctor_appointments.html" class="btn">📋 All Appointments</a>
                 <a href="/admin/" class="btn">⚙️ Admin Panel</a>
             </div>
         </div>
@@ -152,15 +152,15 @@
                     
                 } else if (authResponse.is_authenticated && authResponse.user.user_type === 'patient') {
                     // Redirect patients to home page
-                    window.location.href = '/frontend/index.html';
+                    window.location.href = '../index.html';
                 } else {
                     // Redirect unauthenticated users to login
-                    window.location.href = '/frontend/pages/login.html';
+                    window.location.href = './login.html';
                 }
             } catch (error) {
                 console.error('Error loading doctor info:', error);
                 // Redirect to login on error
-                window.location.href = '/frontend/pages/login.html';
+                window.location.href = './login.html';
             }
         });
         

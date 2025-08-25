@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Isercom Clinic</title>
-    <link rel="stylesheet" href="/frontend/css/login.css">
-    <link rel="stylesheet" href="/frontend/css/body.css">
+    <link rel="stylesheet" href="../css/login.css">
+    <link rel="stylesheet" href="../css/body.css">
 
 </head>
 <body>
     <div class="login-wrapper">
         <div class="home-button-container">
-            <a href="/frontend/index.html" class="home-btn">
+            <a href="../index.html" class="home-btn">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
                 </svg>
@@ -42,34 +42,23 @@
             </form>
             
             <div class="social-login mobile-social">
-                <div class="social-text">or Sign in with</div>
-                <div class="social-icons">
-                    <div class="social-icon google">G</div>
-                    <div class="social-icon facebook">f</div>
-                    <div class="social-icon twitter">t</div>
-                </div>
                 <div class="social-text">
                     <p>Don't have an account?</p>
-                    <a href="/frontend/pages/register.html">Sign up</a>
+                    <a href="./register.html">Sign up</a>
                 </div>
             </div>
         </div>
 
         <div class="logo-section">
             <div class="isercom-logo">
-                <img src="/frontend/images/logo.png" alt="Isercom Medical and Fertility Centre">
+                <img src="../images/logo.png" alt="Isercom Medical and Fertility Centre">
                 <div class="desktop-social">
-                    <div class="social-text">or sign in with</div>
-                    <div class="social-icons">
-                        <div class="social-icon google">G</div>
-                        <div class="social-icon facebook">f</div>
-                        <div class="social-icon twitter">t</div>
-                    </div>
                     <div class="social-text">
                         <p>Don't have an account?</p>
-                        <a href="/frontend/pages/register.html">Sign up</a>
+                        <a href="./register.html">Sign up</a>
                     </div>
                 </div>
+            </div>
             </div>
         </div>
     </div>
@@ -174,10 +163,10 @@
                         
                         if (userType === 'doctor') {
                             message = 'Welcome Doctor! Redirecting to your dashboard...';
-                            redirectUrl = '/frontend/pages/doctor_home.html';
+                            redirectUrl = './doctor_home.html';
                         } else if (userType === 'patient') {
                             message = 'Welcome! Redirecting to homepage...';
-                            redirectUrl = '/frontend/index.html';
+                            redirectUrl = '../index.html';
                         }
                         
                         showMessage(message, 'success');

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Schedule - Doctor Dashboard</title>
-    <link rel="stylesheet" href="/frontend/css/doctor_schedule.css">
+    <link rel="stylesheet" href="../css/doctor_schedule.css">
 </head>
 <body>
     <div class="container">
@@ -14,9 +14,9 @@
                 <p id="doctorInfo">Doctor Portal</p>
             </div>
             <div class="nav-buttons">
-                <a href="/frontend/pages/doctor_home.html" class="btn">🏠 Dashboard</a>
-                <a href="/frontend/pages/doctor_appointments.html" class="btn">📋 All Appointments</a>
-                <a href="/frontend/pages/logout.html" class="btn btn-secondary">🚪 Sign Out</a>
+                <a href="./doctor_home.html" class="btn">🏠 Dashboard</a>
+                <a href="./doctor_appointments.html" class="btn">📋 All Appointments</a>
+                <a href="./logout.html" class="btn btn-secondary">🚪 Sign Out</a>
             </div>
         </div>
 
@@ -170,7 +170,7 @@
 
                 if (authResponse.user.user_type !== 'doctor') {
                     alert('Access denied. This page is for doctors only.');
-                    window.location.href = '/frontend/index.html';
+                    window.location.href = '../index.html';
                     return;
                 }
 

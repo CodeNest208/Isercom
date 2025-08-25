@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Appointments - Doctor Dashboard</title>
-    <link rel="stylesheet" href="/frontend/css/doctor_appointment.css">
+    <link rel="stylesheet" href="../css/doctor_appointment.css">
 </head>
 <body>
     <div class="container">
@@ -14,10 +14,10 @@
                 <p id="doctorInfo">Doctor Portal</p>
             </div>
             <div class="nav-buttons">
-                <a href="/frontend/pages/doctor_home.html" class="btn">🏠 Dashboard</a>
-                <a href="/frontend/pages/doctor_schedule.html" class="btn">📅 Schedule</a>
+                <a href="./doctor_home.html" class="btn">🏠 Dashboard</a>
+                <a href="./doctor_schedule.html" class="btn">📅 Schedule</a>
                 <a href="/admin/" class="btn">⚙️ Admin</a>
-                <a href="/frontend/pages/logout.html" class="btn btn-secondary">🚪 Sign Out</a>
+                <a href="./logout.html" class="btn btn-secondary">🚪 Sign Out</a>
             </div>
         </div>
 
@@ -195,11 +195,11 @@
                 } else if (authResponse.is_authenticated && authResponse.user.user_type === 'patient') {
                     // Redirect patients
                     console.log('Patient user detected, redirecting...');
-                    window.location.href = '/frontend/index.html';
+                    window.location.href = '../index.html';
                 } else {
                     // Redirect unauthenticated users
                     console.log('User not authenticated, redirecting to login...');
-                    window.location.href = '/frontend/pages/login.html';
+                    window.location.href = './login.html';
                 }
                 
             } catch (error) {
@@ -490,7 +490,7 @@
                     <h3>❌ Error</h3>
                     <p><strong>Error:</strong> ${message}</p>
                     <p><button onclick="loadAppointments()" class="btn">🔄 Retry</button></p>
-                    <p><a href="/frontend/pages/doctor_home.html" class="btn btn-secondary">🏠 Back to Dashboard</a></p>
+                    <p><a href="./doctor_home.html" class="btn btn-secondary">🏠 Back to Dashboard</a></p>
                 </div>
             `;
         }

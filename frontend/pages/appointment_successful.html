@@ -51,7 +51,7 @@
         }
 
         .checkmark {
-            font-size: 5em;
+            font-size: 3em;
             color: #48bb78;
             margin-bottom: 20px;
             animation: checkmarkPulse 1.5s ease-in-out infinite alternate;
@@ -68,6 +68,13 @@
 
         .clinic-logo {
             margin-bottom: 25px;
+        }
+
+        .clinic-logo img {
+            height: 120px;
+            max-width: 400px;
+            object-fit: contain;
+            margin-bottom: 10px;
         }
 
         .clinic-logo h2 {
@@ -169,12 +176,17 @@
                 padding: 40px 30px;
             }
             
+            .clinic-logo img {
+                height: 90px;
+                max-width: 320px;
+            }
+            
             h1 {
                 font-size: 2em;
             }
             
             .checkmark {
-                font-size: 4em;
+                font-size: 2.5em;
             }
         }
 
@@ -187,12 +199,17 @@
                 padding: 30px 20px;
             }
             
+            .clinic-logo img {
+                height: 70px;
+                max-width: 280px;
+            }
+            
             h1 {
                 font-size: 1.8em;
             }
             
             .checkmark {
-                font-size: 3.5em;
+                font-size: 2em;
             }
             
             .action-buttons {
@@ -213,7 +230,9 @@
         </div>
 
         <div class="clinic-logo">
-            <h2>🏥 Isercom Clinic</h2>
+            <img src="../images/logo.png" alt="Isercom Clinic" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';">
+            <span style="display: none; font-size: 2em;">🏥</span>
+            <h2>Isercom Clinic</h2>
             <p>Professional Healthcare Services</p>
         </div>
 
@@ -232,9 +251,9 @@
         </div>
 
         <div class="action-buttons">
-            <a href="/frontend/pages/my_appointments.html" class="btn btn-primary">📅 View My Appointments</a>
-            <a href="/frontend/pages/appointment_form.html" class="btn btn-secondary">📅 Book Another</a>
-            <a href="/frontend/index.html" class="btn btn-secondary">🏠 Go Home</a>
+            <a href="./my_appointments.html" class="btn btn-primary">📅 View My Appointments</a>
+            <a href="./appointment_form.html" class="btn btn-secondary">📅 Book Another</a>
+            <a href="../index.html" class="btn btn-secondary">🏠 Go Home</a>
         </div>
 
         <div class="contact-info">
