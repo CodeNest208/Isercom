@@ -133,6 +133,46 @@
   box-shadow: 0 4px 12px rgba(4, 51, 42, 0.3);
 }
 
+/* Dropdown Menu Styles for Desktop Only (not hamburger menu) */
+@media (min-width: 769px) {
+  .dropdown-menu {
+    display: none;
+    position: absolute;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    z-index: 1000;
+    list-style: none;
+    margin: 0;
+    padding: 15px 0; /* Increased padding for more space */
+    border-radius: 8px;
+    min-width: 280px;
+  }
+
+  .dropdown-menu li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .dropdown-menu li a {
+    display: block;
+    padding: 12px 20px; /* Increased padding for more space between items */
+    color: #333;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border-bottom: none;
+  }
+
+  .dropdown-menu li a:hover {
+    background-color: #f8f9fa;
+    color: #04332A;
+    padding-left: 25px; /* Slight indent on hover */
+  }
+
+  .dropdown-menu li a::after {
+    display: none; /* Remove the underline effect for dropdown items */
+  }
+}
+
 /* Hamburger */
 .hamburger {
   display: none;
@@ -153,11 +193,11 @@
 /* Responsive Navbar */
 @media (max-width: 768px) {
   body {
-    padding-top: 100px; /* 40px for top-bar + 60px for mobile navbar */
+    padding-top: 60px; /* Reduced gap - just mobile navbar height */
   }
 
   body.scrolled {
-    padding-top: 60px; /* Only mobile navbar height when top-bar is hidden */
+    padding-top: 60px; /* Keep same height when scrolled */
   }
 
   .navbar {
@@ -204,6 +244,23 @@
     width: 100%;
     text-align: center;
     height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Center nav-dropdown (Services) in mobile */
+  .nav-links .nav-dropdown {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .nav-links .nav-dropdown a {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
   }
   
   .nav-links a:last-child {

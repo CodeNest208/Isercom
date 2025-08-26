@@ -12,6 +12,14 @@
     <script src="../js/script.js" defer></script>
     <script>
       document.addEventListener('DOMContentLoaded', function() {
+        // Add click event for the Talk to doctor button
+        var talkToDoctorBtn = document.querySelector('.ferbtn');
+        if (talkToDoctorBtn) {
+          talkToDoctorBtn.addEventListener('click', function() {
+            window.location.href = "./appointment_form.html";
+          });
+        }
+
         // Scroll animation observer
         const observerOptions = {
           threshold: 0.1,
@@ -65,7 +73,7 @@
     </header>
     <main class="fertility-page">
        <section class="section" style="  background-image: url('../images/gynaecology/gyna.webp');">
-        <h1 style="color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">Obsterics And Gynaecological Services</h1>
+        <h1 style="color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">Obstetrics And Gynaecological Services</h1>
        </section>
        
        <div class="content-card">
@@ -95,7 +103,7 @@
         </p>
        </div>
        <div class="ferimg">
-        <img src="../images/gynaecology/gyna2.webp" alt="gyna">
+        <img src="../images/gynaecology/gyna2.png" alt="gyna">
        </div>
        <div style="margin: 20px;">
         <p>
