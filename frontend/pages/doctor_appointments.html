@@ -294,6 +294,27 @@
                             ${appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1)}
                         </span>
                     </div>
+
+                    <div class="action-buttons">
+                        <h6>Change Status:</h6>
+                        <div class="status-actions">
+                            ${appointment.status !== 'confirmed' ? `
+                                <button class="action-btn btn-confirm" onclick="updateAppointmentStatus(${appointment.id}, 'confirmed')">
+                                    ✅ Confirm
+                                </button>
+                            ` : ''}
+                            ${appointment.status !== 'completed' ? `
+                                <button class="action-btn btn-complete" onclick="updateAppointmentStatus(${appointment.id}, 'completed')">
+                                    ✅ Complete
+                                </button>
+                            ` : ''}
+                            ${appointment.status !== 'cancelled' ? `
+                                <button class="action-btn btn-cancel" onclick="updateAppointmentStatus(${appointment.id}, 'cancelled')">
+                                    ❌ Cancel
+                                </button>
+                            ` : ''}
+                        </div>
+                    </div>
                     
                     ${appointment.notes ? `
                     <div class="notes-section">
