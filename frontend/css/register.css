@@ -131,6 +131,7 @@ label {
 /* Consistent input field styling */
 input[type="text"],
 input[type="email"],
+input[type="tel"],
 input[type="password"],
 input[type="date"] {
     width: 100%;
@@ -147,6 +148,7 @@ input[type="date"] {
 
 input[type="text"]:focus,
 input[type="email"]:focus,
+input[type="tel"]:focus,
 input[type="password"]:focus,
 input[type="date"]:focus {
     outline: none;
@@ -331,6 +333,170 @@ input::placeholder {
     color: #dc3545;
     font-size: 13px;
     margin-top: 6px;
+    display: none;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+/* Error state for form fields */
+.form-group input.error,
+.form-group select.error {
+    border-color: #dc3545 !important;
+    background-color: #fff5f5;
+    box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.1);
+}
+
+.form-group input.error:focus,
+.form-group select.error:focus {
+    border-color: #dc3545;
+    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.15);
+}
+
+.form-group label {
+    position: relative;
+}
+
+.form-group input.error + .field-error::before {
+    content: "⚠️ ";
+    margin-right: 4px;
+}
+
+/* Success state for valid fields */
+.form-group input.valid,
+.form-group select.valid {
+    border-color: #28a745;
+    background-color: #f8fff8;
+}
+
+.form-group input.valid:focus,
+.form-group select.valid:focus {
+    border-color: #28a745;
+    box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.15);
+}
+
+/* Password strength indicator */
+.password-strength {
+    margin-top: 8px;
+}
+
+.strength-bar {
+    width: 100%;
+    height: 6px;
+    background-color: #e9ecef;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+
+.strength-fill {
+    height: 100%;
+    width: 0%;
+    transition: all 0.3s ease;
+    border-radius: 3px;
+}
+
+.strength-fill.weak {
+    background-color: #dc3545;
+    width: 25%;
+}
+
+.strength-fill.fair {
+    background-color: #fd7e14;
+    width: 50%;
+}
+
+.strength-fill.good {
+    background-color: #ffc107;
+    width: 75%;
+}
+
+.strength-fill.strong {
+    background-color: #28a745;
+    width: 100%;
+}
+
+.strength-text {
+    font-size: 12px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.strength-text.weak {
+    color: #dc3545;
+}
+
+.strength-text.fair {
+    color: #fd7e14;
+}
+
+.strength-text.good {
+    color: #ffc107;
+}
+
+.strength-text.strong {
+    color: #28a745;
+}
+
+/* Password requirements */
+.password-requirements {
+    margin-top: 8px;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    border-left: 3px solid #04332A;
+}
+
+.password-requirements small {
+    font-weight: 500;
+    color: #495057;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.password-requirements ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.password-requirements li {
+    font-size: 12px;
+    padding: 2px 0;
+    color: #6c757d;
+    position: relative;
+    padding-left: 20px;
+}
+
+.password-requirements li::before {
+    content: "✗";
+    position: absolute;
+    left: 0;
+    color: #dc3545;
+    font-weight: bold;
+}
+
+.password-requirements li.valid::before {
+    content: "✓";
+    color: #28a745;
+}
+
+.password-requirements li.valid {
+    color: #28a745;
+}
+
+/* Form help text */
+.form-help {
+    display: block;
+    margin-top: 5px;
+    font-size: 12px;
+    color: #6c757d;
+    font-style: italic;
+}
+
+/* Placeholder styling */
+input::placeholder {
+    color: #9ca3af;
+    font-style: italic;
 }
 
 .note {
@@ -494,6 +660,7 @@ input::placeholder {
     /* Make fields and button wider on mobile */
     input[type="text"],
     input[type="email"],
+    input[type="tel"],
     input[type="password"],
     input[type="date"] {
         width: 100%;
@@ -617,6 +784,7 @@ input::placeholder {
     /* Even wider fields and button for small phones */
     input[type="text"],
     input[type="email"],
+    input[type="tel"],
     input[type="password"],
     input[type="date"] {
         padding: 18px 20px;
@@ -653,6 +821,8 @@ input::placeholder {
 /* Message styling to match the page design */
 .message-container {
     margin: 15px 0;
+    display: block;
+    width: 100%;
 }
 
 .success-message, .error-message {

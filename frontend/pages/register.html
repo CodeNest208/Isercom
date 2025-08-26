@@ -28,48 +28,72 @@
                 <!-- {# First Name Field #} -->
                 <div class="form-group">
                     <label for="first_name">First Name:</label>
-                    <input type="text" id="first_name" name="first_name" required>
-                    <div class="field-error" id="firstNameError"></div>
+                    <input type="text" id="first_name" name="first_name" required 
+                           placeholder="Enter your first name" 
+                           autocomplete="given-name">
+                    <div class="field-error" id="first_nameError"></div>
                 </div>
 
                 <!-- {# Last Name Field #} -->
                 <div class="form-group">
                     <label for="last_name">Last Name:</label>
-                    <input type="text" id="last_name" name="last_name" required>
-                    <div class="field-error" id="lastNameError"></div>
+                    <input type="text" id="last_name" name="last_name" required 
+                           placeholder="Enter your last name" 
+                           autocomplete="family-name">
+                    <div class="field-error" id="last_nameError"></div>
                 </div>
 
                 <!-- {# Email Field #} -->
                 <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" required>
+                    <label for="email">Email Address:</label>
+                    <input type="email" id="email" name="email" required 
+                           placeholder="Enter your email address" 
+                           autocomplete="email">
                     <div class="field-error" id="emailError"></div>
                 </div>
 
                 <!-- {# Phone Field #} -->
                 <div class="form-group">
-                    <label for="phone">Phone:</label>
-                    <input type="text" id="phone" name="phone" required>
+                    <label for="phone">Phone Number:</label>
+                    <input type="tel" id="phone" name="phone" required 
+                           placeholder="Enter your phone number (e.g., +1234567890)" 
+                           autocomplete="tel">
                     <div class="field-error" id="phoneError"></div>
                 </div>
 
                 <!-- {# Date of birth Field #} -->
                 <div class="form-group">
                     <label for="date_of_birth">Date of Birth:</label>
-                    <input type="date" id="date_of_birth" name="date_of_birth" required>
-                    <div class="field-error" id="dateOfBirthError"></div>
+                    <input type="date" id="date_of_birth" name="date_of_birth" required 
+                           autocomplete="bday">
+                    <div class="field-error" id="date_of_birthError"></div>
+                    <small class="form-help">You must be at least 13 years old to register</small>
                 </div>
 
                 <!-- {# Password Fields #} -->
                 <div class="form-group">
                     <label for="password1">Password:</label>
                     <input type="password" id="password1" name="password1" required>
+                    <div class="password-strength" id="passwordStrength" style="display: none;">
+                        <div class="strength-bar">
+                            <div class="strength-fill" id="strengthFill"></div>
+                        </div>
+                        <div class="strength-text" id="strengthText"></div>
+                    </div>
                     <div class="field-error" id="password1Error"></div>
+                    <div class="password-requirements">
+                        <small>Password must contain:</small>
+                        <ul>
+                            <li id="req-length">At least 8 characters</li>
+                        </ul>
+                    </div>
                 </div>
 
                 <div class="form-group">
                     <label for="password2">Confirm Password:</label>
-                    <input type="password" id="password2" name="password2" required>
+                    <input type="password" id="password2" name="password2" required 
+                           placeholder="Re-enter your password" 
+                           autocomplete="new-password">
                     <div class="field-error" id="password2Error"></div>
                 </div>
 
@@ -82,7 +106,7 @@
                             Do you agree with the <a href="../pages/terms.html" target="_blank">terms and conditions</a>?
                         </span>
                     </label>
-                    <div class="field-error" id="termsError"></div>
+                    <div class="field-error" id="terms_agreementError"></div>
                 </div>
 
                 <button type="submit" class="login-btn">Create Account</button>
@@ -117,19 +141,352 @@
         document.addEventListener('DOMContentLoaded', function() {
             const registerForm = document.getElementById('registerForm');
             
-            registerForm.addEventListener('submit', async function(e) {
-                e.preventDefault();
+            // Validation functions
+            function validateField(fieldName, value) {
+                const errors = [];
                 
-                // Clear previous errors
+                switch(fieldName) {
+                    case 'first_name':
+                        if (!value.trim()) {
+                            errors.push('First name cannot be empty');
+                        } else if (value.trim().length < 2) {
+                            errors.push(`First name is too short (${value.trim().length} character${value.trim().length === 1 ? '' : 's'}). Please enter at least 2 characters`);
+                        } else if (!/^[a-zA-Z\s'-]+$/.test(value.trim())) {
+                            const invalidChars = value.trim().replace(/[a-zA-Z\s'-]/g, '');
+                            errors.push(`First name contains invalid characters: "${invalidChars}". Only letters, spaces, hyphens (-), and apostrophes (') are allowed`);
+                        }
+                        break;
+                        
+                    case 'last_name':
+                        if (!value.trim()) {
+                            errors.push('Last name cannot be empty');
+                        } else if (value.trim().length < 2) {
+                            errors.push(`Last name is too short (${value.trim().length} character${value.trim().length === 1 ? '' : 's'}). Please enter at least 2 characters`);
+                        } else if (!/^[a-zA-Z\s'-]+$/.test(value.trim())) {
+                            const invalidChars = value.trim().replace(/[a-zA-Z\s'-]/g, '');
+                            errors.push(`Last name contains invalid characters: "${invalidChars}". Only letters, spaces, hyphens (-), and apostrophes (') are allowed`);
+                        }
+                        break;
+                        
+                    case 'email':
+                        if (!value.trim()) {
+                            errors.push('Email address cannot be empty');
+                        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim())) {
+                            if (!value.includes('@')) {
+                                errors.push('Email address is missing the @ symbol. Example: user@example.com');
+                            } else if (!value.includes('.')) {
+                                errors.push('Email address is missing a domain extension. Example: user@example.com');
+                            } else if (value.trim().startsWith('@')) {
+                                errors.push('Email address cannot start with @. Please enter the username before @');
+                            } else if (value.trim().endsWith('@')) {
+                                errors.push('Email address is incomplete. Please add the domain after @. Example: user@example.com');
+                            } else if (value.trim().includes('..')) {
+                                errors.push('Email address cannot contain consecutive dots (..)');
+                            } else if (value.trim().includes(' ')) {
+                                errors.push('Email address cannot contain spaces');
+                            } else {
+                                errors.push(`"${value.trim()}" is not a valid email format. Please use format: username@domain.com`);
+                            }
+                        } else {
+                            // Email format is valid, add note about duplicate checking
+                            // Note: Server-side validation will check for existing accounts
+                        }
+                        break;
+                        
+                    case 'phone':
+                        if (!value.trim()) {
+                            errors.push('Phone number cannot be empty');
+                        } else if (!/^[\+]?[\d\s\-\(\)]+$/.test(value.trim())) {
+                            const invalidChars = value.trim().replace(/[\+\d\s\-\(\)]/g, '');
+                            errors.push(`Phone number contains invalid characters: "${invalidChars}". Only numbers, spaces, dashes (-), parentheses (), and plus sign (+) are allowed`);
+                        } else {
+                            const digitCount = value.replace(/[\D]/g, '').length;
+                            if (digitCount < 10) {
+                                errors.push(`Phone number is too short (${digitCount} digits). Please enter at least 10 digits. Example: +1234567890 or (123) 456-7890`);
+                            }
+                        }
+                        break;
+                        
+                    case 'date_of_birth':
+                        if (!value) {
+                            errors.push('Date of birth is required. Please select your birth date');
+                        } else {
+                            const birthDate = new Date(value);
+                            const today = new Date();
+                            let age = today.getFullYear() - birthDate.getFullYear();
+                            const monthDiff = today.getMonth() - birthDate.getMonth();
+                            
+                            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                                age--;
+                            }
+                            
+                            if (birthDate > today) {
+                                const futureDays = Math.ceil((birthDate - today) / (1000 * 60 * 60 * 24));
+                                errors.push(`Date of birth cannot be in the future (${futureDays} day${futureDays === 1 ? '' : 's'} from now). Please select a past date`);
+                            } else if (age < 13) {
+                                errors.push(`You must be at least 13 years old to register. Based on the date you entered, you are ${age} years old`);
+                            } else if (age > 120) {
+                                errors.push(`The date you entered would make you ${age} years old. Please check and enter a valid birth date`);
+                            }
+                        }
+                        break;
+                        
+                    case 'password1':
+                        if (!value) {
+                            errors.push('Password cannot be empty');
+                        } else if (value.length < 8) {
+                            errors.push(`Password is too short (${value.length} character${value.length === 1 ? '' : 's'}). Please enter at least 8 characters`);
+                        }
+                        break;
+                        
+                    case 'password2':
+                        const password1 = document.getElementById('password1').value;
+                        if (!value) {
+                            errors.push('Please confirm your password by typing it again');
+                        } else if (value !== password1) {
+                            if (password1.length === 0) {
+                                errors.push('Please enter your password first, then confirm it here');
+                            } else {
+                                errors.push('The passwords do not match. Please make sure both password fields contain exactly the same text');
+                            }
+                        }
+                        break;
+                        
+                    case 'terms_agreement':
+                        if (!value) {
+                            errors.push('You must read and agree to the terms and conditions to create an account');
+                        }
+                        break;
+                }
+                
+                return errors;
+            }
+            
+            // Real-time validation setup
+            function setupFieldValidation() {
+                const fields = ['first_name', 'last_name', 'email', 'phone', 'date_of_birth', 'password1', 'password2'];
+                
+                fields.forEach(fieldName => {
+                    const field = document.getElementById(fieldName);
+                    const errorElement = document.getElementById(fieldName + 'Error');
+                    
+                    field.addEventListener('blur', function() {
+                        const errors = validateField(fieldName, field.value);
+                        errorElement.textContent = errors.join('. ');
+                        
+                        if (errors.length > 0) {
+                            field.classList.add('error');
+                            field.classList.remove('valid');
+                            errorElement.style.display = 'block';
+                        } else {
+                            field.classList.remove('error');
+                            field.classList.add('valid');
+                            errorElement.style.display = 'none';
+                        }
+                    });
+                    
+                    field.addEventListener('input', function() {
+                        if (field.classList.contains('error')) {
+                            const errors = validateField(fieldName, field.value);
+                            if (errors.length === 0) {
+                                field.classList.remove('error');
+                                field.classList.add('valid');
+                                errorElement.style.display = 'none';
+                                errorElement.textContent = '';
+                            }
+                        }
+                    });
+                });
+                
+                // Special handling for password strength
+                const password1Field = document.getElementById('password1');
+                const strengthIndicator = document.getElementById('passwordStrength');
+                const strengthFill = document.getElementById('strengthFill');
+                const strengthText = document.getElementById('strengthText');
+                
+                function updatePasswordStrength(password) {
+                    if (!password) {
+                        strengthIndicator.style.display = 'none';
+                        updatePasswordRequirements(password);
+                        return;
+                    }
+                    
+                    strengthIndicator.style.display = 'block';
+                    
+                    // Simplified strength calculation based only on length
+                    let strengthLevel = 'weak';
+                    let strengthClass = 'weak';
+                    
+                    if (password.length >= 8 && password.length < 12) {
+                        strengthLevel = 'good';
+                        strengthClass = 'good';
+                    } else if (password.length >= 12) {
+                        strengthLevel = 'strong';
+                        strengthClass = 'strong';
+                    }
+                    
+                    // Update strength bar and text
+                    strengthFill.className = 'strength-fill';
+                    strengthText.className = 'strength-text';
+                    
+                    strengthFill.classList.add(strengthClass);
+                    strengthText.classList.add(strengthClass);
+                    strengthText.textContent = strengthLevel.charAt(0).toUpperCase() + strengthLevel.slice(1);
+                    
+                    updatePasswordRequirements(password);
+                }
+                
+                function updatePasswordRequirements(password) {
+                    const requirements = {
+                        'req-length': password.length >= 8
+                    };
+                    
+                    Object.keys(requirements).forEach(reqId => {
+                        const element = document.getElementById(reqId);
+                        if (requirements[reqId]) {
+                            element.classList.add('valid');
+                        } else {
+                            element.classList.remove('valid');
+                        }
+                    });
+                }
+                
+                password1Field.addEventListener('input', function() {
+                    updatePasswordStrength(password1Field.value);
+                });
+                
+                // Special handling for terms checkbox
+                const termsCheckbox = document.getElementById('terms_agreement');
+                const termsError = document.getElementById('terms_agreementError');
+                
+                termsCheckbox.addEventListener('change', function() {
+                    if (!termsCheckbox.checked) {
+                        termsError.textContent = 'You must agree to the terms and conditions';
+                        termsError.style.display = 'block';
+                    } else {
+                        termsError.textContent = '';
+                        termsError.style.display = 'none';
+                    }
+                });
+            }
+            
+            // Helper function to detect email conflict errors
+            function isEmailConflictError(errorText) {
+                const conflictKeywords = ['already exists', 'duplicate', 'user with this email', 'email already registered', 'account already exists'];
+                return conflictKeywords.some(keyword => errorText.toLowerCase().includes(keyword));
+            }
+            
+            // Helper function to show email conflict message
+            function showEmailConflictMessage(email) {
+                const message = `🚫 Account Already Exists! The email "${email}" is already registered. <a href="./login.html" style="color: #fff; text-decoration: underline; font-weight: bold;">Click here to sign in instead</a>`;
+                showFormMessage(message, 'error');
+            }
+            
+            // Clear all errors
+            function clearAllErrors() {
                 const errorElements = document.querySelectorAll('.field-error');
-                errorElements.forEach(el => el.textContent = '');
+                errorElements.forEach(el => {
+                    el.textContent = '';
+                    el.style.display = 'none';
+                });
                 
-                // Get form data
+                const fields = document.querySelectorAll('input');
+                fields.forEach(field => field.classList.remove('error'));
+                
+                const messageContainer = document.getElementById('messageContainer');
+                if (messageContainer) {
+                    messageContainer.innerHTML = '';
+                }
+            }
+            
+            // Local message display function for the registration form
+            function showFormMessage(message, type = 'error') {
+                console.log('showFormMessage called with:', message, type);
+                const messageContainer = document.getElementById('messageContainer');
+                console.log('messageContainer found:', messageContainer);
+                
+                if (messageContainer) {
+                    const messageClass = type === 'success' ? 'success-message' : 'error-message';
+                    const icon = type === 'success' ? '✅' : '❌';
+                    const messageHTML = `<div class="${messageClass}">${icon} ${message}</div>`;
+                    
+                    console.log('Setting innerHTML to:', messageHTML);
+                    messageContainer.innerHTML = messageHTML;
+                    messageContainer.style.display = 'block';
+                    messageContainer.style.visibility = 'visible';
+                    
+                    // Scroll to show the message
+                    messageContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    
+                    console.log(`Form message displayed: ${type} - ${message}`);
+                    console.log('messageContainer after update:', messageContainer.innerHTML);
+                } else {
+                    console.error('messageContainer not found!');
+                }
+            }
+            
+            // Validate all fields
+            function validateAllFields() {
+                console.log('validateAllFields called');
+                let isValid = true;
                 const formData = {
                     first_name: document.getElementById('first_name').value,
                     last_name: document.getElementById('last_name').value,
                     email: document.getElementById('email').value,
                     phone: document.getElementById('phone').value,
+                    date_of_birth: document.getElementById('date_of_birth').value,
+                    password1: document.getElementById('password1').value,
+                    password2: document.getElementById('password2').value,
+                    terms_agreement: document.getElementById('terms_agreement').checked
+                };
+                
+                console.log('Form data:', formData);
+                
+                Object.keys(formData).forEach(fieldName => {
+                    const errors = validateField(fieldName, formData[fieldName]);
+                    const errorElement = document.getElementById(fieldName + 'Error');
+                    const field = document.getElementById(fieldName);
+                    
+                    console.log(`Field ${fieldName}: errors =`, errors);
+                    
+                    if (errors.length > 0) {
+                        isValid = false;
+                        errorElement.textContent = errors.join('. ');
+                        errorElement.style.display = 'block';
+                        if (field) field.classList.add('error');
+                        console.log(`Field ${fieldName} has errors, marked as invalid`);
+                    }
+                });
+                
+                console.log('Validation result:', isValid);
+                return isValid;
+            }
+            
+            // Initialize field validation
+            setupFieldValidation();
+            
+            registerForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                // Clear previous errors
+                clearAllErrors();
+                
+                // Validate all fields first
+                if (!validateAllFields()) {
+                    console.log('Validation failed, showing error message...');
+                    
+                    // Use the local form message function
+                    showFormMessage('Please fix the errors above before submitting', 'error');
+                    
+                    return;
+                }
+                
+                // Get form data
+                const formData = {
+                    first_name: document.getElementById('first_name').value.trim(),
+                    last_name: document.getElementById('last_name').value.trim(),
+                    email: document.getElementById('email').value.trim(),
+                    phone: document.getElementById('phone').value.trim(),
                     date_of_birth: document.getElementById('date_of_birth').value,
                     password1: document.getElementById('password1').value,
                     password2: document.getElementById('password2').value,
@@ -155,51 +512,111 @@
                             successMessage = `✅ Welcome to iSercom Clinic${response.user && response.user.first_name ? ', ' + response.user.first_name : ''}! Your account has been created successfully. You will be redirected to complete your sign-in.`;
                         }
                         
-                        // Show message both in the form and as a notification
-                        const messageContainer = document.getElementById('messageContainer');
-                        if (messageContainer) {
-                            messageContainer.innerHTML = `<div class="success-message">${successMessage}</div>`;
-                        }
-                        window.showMessage(successMessage, 'success');
+                        // Show success message
+                        showFormMessage(successMessage, 'success');
                         
                         setTimeout(() => {
                             window.location.href = '/';
                         }, 2500);
                     } else {
-                        // Display field-specific errors
+                        // Display field-specific errors from server
                         if (response.errors) {
+                            let hasFieldErrors = false;
+                            
                             Object.keys(response.errors).forEach(field => {
-                                const errorElement = document.getElementById(field + 'Error');
-                                if (errorElement) {
-                                    errorElement.textContent = response.errors[field].join(', ');
+                                if (field !== 'non_field_errors') {
+                                    hasFieldErrors = true;
+                                    const errorElement = document.getElementById(field + 'Error');
+                                    const fieldElement = document.getElementById(field);
+                                    
+                                    if (errorElement) {
+                                        const serverErrors = Array.isArray(response.errors[field]) 
+                                            ? response.errors[field] 
+                                            : [response.errors[field]];
+                                        
+                                        // Enhance common server error messages
+                                        const enhancedErrors = serverErrors.map(error => {
+                                            if (isEmailConflictError(error)) {
+                                                if (field === 'email') {
+                                                    const email = document.getElementById('email').value;
+                                                    return `❌ An account with email "${email}" already exists. Please <a href="./login.html" style="color: #007bff; text-decoration: underline; font-weight: bold;">sign in here</a> or use a different email address`;
+                                                }
+                                                return `❌ This ${field.replace('_', ' ')} is already taken. Please choose a different one`;
+                                            }
+                                            if (error.toLowerCase().includes('invalid')) {
+                                                return `The ${field.replace('_', ' ')} format is invalid. ${error}`;
+                                            }
+                                            if (error.toLowerCase().includes('required')) {
+                                                return `${field.replace('_', ' ').charAt(0).toUpperCase() + field.replace('_', ' ').slice(1)} is required and cannot be left empty`;
+                                            }
+                                            if (error.toLowerCase().includes('too short')) {
+                                                return `${field.replace('_', ' ').charAt(0).toUpperCase() + field.replace('_', ' ').slice(1)} is too short. ${error}`;
+                                            }
+                                            if (error.toLowerCase().includes('too long')) {
+                                                return `${field.replace('_', ' ').charAt(0).toUpperCase() + field.replace('_', ' ').slice(1)} is too long. ${error}`;
+                                            }
+                                            return error;
+                                        });
+                                        
+                                        errorElement.innerHTML = enhancedErrors.join('. ');
+                                        errorElement.style.display = 'block';
+                                    }
+                                    
+                                    if (fieldElement) {
+                                        fieldElement.classList.add('error');
+                                    }
                                 }
                             });
                             
+                            // Handle general errors
                             if (response.errors.non_field_errors) {
-                                const errorMessage = response.errors.non_field_errors.join(', ');
-                                const messageContainer = document.getElementById('messageContainer');
-                                if (messageContainer) {
-                                    messageContainer.innerHTML = `<div class="error-message">${errorMessage}</div>`;
+                                const errorMessage = Array.isArray(response.errors.non_field_errors)
+                                    ? response.errors.non_field_errors.join('. ')
+                                    : response.errors.non_field_errors;
+                                    
+                                const enhancedMessage = errorMessage.toLowerCase().includes('rate limit') 
+                                    ? '⏱️ Too many registration attempts. Please wait a few minutes before trying again'
+                                    : errorMessage.toLowerCase().includes('server error')
+                                    ? '🔧 Our server is experiencing issues. Please try again in a few minutes'
+                                    : isEmailConflictError(errorMessage)
+                                    ? `🚫 Email Already Registered! An account with this email already exists. <a href="./login.html" style="color: #fff; text-decoration: underline; font-weight: bold;">Click here to sign in</a>`
+                                    : `❌ ${errorMessage}`;
+                                    
+                                showFormMessage(enhancedMessage, 'error');
+                            } else if (hasFieldErrors) {
+                                // Check if the error is specifically about email already existing
+                                const emailField = document.getElementById('email');
+                                const emailError = document.getElementById('emailError');
+                                
+                                if (emailError && isEmailConflictError(emailError.innerHTML)) {
+                                    showEmailConflictMessage(emailField.value);
+                                } else {
+                                    showFormMessage('Please fix the errors highlighted in red below', 'error');
                                 }
-                                window.showMessage(errorMessage, 'error');
                             }
                         } else {
-                            const errorMessage = response.message || 'Registration failed';
-                            const messageContainer = document.getElementById('messageContainer');
-                            if (messageContainer) {
-                                messageContainer.innerHTML = `<div class="error-message">${errorMessage}</div>`;
+                            const errorMessage = response.message || 'Registration failed for an unknown reason. Please try again or contact support if the problem continues.';
+                            
+                            // Check if the general error message indicates email conflict
+                            if (isEmailConflictError(errorMessage)) {
+                                const emailField = document.getElementById('email');
+                                showEmailConflictMessage(emailField.value);
+                            } else {
+                                showFormMessage(errorMessage, 'error');
                             }
-                            window.showMessage(errorMessage, 'error');
                         }
                     }
                 } catch (error) {
                     console.error('Registration error:', error);
-                    const errorMessage = 'Network error. Please check your connection and try again.';
-                    const messageContainer = document.getElementById('messageContainer');
-                    if (messageContainer) {
-                        messageContainer.innerHTML = `<div class="error-message">${errorMessage}</div>`;
+                    let errorMessage = '🌐 Network error. Please check your connection and try again.';
+                    
+                    if (error.message && error.message.includes('fetch')) {
+                        errorMessage = '🌐 Unable to connect to server. Please check your internet connection.';
+                    } else if (error.message) {
+                        errorMessage = `❌ ${error.message}`;
                     }
-                    window.showMessage(errorMessage, 'error');
+                    
+                    showFormMessage(errorMessage, 'error');
                 } finally {
                     // Re-enable submit button
                     submitBtn.textContent = originalText;

@@ -64,6 +64,20 @@ class APIClient {
             const response = await fetch(url, finalOptions);
             console.log(`Response status: ${response.status}`);
             
+            // For client errors (400-499), try to parse JSON response first
+            if (response.status >= 400 && response.status < 500) {
+                try {
+                    const result = await response.json();
+                    console.log('Client error response data:', result);
+                    return result; // Return the error data for handling
+                } catch (jsonError) {
+                    console.error('Failed to parse error response as JSON:', jsonError);
+                    const errorText = await response.text();
+                    console.error(`HTTP error! status: ${response.status}, body: ${errorText}`);
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+            }
+            
             if (!response.ok) {
                 const errorText = await response.text();
                 console.error(`HTTP error! status: ${response.status}, body: ${errorText}`);
