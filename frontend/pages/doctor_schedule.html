@@ -96,6 +96,7 @@
         </div>
     </div>
 
+    <script src="../js/api-client.js"></script>
     <script>
         // Global variables
         let apiClient;
@@ -111,55 +112,30 @@
 
         // Initialize page
         document.addEventListener('DOMContentLoaded', async function() {
-            initializeAPIClient();
             await initializePage();
         });
-
-        // Initialize API client
-        function initializeAPIClient() {
-            apiClient = {
-                async checkAuth() {
-                    const response = await fetch('/api/check_auth/', {
-                        method: 'GET',
-                        credentials: 'include',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-Requested-With': 'XMLHttpRequest'
-                        }
-                    });
-                    return await response.json();
-                },
-
-                async getDoctorAppointments() {
-                    const response = await fetch('/api/doctor/appointments/', {
-                        method: 'GET',
-                        credentials: 'include',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-Requested-With': 'XMLHttpRequest'
-                        }
-                    });
-                    return await response.json();
-                },
-
-                async updateAppointmentStatus(appointmentId, status) {
-                    const response = await fetch(`/api/appointments/${appointmentId}/status/`, {
-                        method: 'POST',
-                        credentials: 'include',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-Requested-With': 'XMLHttpRequest'
-                        },
-                        body: JSON.stringify({ status })
-                    });
-                    return await response.json();
-                }
-            };
-        }
 
         // Initialize page
         async function initializePage() {
             try {
+                // Wait for global apiClient to be ready
+                if (!window.apiClient) {
+                    console.log('Waiting for global apiClient...');
+                    await new Promise(resolve => {
+                        const checkApiClient = () => {
+                            if (window.apiClient) {
+                                resolve();
+                            } else {
+                                setTimeout(checkApiClient, 100);
+                            }
+                        };
+                        checkApiClient();
+                    });
+                }
+                
+                // Use global apiClient
+                apiClient = window.apiClient;
+                
                 // Check authentication
                 const authResponse = await apiClient.checkAuth();
                 
@@ -467,7 +443,9 @@
             if (!selectedAppointment) return;
             
             try {
+                console.log('Confirming appointment:', selectedAppointment.id);
                 const response = await apiClient.updateAppointmentStatus(selectedAppointment.id, 'confirmed');
+                console.log('Response:', response);
                 
                 if (response.success) {
                     // Update local data
@@ -482,9 +460,11 @@
                     displaySchedule();
                     updateSummary();
                 } else {
-                    showError(response.message || 'Failed to confirm appointment');
+                    console.error('Failed to confirm appointment:', response);
+                    showError(response.error || response.message || 'Failed to confirm appointment');
                 }
             } catch (error) {
+                console.error('Error confirming appointment:', error);
                 showError('Error confirming appointment: ' + error.message);
             }
         }
@@ -494,7 +474,9 @@
             if (!selectedAppointment) return;
             
             try {
+                console.log('Completing appointment:', selectedAppointment.id);
                 const response = await apiClient.updateAppointmentStatus(selectedAppointment.id, 'completed');
+                console.log('Response:', response);
                 
                 if (response.success) {
                     // Update local data
@@ -509,9 +491,11 @@
                     displaySchedule();
                     updateSummary();
                 } else {
-                    showError(response.message || 'Failed to complete appointment');
+                    console.error('Failed to complete appointment:', response);
+                    showError(response.error || response.message || 'Failed to complete appointment');
                 }
             } catch (error) {
+                console.error('Error completing appointment:', error);
                 showError('Error completing appointment: ' + error.message);
             }
         }

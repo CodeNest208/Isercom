@@ -124,6 +124,22 @@ class APIClient {
             return { success: false, appointments: [], error: error.message };
         }
     }
+
+    // Update appointment status
+    async updateAppointmentStatus(appointmentId, status) {
+        try {
+            console.log(`Updating appointment ${appointmentId} status to ${status}`);
+            const result = await this.request(`/appointments/${appointmentId}/update_status/`, {
+                method: 'POST',
+                body: JSON.stringify({ status })
+            });
+            console.log('Status update result:', result);
+            return result;
+        } catch (error) {
+            console.error('Error updating appointment status:', error);
+            return { success: false, error: error.message };
+        }
+    }
 }
 
 // Create global API client instance

@@ -324,7 +324,7 @@ function showFooterAutoFillNotice(form) {
 
 function talkToDoctor() {
   alert("Redirecting to consultation...");
-  // window.location.href = 'contact.html'; // Optional redirection
+  window.location.href = '/frontend/pages/appointment_form.html'; // Optional redirection
 }
 
 // Modal Dialog Functions
