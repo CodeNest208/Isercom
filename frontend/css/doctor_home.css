@@ -22,6 +22,37 @@ body {
     align-items: center;
 }
 
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.clinic-logo {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+.logo-text h1 {
+    color: #0f3322;
+    font-size: 2.2em;
+    font-weight: 700;
+    margin: 0;
+}
+
+.logo-text p {
+    color: #004d33;
+    font-size: 1.1em;
+    margin: 0;
+}
+
+.logo-fallback {
+    font-size: 3em;
+    color: #0f3322;
+}
+
 .header h1 {
     color: #0f3322;
     font-size: 2.2em;
@@ -205,6 +236,11 @@ body {
     text-align: center;
     margin: 0 8px;
     border: 1px solid rgba(15, 51, 34, 0.1);
+    min-width: 160px;
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .btn:hover {
@@ -220,6 +256,8 @@ body {
     padding: 15px 30px;
     box-shadow: 0 4px 15px rgba(0, 77, 51, 0.3);
     border: none;
+    min-width: 180px;
+    font-weight: 600;
 }
 
 .btn-primary:hover {
@@ -251,32 +289,287 @@ body {
     align-items: center;
     gap: 15px;
     flex-wrap: wrap;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+@media (max-width: 992px) {
+    .action-buttons {
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        max-width: 400px;
+    }
+
+    .btn {
+        width: 100%;
+        max-width: 280px;
+        margin: 0;
+    }
+
+    .btn-primary {
+        max-width: 300px;
+    }
 }
 
 @media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    .container {
+        max-width: 100%;
+    }
+
     .header {
         flex-direction: column;
         text-align: center;
         gap: 20px;
+        padding: 20px;
+    }
+
+    .logo-container {
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .clinic-logo {
+        width: 50px;
+        height: 50px;
+    }
+
+    .logo-text h1 {
+        font-size: 1.8em;
+    }
+
+    .logo-text p {
+        font-size: 1em;
+    }
+
+    .logo-fallback {
+        font-size: 2.5em;
+    }
+
+    .header h1 {
+        font-size: 1.8em;
+    }
+
+    .logout-btn {
+        width: 100%;
+        max-width: 200px;
+        text-align: center;
+    }
+
+    .welcome-card {
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+
+    .welcome-card h2 {
+        font-size: 1.5em;
+    }
+
+    .welcome-card p {
+        font-size: 1em;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .stat-card {
+        padding: 20px 15px;
+    }
+
+    .stat-card .icon {
+        font-size: 2.5em;
+        margin-bottom: 10px;
+    }
+
+    .stat-card h3 {
+        font-size: 1.5em;
+    }
+
+    .stat-card p {
+        font-size: 1em;
     }
 
     .dashboard-grid {
         grid-template-columns: 1fr;
     }
 
-    .stats-grid {
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    .action-section {
+        padding: 20px;
+        margin-top: 20px;
+    }
+
+    .action-section h3 {
+        font-size: 1.5em;
+        margin-bottom: 20px;
     }
 
     .action-buttons {
         flex-direction: column;
         align-items: stretch;
+        gap: 12px;
+        width: 100%;
     }
 
     .btn {
-        margin: 5px 0;
+        margin: 0;
         width: 100%;
-        max-width: 300px;
+        max-width: none;
+        padding: 15px 20px;
+        font-size: 1em;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 50px;
+        border-radius: 8px;
+    }
+
+    .btn-primary {
+        padding: 18px 25px;
+        font-size: 1.1em;
+        min-height: 56px;
+        font-weight: 600;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 5px;
+    }
+
+    .header {
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 10px;
+    }
+
+    .logo-container {
+        gap: 8px;
+    }
+
+    .clinic-logo {
+        width: 40px;
+        height: 40px;
+    }
+
+    .logo-text h1 {
+        font-size: 1.6em;
+    }
+
+    .logo-text p {
+        font-size: 1em;
+    }
+
+    .logo-fallback {
+        font-size: 2em;
+    }
+
+    .header h1 {
+        font-size: 1.6em;
+    }
+
+    .header p {
+        font-size: 1em;
+    }
+
+    .welcome-card {
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 8px;
+    }
+
+    .welcome-card h2 {
+        font-size: 1.3em;
+        margin-bottom: 8px;
+    }
+
+    .welcome-card p {
+        font-size: 0.9em;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+
+    .stat-card {
+        padding: 15px;
+        border-radius: 8px;
+    }
+
+    .stat-card .icon {
+        font-size: 2em;
+        margin-bottom: 8px;
+    }
+
+    .stat-card h3 {
+        font-size: 1.3em;
+        margin-bottom: 5px;
+    }
+
+    .stat-card p {
+        font-size: 0.9em;
+    }
+
+    .action-section {
+        padding: 15px;
+        margin-top: 15px;
+        border-radius: 10px;
+    }
+
+    .action-section h3 {
+        font-size: 1.3em;
+        margin-bottom: 18px;
+        text-align: center;
+    }
+
+    .action-buttons {
+        gap: 10px;
+        width: 100%;
+    }
+
+    .btn {
+        padding: 14px 18px;
+        font-size: 0.95em;
+        border-radius: 8px;
+        min-height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        line-height: 1.2;
+    }
+
+    .btn-primary {
+        padding: 16px 22px;
+        font-size: 1.05em;
+        min-height: 52px;
+        font-weight: 600;
+    }
+
+    /* Message containers for mobile */
+    .message-container {
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        right: 10px;
+        max-width: none;
+    }
+
+    .message, .alert {
+        margin-bottom: 10px;
+        padding: 12px 15px;
+        border-radius: 8px;
+        font-size: 13px;
     }
 }
 

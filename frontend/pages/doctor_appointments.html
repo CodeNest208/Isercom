@@ -72,17 +72,18 @@
                 <p>Manage your patient appointments</p>
             </div>
 
-            <div class="appointments-table-header">
-                <div>Patient Information</div>
-                <div>Appointment Details</div>
-                <div>Date & Time</div>
-                <div>Status</div>
-                <div>Actions</div>
-            </div>
+            <div class="appointments-table-wrapper">
+                <div class="appointments-table-header">
+                    <div>Patient Information</div>
+                    <div>Appointment Details</div>
+                    <div>Date & Time</div>
+                    <div>Status</div>
+                </div>
 
-            <div class="appointments-content" id="appointmentsList">
-                <div class="loading-message">
-                    <p>Loading appointments...</p>
+                <div class="appointments-content" id="appointmentsList">
+                    <div class="loading-message">
+                        <p>Loading appointments...</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -292,20 +293,6 @@
                         <span class="status-badge status-${appointment.status}">
                             ${appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1)}
                         </span>
-                    </div>
-
-                    <div class="actions">
-                        ${appointment.status === 'scheduled' ? `
-                            <button class="action-btn btn-confirm" onclick="updateAppointmentStatus(${appointment.id}, 'confirmed')">✅ Confirm</button>
-                        ` : ''}
-                        
-                        ${appointment.status === 'confirmed' ? `
-                            <button class="action-btn btn-complete" onclick="updateAppointmentStatus(${appointment.id}, 'completed')">✅ Complete</button>
-                        ` : ''}
-                        
-                        ${(appointment.status === 'scheduled' || appointment.status === 'confirmed') ? `
-                            <button class="action-btn btn-cancel" onclick="confirmCancelAppointment(${appointment.id})">❌ Cancel</button>
-                        ` : ''}
                     </div>
                     
                     ${appointment.notes ? `
