@@ -248,3 +248,8 @@ INFO 2025-08-26 17:23:20,056 email_utils 5728 13004 Email queued for async sendi
 INFO 2025-08-26 17:23:20,057 email_utils 5728 13004 Both appointment emails queued for appointment 2
 INFO 2025-08-26 17:23:25,751 email_utils 5728 3520 Email sent successfully to felixasante@gmail.com in 5.69s
 INFO 2025-08-26 17:23:26,679 email_utils 5728 14244 Email sent successfully to isaacsercom@gmail.com in 6.62s
+INFO 2025-08-28 19:03:25,612 email_utils 3880 27416 Email queued for async sending to isaacsercom@gmail.com
+INFO 2025-08-28 19:03:25,616 email_utils 3880 27416 Email queued for async sending to christiantano@gmail.com
+INFO 2025-08-28 19:03:25,616 email_utils 3880 27416 Both appointment emails queued for appointment 5
+ERROR 2025-08-28 19:03:35,195 email_utils 3880 15832 Error sending email to isaacsercom@gmail.com: (421, b'Service not available')
+ERROR 2025-08-28 19:03:35,196 email_utils 3880 20532 Error sending email to christiantano@gmail.com: (421, b'Service not available')

@@ -1,0 +1,375 @@
+body {
+    padding-top: 0 !important;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+}
+
+.page-wrapper {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+    position: relative;
+}
+
+.home-button-container {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 100;
+}
+
+.home-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: #04332A;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.home-btn:hover {
+    background: #006b50;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.home-btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* Left Half - Profile Content */
+.profile-form-section {
+    flex: 1;
+    max-width: 50%;
+    padding: 80px 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    background: #f8f9fa;
+    overflow-y: auto;
+    height: 100vh;
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    -webkit-scrollbar: none;
+    /* Hide scrollbar for IE, Edge and Firefox */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* Right Half - Logo Section */
+.logo-section {
+    flex: 1;
+    width: 50%;
+    background: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    height: 100vh;
+    position: fixed;
+    right: 0;
+    top: 0;
+}
+
+.isercom-logo {
+    text-align: center;
+    padding: 40px;
+}
+
+.isercom-logo img {
+    max-width: 400px;
+    height: auto;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+}
+
+/* Form Styling */
+.form-title {
+    color: #04332A;
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.profile-header {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    text-align: center;
+}
+
+.profile-info h2 {
+    color: #04332A;
+    font-size: 1.8rem;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.profile-info p {
+    color: #6c757d;
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+.profile-status {
+    background: #E5C285;
+    color: #04332A;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.profile-actions {
+    margin-top: 20px;
+}
+
+.profile-section {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+}
+
+.profile-section h3 {
+    color: #04332A;
+    font-size: 1.4rem;
+    margin-bottom: 20px;
+    font-weight: 600;
+    border-bottom: 2px solid #E5C285;
+    padding-bottom: 10px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    color: #04332A;
+    font-weight: 500;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+}
+
+.info-value {
+    position: relative;
+}
+
+.info-value span {
+    display: inline-block;
+    padding: 12px 15px;
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    width: 100%;
+    box-sizing: border-box;
+    color: #495057;
+    min-height: 44px;
+    line-height: 1.4;
+}
+
+.edit-input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+    background: white;
+}
+
+.edit-input:focus {
+    outline: none;
+    border-color: #E5C285;
+    box-shadow: 0 0 0 3px rgba(229, 194, 133, 0.1);
+}
+
+textarea.edit-input {
+    resize: vertical;
+    min-height: 80px;
+    font-family: inherit;
+}
+
+select.edit-input {
+    cursor: pointer;
+}
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.btn-primary {
+    background: #04332A;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #006b50;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #5a6268;
+    transform: translateY(-1px);
+}
+
+.btn-outline {
+    background: transparent;
+    color: #04332A;
+    border: 2px solid #04332A;
+}
+
+.btn-outline:hover {
+    background: #04332A;
+    color: white;
+}
+
+.btn-edit {
+    background: #E5C285;
+    color: #04332A;
+}
+
+.btn-edit:hover {
+    background: #d4af6f;
+    transform: translateY(-1px);
+}
+
+.edit-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 30px 0;
+    padding: 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+}
+
+.action-buttons {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .page-wrapper {
+        flex-direction: column;
+    }
+    
+    .profile-form-section {
+        max-width: 100%;
+        padding: 20px;
+        height: auto;
+    }
+    
+    .logo-section {
+        position: relative;
+        width: 100%;
+        height: auto;
+        min-height: 300px;
+        order: -1;
+    }
+    
+    .home-button-container {
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        z-index: 1000;
+    }
+    
+    .form-title {
+        font-size: 2rem;
+        margin-top: 60px;
+    }
+    
+    .isercom-logo {
+        padding: 20px;
+    }
+    
+    .isercom-logo img {
+        max-width: 150px;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+    }
+    
+    .btn {
+        width: 100%;
+        margin-right: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-form-section {
+        padding: 15px;
+    }
+    
+    .profile-header {
+        padding: 20px;
+    }
+    
+    .profile-section {
+        padding: 20px;
+    }
+    
+    .form-title {
+        font-size: 1.8rem;
+    }
+
+    .profile-info h2 {
+        font-size: 1.5rem;
+    }
+}
+
+/* Animation */
+@keyframes slideUp {
+    from {
+        transform: translateY(30px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.profile-section {
+    animation: slideUp 0.6s ease forwards;
+}
+
+.profile-section:nth-child(2) { animation-delay: 0.1s; }
+.profile-section:nth-child(3) { animation-delay: 0.2s; }
+.profile-section:nth-child(4) { animation-delay: 0.3s; }
+.profile-section:nth-child(5) { animation-delay: 0.4s; }
