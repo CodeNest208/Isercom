@@ -509,8 +509,133 @@ def csrf_token_api(request):
         'csrfToken': get_token(request)
     })
 
-
 @require_http_methods(["GET"])
+@require_http_methods(["GET"])
+def my_appointments_api(request):
+    """
+    API endpoint to get the patient's appointments
+    """
+    try:
+        print(f"DEBUG: my_appointments_api called by user: {request.user}")
+        if not request.user.is_authenticated:
+            print("DEBUG: User not authenticated")
+            return JsonResponse({
+                'success': False,
+                'message': "Authentication required"
+            }, status=401)
+        
+        try:
+            patient = Patient.objects.get(user=request.user)
+            print(f"DEBUG: Found patient: {patient}")
+        except Patient.DoesNotExist:
+            print("DEBUG: Patient not found")
+            return JsonResponse({
+                'success': False,
+                'message': 'Patient profile not found. Please complete your profile first.'
+            }, status=403)
+        
+        # Get appointments for the patient
+        appointments = Appointment.objects.filter(patient=patient).select_related('doctor__user', 'service').order_by('-date', '-time')
+        print(f"DEBUG: Found {appointments.count()} appointments for patient {patient.user.username}")
+        appointments_data = []
+
+        for appointment in appointments:
+            try:
+                appointment_dict = {
+                    'id': appointment.pk,
+                    'date': appointment.date.isoformat(),
+                    'time': appointment.time.strftime('%H:%M'),
+                    'status': appointment.status,
+                    'doctor': {
+                        'id': appointment.doctor.pk,
+                        'name': appointment.doctor.full_name,
+                        'speciality': appointment.doctor.speciality
+                    },
+                    'service': {
+                        'id': appointment.service.pk,
+                        'name': appointment.service.name,
+                        'description': appointment.service.description
+                    },
+                    'notes': appointment.notes or '',
+                    'can_cancel': appointment.status in ['scheduled', 'confirmed']
+                }
+                appointments_data.append(appointment_dict)
+                print(f"DEBUG: Added appointment {appointment.pk}: {appointment.date} {appointment.time}")
+            except Exception as appointment_error:
+                print(f"DEBUG: Error processing appointment {appointment.pk}: {appointment_error}")
+                continue
+
+        response_data = {
+            'success': True,
+            'appointments': appointments_data
+        }
+        print(f"DEBUG: Returning {len(appointments_data)} appointments")
+        print(f"DEBUG: Response data keys: {response_data.keys()}")
+        return JsonResponse(response_data)
+        
+    except Exception as e:
+        print(f"DEBUG: API Error: {str(e)}")
+        return JsonResponse({
+            'success': False,
+            'message': f'Error retrieving appointments: {str(e)}'
+        }, status=500)
+
+
+@require_http_methods(["POST"])
+def cancel_appointment_api(request, appointment_id):
+    """
+    API endpoint to cancel a patient's appointment
+    """
+    try:
+        if not request.user.is_authenticated:
+            return JsonResponse({
+                'success': False,
+                'message': "Authentication required"
+            }, status=401)
+        
+        try:
+            patient = Patient.objects.get(user=request.user)
+        except Patient.DoesNotExist:
+            return JsonResponse({
+                'success': False,
+                'message': 'Only patients can access this endpoint'
+            }, status=403)
+        
+        try:
+            appointment = Appointment.objects.get(id=appointment_id, patient=patient)
+        except Appointment.DoesNotExist:
+            return JsonResponse({
+                'success': False,
+                'message': 'Appointment not found'
+            }, status=404)
+        
+        # Check if appointment can be cancelled
+        if appointment.status not in ['scheduled', 'confirmed']:
+            return JsonResponse({
+                'success': False,
+                'message': f'Cannot cancel appointment with status: {appointment.status}'
+            }, status=400)
+        
+        # Cancel the appointment
+        appointment.status = 'cancelled'
+        appointment.save()
+        
+        return JsonResponse({
+            'success': True,
+            'message': 'Appointment cancelled successfully',
+            'appointment': {
+                'id': appointment.pk,
+                'date': appointment.date.isoformat(),
+                'time': appointment.time.strftime('%H:%M'),
+                'status': appointment.status
+            }
+        })
+        
+    except Exception as e:
+        return JsonResponse({
+            'success': False,
+            'message': f'Error cancelling appointment: {str(e)}'
+        }, status=500)
 def doctor_appointments_api(request):
     """
     API endpoint to get appointments for the logged-in doctor
@@ -766,3 +891,117 @@ iSercom Clinic Team
             'message': f'Error processing contact form: {str(e)}'
         }, status=500)
 
+
+@require_http_methods(["GET", "PUT"])
+def user_profile_api(request):
+    """
+    Get or update user profile information
+    """
+    if not request.user.is_authenticated:
+        return JsonResponse({
+            'success': False,
+            'message': 'Authentication required.'
+        }, status=401)
+    
+    user = request.user
+    
+    if request.method == 'GET':
+        try:
+            # Get user profile data
+            profile_data = {
+                'first_name': user.first_name,
+                'last_name': user.last_name,
+                'email': user.email,
+                'username': user.username,
+                'date_joined': user.date_joined.isoformat() if user.date_joined else None,
+                'last_login': user.last_login.isoformat() if user.last_login else None,
+            }
+            
+            # Check if user is a patient and get additional info
+            try:
+                patient = Patient.objects.get(user=user)
+                profile_data.update({
+                    'phone': patient.phone,
+                    'date_of_birth': patient.date_of_birth.isoformat() if patient.date_of_birth else None,
+                    'address': patient.address,
+                    'user_type': 'patient'
+                })
+            except Patient.DoesNotExist:
+                # Check if user is a doctor
+                try:
+                    doctor = Doctor.objects.get(user=user)
+                    profile_data.update({
+                        'speciality': doctor.speciality,
+                        'user_type': 'doctor'
+                    })
+                except Doctor.DoesNotExist:
+                    profile_data['user_type'] = 'user'
+            
+            return JsonResponse(profile_data)
+            
+        except Exception as e:
+            return JsonResponse({
+                'success': False,
+                'message': f'Error retrieving profile: {str(e)}'
+            }, status=500)
+    
+    elif request.method == 'PUT':
+        try:
+            data = json.loads(request.body)
+            
+            # Update user fields
+            if 'first_name' in data:
+                user.first_name = data['first_name']
+            if 'last_name' in data:
+                user.last_name = data['last_name']
+            if 'email' in data:
+                # Validate email
+                try:
+                    validate_email(data['email'])
+                    user.email = data['email']
+                except ValidationError:
+                    return JsonResponse({
+                        'success': False,
+                        'error': 'Invalid email format.'
+                    }, status=400)
+            
+            user.save()
+            
+            # Update patient-specific fields if user is a patient
+            try:
+                patient = Patient.objects.get(user=user)
+                if 'phone' in data:
+                    patient.phone = data['phone']
+                if 'date_of_birth' in data and data['date_of_birth']:
+                    patient.date_of_birth = data['date_of_birth']
+                if 'address' in data:
+                    patient.address = data['address']
+                patient.save()
+            except Patient.DoesNotExist:
+                # If user is not a patient but tries to update patient fields, create patient record
+                if any(field in data for field in ['phone', 'date_of_birth', 'address']):
+                    patient = Patient.objects.create(
+                        user=user,
+                        phone=data.get('phone', ''),
+                        date_of_birth=data.get('date_of_birth') if data.get('date_of_birth') else None,
+                        address=data.get('address', '')
+                    )
+            
+            # Return updated profile data
+            # Create a mock GET request to get updated profile
+            from django.http import HttpRequest
+            get_request = HttpRequest()
+            get_request.method = 'GET'
+            get_request.user = user
+            return user_profile_api(get_request)
+            
+        except json.JSONDecodeError:
+            return JsonResponse({
+                'success': False,
+                'error': 'Invalid JSON data.'
+            }, status=400)
+        except Exception as e:
+            return JsonResponse({
+                'success': False,
+                'error': f'Error updating profile: {str(e)}'
+            }, status=500)

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Auth Debug Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .result { background: #f5f5f5; padding: 15px; margin: 10px 0; border-radius: 5px; }
+        .error { background: #ffebee; color: #c62828; }
+        .success { background: #e8f5e8; color: #2e7d32; }
+        pre { white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+    <h1>Authentication Debug Test</h1>
+    <button onclick="testAuth()">Test Auth</button>
+    <div id="result"></div>
+
+    <script>
+        async function testAuth() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '<div class="result">Testing authentication...</div>';
+
+            try {
+                const response = await fetch('/api/auth/check/', {
+                    method: 'GET',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                console.log('Response status:', response.status);
+                console.log('Response headers:', [...response.headers.entries()]);
+
+                const data = await response.json();
+                console.log('Response data:', data);
+
+                resultDiv.innerHTML = `
+                    <div class="result ${data.is_authenticated ? 'success' : 'error'}">
+                        <h3>Auth Check Result</h3>
+                        <p><strong>Status:</strong> ${response.status}</p>
+                        <p><strong>Authenticated:</strong> ${data.is_authenticated}</p>
+                        <p><strong>User:</strong> ${data.user ? JSON.stringify(data.user, null, 2) : 'null'}</p>
+                        <h4>Full Response:</h4>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    </div>
+                `;
+
+            } catch (error) {
+                console.error('Error:', error);
+                resultDiv.innerHTML = `<div class="result error">
+                    <h3>Error</h3>
+                    <p>${error.message}</p>
+                </div>`;
+            }
+        }
+
+        // Auto-test on page load
+        document.addEventListener('DOMContentLoaded', testAuth);
+    </script>
+</body>
+</html>

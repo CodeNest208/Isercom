@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple API Test</title>
+</head>
+<body>
+    <h1>Simple API Test</h1>
+    <div id="result"></div>
+    <script>
+        console.log('Starting simple test...');
+        
+        fetch('/api/home/')
+            .then(response => {
+                console.log('Response received:', response.status);
+                return response.json();
+            })
+            .then(data => {
+                console.log('Data:', data);
+                document.getElementById('result').innerHTML = JSON.stringify(data, null, 2);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('result').innerHTML = 'Error: ' + error.message;
+            });
+    </script>
+</body>
+</html>
