@@ -9,20 +9,20 @@ body {
 }
 
 .hero {
-  background: url('your-header-image.jpg') no-repeat center center/cover;
-  height: 200px;
   position: relative;
+  height: 40vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
   color: white;
 }
 
-.hero-overlay {
-  background-color: rgba(0, 0, 0, 0.5);
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 20px;
+.container{
+  margin-top: 40vh;
 }
+
+
+
 
 .hero-overlay h1 {
   font-size: 24px;
@@ -68,6 +68,16 @@ body {
   min-width: 200px;
   background-color: #d9d9d9;
   height: 200px;
+  background-image: url(../images/consultation/CCF-9498.jpg);
+  background-size: cover;
+}
+.placeholder1 {
+  flex: 1;
+  min-width: 200px;
+  background-color: #d9d9d9;
+  height: 200px;
+  background-image: url(../images/consultation/CCF-9492.jpg);
+  background-size: cover;
 }
 
 ul {
