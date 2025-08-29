@@ -53,7 +53,7 @@
 
     <!-- Slide 1 -->
     <div class="slide">
-      <img src="./images/homepage/CCF-9434.jpg" alt="Medical Service">
+      <img src="./images/homepage/hpdoctor1.jpg" alt="Medical Service">
       <div class="overlay">
         <div class="hero-text">
           <h1>We Provide Medical Services That You Can Trust!</h1>
@@ -228,7 +228,7 @@
           <ul>
             <li><a href="./pages/about_us.html">About Us</a></li>
             <li><a href="./pages/contact.html">Contact Us</a></li>
-            <li><a href="#">Learn More</a></li>
+            <li><a href="./pages/terms.html">Learn More</a></li>
           </ul>
         </div>
 
@@ -247,8 +247,8 @@
           <div class="icons">
             <a href="https://www.facebook.com/share/1GGg69Cv1C/"><img src="./images/facebook.png" alt="Facebook" /></a>
             <a href="https://www.tiktok.com/@isaac_secorm?_t=ZM-8yv6UjvY3yH&_r=1"><img src="./images/tiktok.png" alt="TikTok" /></a>
-            <a href="#"><img src="./images/instagram.png" alt="instagram" /></a>
-            <a href="#"><img src="./images/x.png" alt="X" /></a>
+            <a href="https://www.instagram.com/"><img src="./images/instagram.png" alt="instagram" /></a>
+            <a href="https://twitter.com/"><img src="./images/x.png" alt="X" /></a>
           </div>
 
           <form class="feedback-form">
@@ -287,6 +287,13 @@
         } catch (error) {
           console.error('Failed to load homepage data:', error);
         }
+        
+        const learnMoreButtons = document.querySelectorAll('.btn-secondary');
+        learnMoreButtons.forEach(function(button) {
+          button.addEventListener('click', function() {
+            window.location.href = './pages/terms.html';
+          });
+        });
       });
     </script>
   </body>
