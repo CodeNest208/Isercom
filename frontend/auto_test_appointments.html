@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto Login and Test Appointments</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .step {
+            margin: 20px 0;
+            padding: 15px;
+            border-left: 4px solid #007bff;
+            background: #f8f9fa;
+        }
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .status.pending { background: #ffeaa7; color: #2d3436; }
+        .status.success { background: #00b894; color: white; }
+        .status.error { background: #e17055; color: white; }
+        .appointments-list {
+            margin-top: 20px;
+        }
+        .appointment-item {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .appointment-header {
+            font-weight: bold;
+            color: #2d3436;
+            margin-bottom: 8px;
+        }
+        .appointment-detail {
+            margin: 5px 0;
+            color: #636e72;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        pre {
+            background: #2d3436;
+            color: #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🔍 Appointments System Test</h1>
+        <p>This page will automatically log in and test the appointments system.</p>
+        
+        <div class="step">
+            <h3>Step 1: Authentication Check</h3>
+            <span id="auth-status" class="status pending">Checking...</span>
+            <div id="auth-result"></div>
+        </div>
+        
+        <div class="step">
+            <h3>Step 2: Login (if needed)</h3>
+            <span id="login-status" class="status pending">Waiting...</span>
+            <div id="login-result"></div>
+        </div>
+        
+        <div class="step">
+            <h3>Step 3: Load Appointments</h3>
+            <span id="appointments-status" class="status pending">Waiting...</span>
+            <div id="appointments-result">
+                <div class="appointments-list" id="appointments-list"></div>
+            </div>
+        </div>
+        
+        <div class="step">
+            <h3>Manual Controls</h3>
+            <button onclick="runFullTest()">🔄 Run Full Test</button>
+            <button onclick="testLogin()">🔐 Test Login Only</button>
+            <button onclick="testAppointments()">📅 Test Appointments Only</button>
+            <button onclick="clearLogs()">🗑️ Clear Logs</button>
+        </div>
+        
+        <div class="step">
+            <h3>Debug Logs</h3>
+            <pre id="debug-logs">Initializing test system...\n</pre>
+        </div>
+    </div>
+
+    <script>
+        function log(message, isError = false) {
+            const logs = document.getElementById('debug-logs');
+            const timestamp = new Date().toLocaleTimeString();
+            const prefix = isError ? '❌' : '✅';
+            logs.textContent += `[${timestamp}] ${prefix} ${message}\n`;
+            logs.scrollTop = logs.scrollHeight;
+        }
+
+        function updateStatus(elementId, status, message = '') {
+            const element = document.getElementById(elementId);
+            element.className = `status ${status}`;
+            element.textContent = status === 'pending' ? 'Processing...' : 
+                                status === 'success' ? 'Success' : 'Failed';
+            
+            if (message) {
+                const resultDiv = document.getElementById(elementId.replace('-status', '-result'));
+                resultDiv.innerHTML = `<p style="margin-top: 10px; color: ${status === 'error' ? '#e17055' : '#636e72'};">${message}</p>`;
+            }
+        }
+
+        function clearLogs() {
+            document.getElementById('debug-logs').textContent = 'Logs cleared...\n';
+        }
+
+        function getCSRFToken() {
+            const cookies = document.cookie.split(';');
+            for (let cookie of cookies) {
+                const [name, value] = cookie.trim().split('=');
+                if (name === 'csrftoken') {
+                    return value;
+                }
+            }
+            return null;
+        }
+
+        async function checkAuth() {
+            log('🔍 Checking authentication status...');
+            updateStatus('auth-status', 'pending');
+            
+            try {
+                const response = await fetch('/api/auth/check/', {
+                    method: 'GET',
+                    credentials: 'include'
+                });
+                
+                const data = await response.json();
+                log(`Auth response: ${JSON.stringify(data)}`);
+                
+                if (data.success && data.user.is_authenticated) {
+                    updateStatus('auth-status', 'success', `Logged in as: ${data.user.username}`);
+                    return true;
+                } else {
+                    updateStatus('auth-status', 'error', 'Not authenticated');
+                    return false;
+                }
+                
+            } catch (error) {
+                log(`Auth check error: ${error.message}`, true);
+                updateStatus('auth-status', 'error', `Error: ${error.message}`);
+                return false;
+            }
+        }
+
+        async function testLogin() {
+            log('🔐 Attempting login...');
+            updateStatus('login-status', 'pending');
+            
+            const credentials = {
+                username: 'christian_tano_3',
+                password: 'testpass123'
+            };
+            
+            try {
+                const response = await fetch('/api/auth/login/', {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCSRFToken() || ''
+                    },
+                    body: JSON.stringify(credentials)
+                });
+                
+                const data = await response.json();
+                log(`Login response: ${JSON.stringify(data)}`);
+                
+                if (data.success) {
+                    updateStatus('login-status', 'success', `Successfully logged in as: ${data.user.username}`);
+                    return true;
+                } else {
+                    updateStatus('login-status', 'error', `Login failed: ${data.message}`);
+                    return false;
+                }
+                
+            } catch (error) {
+                log(`Login error: ${error.message}`, true);
+                updateStatus('login-status', 'error', `Error: ${error.message}`);
+                return false;
+            }
+        }
+
+        async function testAppointments() {
+            log('📅 Loading appointments...');
+            updateStatus('appointments-status', 'pending');
+            
+            try {
+                const response = await fetch('/api/user/appointments/', {
+                    method: 'GET',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                log(`Appointments response status: ${response.status}`);
+                const data = await response.json();
+                log(`Appointments data: ${JSON.stringify(data, null, 2)}`);
+                
+                if (data.success) {
+                    updateStatus('appointments-status', 'success', `Found ${data.appointments.length} appointments`);
+                    displayAppointments(data.appointments);
+                    return true;
+                } else {
+                    updateStatus('appointments-status', 'error', `Failed: ${data.message}`);
+                    return false;
+                }
+                
+            } catch (error) {
+                log(`Appointments error: ${error.message}`, true);
+                updateStatus('appointments-status', 'error', `Error: ${error.message}`);
+                return false;
+            }
+        }
+
+        function displayAppointments(appointments) {
+            const listElement = document.getElementById('appointments-list');
+            listElement.innerHTML = '';
+            
+            if (!appointments || appointments.length === 0) {
+                listElement.innerHTML = '<p>No appointments found.</p>';
+                return;
+            }
+            
+            appointments.forEach((apt, index) => {
+                const item = document.createElement('div');
+                item.className = 'appointment-item';
+                item.innerHTML = `
+                    <div class="appointment-header">Appointment #${index + 1}</div>
+                    <div class="appointment-detail"><strong>Date:</strong> ${new Date(apt.date).toLocaleDateString()}</div>
+                    <div class="appointment-detail"><strong>Time:</strong> ${apt.time}</div>
+                    <div class="appointment-detail"><strong>Doctor:</strong> ${apt.doctor.name}</div>
+                    <div class="appointment-detail"><strong>Service:</strong> ${apt.service.name}</div>
+                    <div class="appointment-detail"><strong>Status:</strong> ${apt.status}</div>
+                    ${apt.notes ? `<div class="appointment-detail"><strong>Notes:</strong> ${apt.notes}</div>` : ''}
+                `;
+                listElement.appendChild(item);
+            });
+        }
+
+        async function runFullTest() {
+            log('🚀 Starting full test sequence...');
+            clearLogs();
+            
+            // Reset all statuses
+            updateStatus('auth-status', 'pending');
+            updateStatus('login-status', 'pending');
+            updateStatus('appointments-status', 'pending');
+            
+            // Step 1: Check authentication
+            const isAuthenticated = await checkAuth();
+            
+            // Step 2: Login if needed
+            let loginSuccess = isAuthenticated;
+            if (!isAuthenticated) {
+                loginSuccess = await testLogin();
+            } else {
+                updateStatus('login-status', 'success', 'Already authenticated');
+            }
+            
+            // Step 3: Load appointments if logged in
+            if (loginSuccess) {
+                await testAppointments();
+            } else {
+                updateStatus('appointments-status', 'error', 'Cannot load appointments - not logged in');
+            }
+            
+            log('🏁 Test sequence completed');
+        }
+
+        // Auto-run test on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            log('🎯 Page loaded, starting auto-test in 2 seconds...');
+            setTimeout(runFullTest, 2000);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - Isercom Clinic</title>
+    <link rel="stylesheet" href="../css/profile.css"/>
+    <link rel="stylesheet" href="../css/body.css"/>
+    <script src="../js/profile.js" defer></script>
+</head>
+<body>
+    <div class="page-wrapper">
+        <!-- Left Half - Profile Content -->
+        <div class="profile-form-section">
+            <div class="home-button-container">
+                <a href="../index.html" class="home-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                    </svg>
+                    Home
+                </a>
+            </div>
+
+            <h1 class="form-title">My Profile</h1>
+
+            <!-- Profile Header -->
+            <div class="profile-header">
+                <div class="profile-info">
+                    <h2 id="userName">John Doe</h2>
+                    <p id="userEmail">john.doe@email.com</p>
+                    <span class="profile-status" id="profileStatus">Patient</span>
+                </div>
+                <div class="profile-actions">
+                    <button class="btn btn-edit" id="editProfileBtn">✏️ Edit Profile</button>
+                </div>
+            </div>
+
+            <!-- Personal Information -->
+            <div class="profile-section">
+                <h3>Personal Information</h3>
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <div class="info-value">
+                        <span id="fullNameDisplay">John Doe</span>
+                        <input type="text" id="fullNameEdit" class="edit-input" style="display: none;" value="John Doe">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <div class="info-value">
+                        <span id="emailDisplay">john.doe@email.com</span>
+                        <input type="email" id="emailEdit" class="edit-input" style="display: none;" value="john.doe@email.com">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <div class="info-value">
+                        <span id="phoneDisplay">+1 (555) 123-4567</span>
+                        <input type="tel" id="phoneEdit" class="edit-input" style="display: none;" value="+1 (555) 123-4567">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Date of Birth</label>
+                    <div class="info-value">
+                        <span id="dobDisplay">January 15, 1990</span>
+                        <input type="date" id="dobEdit" class="edit-input" style="display: none;" value="1990-01-15">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Address</label>
+                    <div class="info-value">
+                        <span id="addressDisplay">123 Main Street, City, State 12345</span>
+                        <textarea id="addressEdit" class="edit-input" style="display: none;" rows="3">123 Main Street, City, State 12345</textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Edit Mode Actions -->
+            <div class="edit-actions" id="editActions" style="display: none;">
+                <button class="btn btn-secondary" id="cancelEditBtn">Cancel</button>
+                <button class="btn btn-primary" id="saveChangesBtn">Save Changes</button>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="profile-section">
+                <h3>Quick Actions</h3>
+                <div class="action-buttons">
+                    <button class="btn btn-primary" id="bookAppointmentBtn">📅 Book Appointment</button>
+                    <button class="btn btn-outline" id="viewAppointmentsBtn">📋 View Appointments</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Half - Logo Section -->
+        <div class="logo-section">
+            <div class="isercom-logo">
+                <img src="../images/logo.png" alt="Isercom Medical and Fertility Centre">
+            </div>
+        </div>
+    </div>
+
+
+</body>
+</html>

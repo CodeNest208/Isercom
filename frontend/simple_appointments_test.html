@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Appointments Test</title>
+    <style>
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; 
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            margin: 0;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            color: white;
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .loading { 
+            color: #667eea; 
+            background: rgba(255,255,255,0.9);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+        
+        .error { 
+            color: white; 
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(255,107,107,0.3);
+        }
+        
+        .success { 
+            color: #4CAF50;
+            background: rgba(255,255,255,0.9);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .appointment { 
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.2);
+            margin: 20px 0; 
+            padding: 25px; 
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .appointment:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+        }
+        
+        .appointment h3 { 
+            margin-top: 0; 
+            color: #333;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .detail { 
+            margin: 12px 0;
+            display: flex;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .detail:last-child {
+            border-bottom: none;
+        }
+        
+        .detail strong {
+            min-width: 100px;
+            color: #555;
+        }
+        
+        .status { 
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-left: 10px;
+        }
+        
+        .status.confirmed { 
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            box-shadow: 0 4px 15px rgba(76,175,80,0.3);
+        }
+        
+        .status.pending { 
+            background: linear-gradient(135deg, #FF9800, #f57c00);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255,152,0,0.3);
+        }
+        
+        .status.cancelled { 
+            background: linear-gradient(135deg, #f44336, #d32f2f);
+            color: white;
+            box-shadow: 0 4px 15px rgba(244,67,54,0.3);
+        }
+        
+        .appointments-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏥 Simple Appointments Test</h1>
+        <div id="status" class="loading">Loading appointments...</div>
+        <div id="appointments" class="appointments-grid"></div>
+    </div>
+
+    <script>
+        console.log('Script starting...');
+
+        async function loadAppointments() {
+            const statusDiv = document.getElementById('status');
+            const appointmentsDiv = document.getElementById('appointments');
+            
+            try {
+                console.log('Making API call...');
+                statusDiv.textContent = 'Calling API...';
+                
+                const response = await fetch('/api/user/appointments/', {
+                    method: 'GET',
+                    credentials: 'include'
+                });
+                
+                console.log('Response received:', response.status);
+                statusDiv.textContent = `Response: ${response.status}`;
+                
+                if (response.status === 401) {
+                    statusDiv.innerHTML = '<div class="error">Not logged in. Please <a href="login.html">login first</a></div>';
+                    return;
+                }
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                
+                const data = await response.json();
+                console.log('Data received:', data);
+                
+                if (data.success && data.appointments) {
+                    statusDiv.innerHTML = `<div class="success">Found ${data.appointments.length} appointments</div>`;
+                    
+                    if (data.appointments.length === 0) {
+                        appointmentsDiv.innerHTML = '<p>No appointments found.</p>';
+                        return;
+                    }
+                    
+                    appointmentsDiv.innerHTML = data.appointments.map(apt => `
+                        <div class="appointment">
+                            <h3>🩺 ${apt.service.name}</h3>
+                            <div class="detail"><strong>📅 Date:</strong> ${new Date(apt.date).toLocaleDateString()}</div>
+                            <div class="detail"><strong>🕐 Time:</strong> ${apt.time}</div>
+                            <div class="detail"><strong>👨‍⚕️ Doctor:</strong> Dr. ${apt.doctor.name}</div>
+                            <div class="detail"><strong>🎯 Specialty:</strong> ${apt.doctor.speciality || 'General'}</div>
+                            <div class="detail"><strong>📋 Status:</strong> <span class="status ${apt.status.toLowerCase()}">${apt.status}</span></div>
+                            ${apt.notes ? `<div class="detail"><strong>📝 Notes:</strong> ${apt.notes}</div>` : ''}
+                        </div>
+                    `).join('');
+                    
+                } else {
+                    statusDiv.innerHTML = '<div class="error">Failed to load appointments</div>';
+                    appointmentsDiv.innerHTML = `<pre>Response: ${JSON.stringify(data, null, 2)}</pre>`;
+                }
+                
+            } catch (error) {
+                console.error('Error:', error);
+                statusDiv.innerHTML = `<div class="error">Error: ${error.message}</div>`;
+            }
+        }
+
+        // Load on page ready
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, calling loadAppointments...');
+            loadAppointments();
+        });
+    </script>
+</body>
+</html>

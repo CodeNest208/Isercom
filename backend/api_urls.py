@@ -9,6 +9,8 @@ urlpatterns = [
     path('auth/register/', api_views.register_api, name='api_register'),
     path('auth/logout/', api_views.logout_api, name='api_logout'),
     
+
+    
     # Frontend compatibility endpoints (same functions, different URLs)
     path('check_auth/', api_views.auth_check_api, name='api_check_auth'),
     path('login/', api_views.login_api, name='api_login_compat'),
@@ -24,4 +26,8 @@ urlpatterns = [
     
     # Contact form
     path('contact/', api_views.contact_api, name='api_contact'),
+    # User profile management
+    path('user/profile/', api_views.user_profile_api, name='api_user_profile'),
+    path('user/appointments/', api_views.my_appointments_api, name='api_my_appointments'),
+    path('user/appointments/<int:appointment_id>/cancel/', api_views.cancel_appointment_api, name='api_cancel_appointment'),
 ]
