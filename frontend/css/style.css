@@ -45,13 +45,13 @@
 }
 
 .btn-primary {
-  background-color: #063828;
+  background-color: #04332A;
   color: #fff;
 }
 
 .btn-secondary {
   background-color: #f0f0f0;
-  color: #004d33;
+  color: #04332A;
   border: 1px solid #004d33;
 }
 
@@ -252,13 +252,13 @@
 }
 
 .btn-primary {
-  background: #006400;
+  background: #04332A;
   color: white;
 }
 
 .btn-secondary {
   background: #fff;
-  color: #006400;
+  color: #04332A;
 }
 
 /* Arrows */

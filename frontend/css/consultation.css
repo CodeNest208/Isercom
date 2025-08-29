@@ -17,6 +17,65 @@ body {
   color: white;
 }
 
+.banner {
+      background: url('../images/consultation/doctor-3264979_1280.jpg') no-repeat center center/cover;
+      height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 24px;
+      font-weight: bold;
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
+      background-size: cover;
+}
+
+ /* Page container */
+    .container {
+      width: 80%;
+      max-width: 1100px;
+      margin: 20px auto;
+    }
+
+    /* Section titles */
+    h2 {
+      color:#004d40;
+      margin-top: 20px;
+    }
+
+    /* Paragraphs */
+    p {
+      color: #333;
+      font-size: 15px;
+      text-align: justify;
+    }
+
+    /* Highlight box for steps/info */
+    .highlight-box {
+      background: #f4f4f4;
+      padding: 15px;
+      border-left: 4px solid #004d40;
+      margin: 15px 0;
+    }
+    /* Placeholder for images */
+    
+
+.img-placeholder1 {
+  width: 100%;
+  margin: 15px 0;
+}
+
+.img-placeholder1 img {
+  max-width: 100%;   /* responsive */
+  height: auto;      /* keeps original ratio */
+  display: block;
+}
+
+
+
+
+
+
 .container{
   margin-top: 40vh;
 }
