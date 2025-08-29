@@ -10,6 +10,24 @@
   /* min-height: 600px; */
 }
 
+.profile{
+  display: inline-block;
+  background-color: #ffffff;
+  color: #063828;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all ease 0.3ms;
+}
+.profile:hover{
+  background-color:#004d33;
+  color: #ffffff;
+}
+
+
+
 .overlay {
   background-color: rgba(0, 0, 0, 0.5);
   width: 100%;
@@ -36,8 +54,14 @@
   margin-bottom: 30px;
 }
 
+.hero-buttons {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
 .hero-buttons button {
-  margin-right: 15px;
+  margin-right: 0;
   padding: 10px 20px;
   border: none;
   border-radius: 6px;
@@ -51,7 +75,7 @@
 
 .btn-secondary {
   background-color: #f0f0f0;
-  color: #004d33;
+  color: #063828;
   border: 1px solid #004d33;
 }
 
@@ -242,9 +266,15 @@
   margin-bottom: 20px;
 }
 
+.hero-buttons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .hero-buttons button {
   padding: 12px 24px;
-  margin-right: 10px;
+  margin-right: 0;
   border: none;
   cursor: pointer;
   border-radius: 5px;
@@ -324,10 +354,23 @@
 }
 
 @media (max-width: 768px) {
+  .hero {
+    height: 85vh;
+    position: relative;
+  }
+  
   .overlay {
-    justify-content: center;
+    justify-content: flex-end;
+    align-items: center;
     text-align: center;
     padding: 20px;
+    flex-direction: column;
+  }
+  
+  .hero-text {
+    margin-left: 0;
+    margin-bottom: 20px;
+    order: 1;
   }
   
   .hero-text h1 {
@@ -338,9 +381,44 @@
     font-size: 1rem;
   }
   
+  .hero-buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 60px;
+    order: 2;
+  }
+  
   .hero-buttons button {
     font-size: 0.9rem;
     padding: 10px 20px;
+  }
+  
+  /* Move arrows to bottom */
+  .prev, .next {
+    top: auto;
+    bottom: 20px;
+    transform: none;
+    height: 50px;
+    width: 40px;
+    font-size: 1.5rem;
+  }
+  
+  .prev { 
+    left: 20px; 
+    bottom: 20px;
+  }
+  
+  .next { 
+    right: 20px; 
+    bottom: 20px;
+  }
+  
+  .prev:hover, .next:hover {
+    height: 55px;
+    width: 45px;
   }
   
   .services-grid {

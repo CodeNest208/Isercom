@@ -38,7 +38,6 @@
               
             </ul>
           </div>
-          <a  data-auth-required style="display: none;" href="./pages/profile_page.html" class="appointment">Profile</a>
 
           <a href="./pages/logout.html" class="appointment" data-auth-required style="display:none;">Sign Out</a>
           <a href="./pages/login.html" class="appointment" data-guest-only>Login</a>
@@ -68,7 +67,7 @@
             <a href="./pages/appointment_form.html">
               <button class="btn-primary">Get Appointment</button>
             </a>
-            <button class="btn-secondary">Learn More</button>
+            <button data-auth-required="display:none;" onclick="profilePage()" class="profile">Profile</button>
           </div>
         </div>
       </div>
@@ -88,7 +87,7 @@
             <a href="./pages/appointment_form.html">
               <button class="btn-primary">Get Appointment</button>
             </a>
-            <button class="btn-secondary">Learn More</button>
+            <button data-auth-required="display:none;" onclick="profilePage()" class="profile">Profile</button>
           </div>
         </div>
       </div>
@@ -110,7 +109,7 @@
             <a href="./pages/appointment_form.html">
               <button class="btn-primary">Get Appointment</button>
             </a>
-            <button class="btn-secondary">Learn More</button>
+            <button data-auth-required="display:none;" onclick="profilePage()" class="profile">Profile</button>
           </div>
         </div>
       </div>

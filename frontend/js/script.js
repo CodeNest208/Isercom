@@ -43,6 +43,11 @@ function restoreOriginalNav() {
   navLinks.classList.add('active');
   // Re-initialize services dropdown after restoring content
   initializeServicesDropdown();
+  
+  // Re-apply authentication state after restoring original content
+  if (window.apiClient && typeof window.apiClient.updateAuthenticationState === 'function') {
+    window.apiClient.updateAuthenticationState();
+  }
 }
 
 // Function to show services menu in mobile
@@ -430,6 +435,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 });
+
+
+function profilePage(){
+  window.location.href='../frontend/pages/profile_page.html';
+}
 
 // Helper function to show messages (reuse existing if available)
 function showMessage(message, type = 'info') {

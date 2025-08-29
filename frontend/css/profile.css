@@ -296,8 +296,8 @@ select.edit-input {
     .logo-section {
         position: relative;
         width: 100%;
-        height: auto;
-        min-height: 300px;
+        height: 120px;
+        min-height: 120px;
         order: -1;
     }
     
@@ -310,15 +310,15 @@ select.edit-input {
     
     .form-title {
         font-size: 2rem;
-        margin-top: 60px;
+        margin-top: 30px;
     }
     
     .isercom-logo {
-        padding: 20px;
+        padding: 5px;
     }
     
     .isercom-logo img {
-        max-width: 150px;
+        max-width: 120px;
     }
     
     .action-buttons {
