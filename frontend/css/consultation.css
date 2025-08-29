@@ -15,10 +15,6 @@ body {
   display: flex;
   align-items: center;
   color: white;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  font-size: 30px;
 }
 
 .banner {
@@ -193,11 +189,4 @@ ul li {
     text-align: center;
   }
 }
-@media (max-width:768px) {
-  .hero h1 {
-    font-size: 40px;
-  }
-  .hero p {
-    font-size: 25px;
-  }
-}
+
