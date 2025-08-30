@@ -19,6 +19,16 @@ document.addEventListener('DOMContentLoaded', function() {
         toggleEditMode(false);
         // Restore original values
         populateFields(currentUserData);
+        const displays = document.querySelectorAll('[id$="Display"]');
+        const edits = document.querySelectorAll('[id$="Edit"]');
+
+        displays.forEach(display => {
+            display.style.display = 'flex';
+        });
+
+        edits.forEach(edit => {
+            edit.style.display = 'none';
+        });
     });
 
     saveBtn.addEventListener('click', function() {
