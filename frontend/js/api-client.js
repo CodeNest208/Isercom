@@ -276,6 +276,11 @@ window.updateAuthUI = function(isAuthenticated, userData = null) {
                 logoutLink.textContent = 'Sign Out';
             }
         }
+        
+        // Update stored nav content with current authentication state
+        if (window.updateStoredNavContent && typeof window.updateStoredNavContent === 'function') {
+            window.updateStoredNavContent();
+        }
     }
 };
 

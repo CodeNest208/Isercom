@@ -36,6 +36,13 @@ function storeOriginalNav() {
   }
 }
 
+// Function to update stored nav content with current authentication state
+function updateStoredNavContent() {
+  if (originalNavContent) {
+    originalNavContent = navLinks.innerHTML;
+  }
+}
+
 // Function to restore original nav content
 function restoreOriginalNav() {
   navLinks.innerHTML = originalNavContent;
@@ -43,11 +50,6 @@ function restoreOriginalNav() {
   navLinks.classList.add('active');
   // Re-initialize services dropdown after restoring content
   initializeServicesDropdown();
-  
-  // Re-apply authentication state after restoring original content
-  if (window.apiClient && typeof window.apiClient.updateAuthenticationState === 'function') {
-    window.apiClient.updateAuthenticationState();
-  }
 }
 
 // Function to show services menu in mobile
@@ -557,3 +559,4 @@ document.addEventListener('DOMContentLoaded', function() {
 // Make functions available globally
 window.restoreOriginalNav = restoreOriginalNav;
 window.showServicesMenu = showServicesMenu;
+window.updateStoredNavContent = updateStoredNavContent;
