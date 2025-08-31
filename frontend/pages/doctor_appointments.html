@@ -296,24 +296,32 @@
                     </div>
 
                     <div class="action-buttons">
-                        <h6>Change Status:</h6>
-                        <div class="status-actions">
-                            ${appointment.status !== 'confirmed' ? `
-                                <button class="action-btn btn-confirm" onclick="updateAppointmentStatus(${appointment.id}, 'confirmed')">
-                                    ✅ Confirm
-                                </button>
-                            ` : ''}
-                            ${appointment.status !== 'completed' ? `
-                                <button class="action-btn btn-complete" onclick="updateAppointmentStatus(${appointment.id}, 'completed')">
-                                    ✅ Complete
-                                </button>
-                            ` : ''}
-                            ${appointment.status !== 'cancelled' ? `
+                        ${appointment.status !== 'cancelled' && appointment.status !== 'completed' ? `
+                            <h6>Change Status:</h6>
+                            <div class="status-actions">
+                                ${appointment.status !== 'confirmed' ? `
+                                    <button class="action-btn btn-confirm" onclick="updateAppointmentStatus(${appointment.id}, 'confirmed')">
+                                        ✅ Confirm
+                                    </button>
+                                ` : ''}
+                                ${appointment.status === 'confirmed' ? `
+                                    <button class="action-btn btn-complete" onclick="updateAppointmentStatus(${appointment.id}, 'completed')">
+                                        ✅ Complete
+                                    </button>
+                                ` : ''}
                                 <button class="action-btn btn-cancel" onclick="updateAppointmentStatus(${appointment.id}, 'cancelled')">
                                     ❌ Cancel
                                 </button>
-                            ` : ''}
-                        </div>
+                            </div>
+                        ` : appointment.status === 'cancelled' ? `
+                            <div class="status-message">
+                                <p><em>This appointment has been cancelled.</em></p>
+                            </div>
+                        ` : `
+                            <div class="status-message">
+                                <p><em>This appointment has been completed.</em></p>
+                            </div>
+                        `}
                     </div>
                     
                     ${appointment.notes ? `
@@ -427,6 +435,8 @@
                     targetButton.textContent = 'Updating...';
                 }
                 
+                console.log(`Updating appointment ${appointmentId} to status: ${newStatus}`);
+                
                 // Make API call to update appointment status
                 const response = await fetch(`/api/appointments/${appointmentId}/update_status/`, {
                     method: 'POST',
@@ -440,12 +450,21 @@
                     })
                 });
                 
+                console.log(`Response status: ${response.status}`);
+                
                 if (!response.ok) {
-                    const errorData = await response.json();
+                    let errorData;
+                    try {
+                        errorData = await response.json();
+                    } catch (e) {
+                        errorData = { error: `HTTP ${response.status}: ${response.statusText}` };
+                    }
+                    console.error('Backend error:', errorData);
                     throw new Error(errorData.error || `Failed to update appointment (${response.status})`);
                 }
                 
                 const result = await response.json();
+                console.log('Update successful:', result);
                 
                 // Show success message
                 const statusText = newStatus.charAt(0).toUpperCase() + newStatus.slice(1);
