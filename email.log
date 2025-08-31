@@ -253,3 +253,13 @@ INFO 2025-08-28 19:03:25,616 email_utils 3880 27416 Email queued for async sendi
 INFO 2025-08-28 19:03:25,616 email_utils 3880 27416 Both appointment emails queued for appointment 5
 ERROR 2025-08-28 19:03:35,195 email_utils 3880 15832 Error sending email to isaacsercom@gmail.com: (421, b'Service not available')
 ERROR 2025-08-28 19:03:35,196 email_utils 3880 20532 Error sending email to christiantano@gmail.com: (421, b'Service not available')
+INFO 2025-08-31 19:12:27,115 email_utils 31780 3272 Email queued for async sending to isaacsercom@gmail.com
+INFO 2025-08-31 19:12:27,121 email_utils 31780 3272 Email queued for async sending to christiantano@gmail.com
+INFO 2025-08-31 19:12:27,122 email_utils 31780 3272 Both appointment emails queued for appointment 6
+INFO 2025-08-31 19:12:34,109 email_utils 31780 34068 Email sent successfully to isaacsercom@gmail.com in 6.99s
+INFO 2025-08-31 19:12:34,316 email_utils 31780 29500 Email sent successfully to christiantano@gmail.com in 7.20s
+INFO 2025-08-31 19:13:07,606 email_utils 31780 28004 Email queued for async sending to isaacsercom@gmail.com
+INFO 2025-08-31 19:13:07,613 email_utils 31780 28004 Email queued for async sending to christiantano@gmail.com
+INFO 2025-08-31 19:13:07,614 email_utils 31780 28004 Both appointment emails queued for appointment 6
+INFO 2025-08-31 19:13:12,507 email_utils 31780 29500 Email sent successfully to christiantano@gmail.com in 4.89s
+INFO 2025-08-31 19:13:12,735 email_utils 31780 34068 Email sent successfully to isaacsercom@gmail.com in 5.13s
