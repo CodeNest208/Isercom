@@ -48,7 +48,7 @@
 .back {
     
     background-image:
-      linear-gradient(45deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.4) 50%, rgba(0, 0, 0, 0.1) 100%),
+      linear-gradient(360deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.4) 50%, rgba(0, 0, 0, 0.1) 100%),
       url('../images/nur1.jpg');
     background-size: cover;
     background-position: center;
