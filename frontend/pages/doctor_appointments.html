@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Appointments - Doctor Dashboard</title>
+    <link rel="stylesheet" href="../css/doctor_appointment.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-info">
+                <h1>📋 My Appointments</h1>
+                <p id="doctorInfo">Doctor Portal</p>
+            </div>
+            <div class="nav-buttons">
+                <a href="./doctor_home.html" class="btn">🏠 Dashboard</a>
+                <a href="./doctor_schedule.html" class="btn">📅 Schedule</a>
+                <a href="/admin/" class="btn">⚙️ Admin</a>
+                <a href="./logout.html" class="btn btn-secondary">🚪 Sign Out</a>
+            </div>
+        </div>
+
+        <div class="filters-section">
+            <h3 class="filters-title">Filter Appointments</h3>
+            
+            <div class="filter-buttons">
+                <button class="filter-btn active" onclick="filterAppointments('all', this)">
+                    All (<span id="totalAll">0</span>)
+                </button>
+                <button class="filter-btn" onclick="filterAppointments('scheduled', this)">
+                    Scheduled (<span id="totalScheduled">0</span>)
+                </button>
+                <button class="filter-btn" onclick="filterAppointments('confirmed', this)">
+                    Confirmed (<span id="totalConfirmed">0</span>)
+                </button>
+                <button class="filter-btn" onclick="filterAppointments('completed', this)">
+                    Completed (<span id="totalCompleted">0</span>)
+                </button>
+                <button class="filter-btn" onclick="filterAppointments('cancelled', this)">
+                    Cancelled (<span id="totalCancelled">0</span>)
+                </button>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number" id="statAll">0</div>
+                    <div class="stat-label">Total</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="statScheduled">0</div>
+                    <div class="stat-label">Scheduled</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="statConfirmed">0</div>
+                    <div class="stat-label">Confirmed</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="statCompleted">0</div>
+                    <div class="stat-label">Completed</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="statCancelled">0</div>
+                    <div class="stat-label">Cancelled</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="appointments-section">
+            <div class="appointments-header">
+                <h2 id="appointmentsTitle">All Appointments</h2>
+                <p>Manage your patient appointments</p>
+            </div>
+
+            <div class="appointments-table-wrapper">
+                <div class="appointments-table-header">
+                    <div>Patient Information</div>
+                    <div>Appointment Details</div>
+                    <div>Date & Time</div>
+                    <div>Status</div>
+                </div>
+
+                <div class="appointments-content" id="appointmentsList">
+                    <div class="loading-message">
+                        <p>Loading appointments...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        console.log('Doctor appointments page loading...');
+        
+        // Global variables
+        let allAppointments = [];
+        let currentFilter = 'all';
+
+        // Simple API client - self-contained
+        class SimpleAPIClient {
+            constructor() {
+                this.baseURL = '/api';
+                this.csrfToken = null;
+            }
+
+            async getCSRFToken() {
+                try {
+                    // Try to get from cookie first
+                    const cookie = document.cookie
+                        .split(';')
+                        .find(row => row.trim().startsWith('csrftoken='));
+                    
+                    if (cookie) {
+                        return cookie.split('=')[1];
+                    }
+
+                    // Get from API if no cookie
+                    const response = await fetch('/api/csrf-token/', {
+                        credentials: 'same-origin'
+                    });
+                    if (response.ok) {
+                        const data = await response.json();
+                        return data.csrfToken;
+                    }
+                } catch (error) {
+                    console.error('CSRF token error:', error);
+                }
+                return null;
+            }
+
+            async request(endpoint, options = {}) {
+                try {
+                    if (!this.csrfToken) {
+                        this.csrfToken = await this.getCSRFToken();
+                    }
+
+                    const url = `${this.baseURL}${endpoint}`;
+                    const defaultOptions = {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': this.csrfToken || ''
+                        },
+                        credentials: 'same-origin'
+                    };
+
+                    const finalOptions = { ...defaultOptions, ...options };
+                    console.log(`API Request: ${url}`);
+
+                    const response = await fetch(url, finalOptions);
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    }
+
+                    const data = await response.json();
+                    return data;
+
+                } catch (error) {
+                    console.error(`API Error: ${error.message}`);
+                    throw error;
+                }
+            }
+
+            async checkAuth() {
+                return await this.request('/auth/check/');
+            }
+
+            async getDoctorAppointments() {
+                return await this.request('/doctor/appointments/');
+            }
+        }
+
+        // Create API client instance
+        const apiClient = new SimpleAPIClient();
+        
+        // Initialize application
+        async function initializeApp() {
+            try {
+                console.log('Initializing doctor appointments...');
+                
+                // Check authentication
+                const authResponse = await apiClient.checkAuth();
+                console.log('Auth response:', authResponse);
+                
+                if (authResponse.is_authenticated && authResponse.user.user_type === 'doctor') {
+                    // Update doctor info in header
+                    const doctorInfo = document.getElementById('doctorInfo');
+                    if (doctorInfo) {
+                        const specialty = authResponse.user.profile.speciality || 'General Practice';
+                        doctorInfo.textContent = `${authResponse.user.profile.full_name} - ${specialty}`;
+                    }
+                    
+                    // Load appointments
+                    await loadAppointments();
+                    
+                } else if (authResponse.is_authenticated && authResponse.user.user_type === 'patient') {
+                    // Redirect patients
+                    console.log('Patient user detected, redirecting...');
+                    window.location.href = '../index.html';
+                } else {
+                    // Redirect unauthenticated users
+                    console.log('User not authenticated, redirecting to login...');
+                    window.location.href = './login.html';
+                }
+                
+            } catch (error) {
+                console.error('Error initializing app:', error);
+                showError(`Failed to load application: ${error.message}`);
+            }
+        }
+        
+        // Load appointments for the logged-in doctor
+        async function loadAppointments() {
+            const appointmentsList = document.getElementById('appointmentsList');
+            appointmentsList.innerHTML = '<div class="loading-message"><p>Loading appointments...</p></div>';
+
+            try {
+                console.log('Fetching doctor appointments...');
+                const response = await apiClient.getDoctorAppointments();
+                console.log('API Response:', response);
+                
+                if (response.success && response.appointments) {
+                    allAppointments = response.appointments;
+                    console.log('Found appointments:', allAppointments.length);
+                    
+                    if (allAppointments.length > 0) {
+                        // Update statistics
+                        updateAppointmentStats(allAppointments);
+                        
+                        // Display appointments
+                        displayAppointments(allAppointments);
+                        
+                        // Show success message
+                        showSuccess(`Successfully loaded ${allAppointments.length} appointments`);
+                    } else {
+                        appointmentsList.innerHTML = `
+                            <div class="no-appointments">
+                                <h3>📅 No Appointments Yet</h3>
+                                <p>You don't have any appointments scheduled at this time.</p>
+                                <p>Appointments will appear here once patients book with you.</p>
+                            </div>
+                        `;
+                    }
+                } else {
+                    console.log('No appointments found or API error:', response);
+                    appointmentsList.innerHTML = `
+                        <div class="no-appointments">
+                            <h3>❌ Unable to Load Appointments</h3>
+                            <p>${response.message || 'There was an error loading your appointments.'}</p>
+                            <p><button onclick="loadAppointments()" class="btn">🔄 Retry</button></p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error loading appointments:', error);
+                showError(`Error loading appointments: ${error.message}`);
+            }
+        }
+        
+        // Display appointments
+        function displayAppointments(appointments) {
+            const appointmentsList = document.getElementById('appointmentsList');
+            
+            if (appointments.length === 0) {
+                appointmentsList.innerHTML = `
+                    <div class="no-appointments">
+                        <p>No appointments found for the current filter.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            appointmentsList.innerHTML = appointments.map(appointment => `
+                <div class="appointment-item">
+                    <div class="patient-info">
+                        <h4>${appointment.patient.full_name || `${appointment.patient.first_name} ${appointment.patient.last_name}`}</h4>
+                        <p><strong>Email:</strong> ${appointment.patient.email}</p>
+                        <p><strong>Phone:</strong> ${appointment.patient.phone || 'N/A'}</p>
+                    </div>
+
+                    <div class="appointment-details">
+                        <h5>${appointment.service.name}</h5>
+                        <p>${appointment.service.description}</p>
+                    </div>
+
+                    <div class="date-time">
+                        <div class="date">${formatDate(appointment.date)}</div>
+                        <div class="time">${formatTime(appointment.time)}</div>
+                    </div>
+
+                    <div>
+                        <span class="status-badge status-${appointment.status}">
+                            ${appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1)}
+                        </span>
+                    </div>
+
+                    <div class="action-buttons">
+                        ${appointment.status !== 'cancelled' && appointment.status !== 'completed' ? `
+                            <h6>Change Status:</h6>
+                            <div class="status-actions">
+                                ${appointment.status !== 'confirmed' ? `
+                                    <button class="action-btn btn-confirm" onclick="updateAppointmentStatus(${appointment.id}, 'confirmed')">
+                                        ✅ Confirm
+                                    </button>
+                                ` : ''}
+                                ${appointment.status === 'confirmed' ? `
+                                    <button class="action-btn btn-complete" onclick="updateAppointmentStatus(${appointment.id}, 'completed')">
+                                        ✅ Complete
+                                    </button>
+                                ` : ''}
+                                <button class="action-btn btn-cancel" onclick="updateAppointmentStatus(${appointment.id}, 'cancelled')">
+                                    ❌ Cancel
+                                </button>
+                            </div>
+                        ` : appointment.status === 'cancelled' ? `
+                            <div class="status-message">
+                                <p><em>This appointment has been cancelled.</em></p>
+                            </div>
+                        ` : `
+                            <div class="status-message">
+                                <p><em>This appointment has been completed.</em></p>
+                            </div>
+                        `}
+                    </div>
+                    
+                    ${appointment.notes ? `
+                    <div class="notes-section">
+                        <strong>📝 Patient Notes:</strong>
+                        <p>${appointment.notes}</p>
+                    </div>
+                    ` : ''}
+                </div>
+            `).join('');
+        }
+        
+        // Update appointment statistics
+        function updateAppointmentStats(appointments) {
+            const stats = {
+                all: appointments.length,
+                scheduled: appointments.filter(a => a.status === 'scheduled').length,
+                confirmed: appointments.filter(a => a.status === 'confirmed').length,
+                completed: appointments.filter(a => a.status === 'completed').length,
+                cancelled: appointments.filter(a => a.status === 'cancelled').length
+            };
+            
+            // Update filter buttons
+            document.getElementById('totalAll').textContent = stats.all;
+            document.getElementById('totalScheduled').textContent = stats.scheduled;
+            document.getElementById('totalConfirmed').textContent = stats.confirmed;
+            document.getElementById('totalCompleted').textContent = stats.completed;
+            document.getElementById('totalCancelled').textContent = stats.cancelled;
+            
+            // Update stats grid
+            document.getElementById('statAll').textContent = stats.all;
+            document.getElementById('statScheduled').textContent = stats.scheduled;
+            document.getElementById('statConfirmed').textContent = stats.confirmed;
+            document.getElementById('statCompleted').textContent = stats.completed;
+            document.getElementById('statCancelled').textContent = stats.cancelled;
+        }
+        
+        // Filter appointments
+        function filterAppointments(status, buttonElement) {
+            currentFilter = status;
+            
+            // Update active filter button
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            buttonElement.classList.add('active');
+            
+            // Filter appointments
+            let filteredAppointments;
+            if (status === 'all') {
+                filteredAppointments = allAppointments;
+                document.getElementById('appointmentsTitle').textContent = 'All Appointments';
+            } else {
+                filteredAppointments = allAppointments.filter(a => a.status === status);
+                document.getElementById('appointmentsTitle').textContent = `${status.charAt(0).toUpperCase() + status.slice(1)} Appointments`;
+            }
+            
+            displayAppointments(filteredAppointments);
+        }
+        
+        // Format date for display
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('en-US', { 
+                weekday: 'short',
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+        }
+        
+        // Format time for display
+        function formatTime(timeStr) {
+            if (timeStr.includes('AM') || timeStr.includes('PM')) {
+                return timeStr; // Already formatted
+            }
+            // Convert 24-hour to 12-hour format
+            const [hours, minutes] = timeStr.split(':');
+            const hour12 = hours % 12 || 12;
+            const ampm = hours < 12 ? 'AM' : 'PM';
+            return `${hour12}:${minutes} ${ampm}`;
+        }
+        
+        // Update appointment status
+        async function updateAppointmentStatus(appointmentId, newStatus) {
+            let confirmMessage = '';
+            if (newStatus === 'completed') {
+                confirmMessage = 'Mark this appointment as completed?';
+            } else if (newStatus === 'confirmed') {
+                confirmMessage = 'Confirm this appointment?';
+            } else if (newStatus === 'cancelled') {
+                confirmMessage = 'Are you sure you want to cancel this appointment? This action cannot be undone.';
+            }
+            
+            if (confirmMessage && !confirm(confirmMessage)) {
+                return;
+            }
+            
+            try {
+                // Find and disable the button
+                const buttons = document.querySelectorAll(`[onclick*="${appointmentId}"]`);
+                let targetButton = null;
+                buttons.forEach(btn => {
+                    if (btn.onclick && btn.onclick.toString().includes(newStatus)) {
+                        targetButton = btn;
+                    }
+                });
+                
+                let originalText = '';
+                if (targetButton) {
+                    originalText = targetButton.textContent;
+                    targetButton.disabled = true;
+                    targetButton.textContent = 'Updating...';
+                }
+                
+                console.log(`Updating appointment ${appointmentId} to status: ${newStatus}`);
+                
+                // Make API call to update appointment status
+                const response = await fetch(`/api/appointments/${appointmentId}/update_status/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken')
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({
+                        status: newStatus
+                    })
+                });
+                
+                console.log(`Response status: ${response.status}`);
+                
+                if (!response.ok) {
+                    let errorData;
+                    try {
+                        errorData = await response.json();
+                    } catch (e) {
+                        errorData = { error: `HTTP ${response.status}: ${response.statusText}` };
+                    }
+                    console.error('Backend error:', errorData);
+                    throw new Error(errorData.error || `Failed to update appointment (${response.status})`);
+                }
+                
+                const result = await response.json();
+                console.log('Update successful:', result);
+                
+                // Show success message
+                const statusText = newStatus.charAt(0).toUpperCase() + newStatus.slice(1);
+                showSuccess(`Appointment has been ${statusText.toLowerCase()} successfully!`);
+                
+                // Reload appointments to show updated data
+                await loadAppointments();
+                
+            } catch (error) {
+                console.error('Error updating appointment status:', error);
+                showError(`Failed to update appointment: ${error.message}`);
+                
+                // Restore button state if we found it
+                if (targetButton && originalText) {
+                    targetButton.disabled = false;
+                    targetButton.textContent = originalText;
+                }
+            }
+        }
+        
+        // Confirm cancellation (simplified since updateAppointmentStatus now handles confirmation)
+        function confirmCancelAppointment(appointmentId) {
+            updateAppointmentStatus(appointmentId, 'cancelled');
+        }
+        
+        // Utility function to get CSRF token from cookies
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        // Show error message
+        function showError(message) {
+            showMessage(message, 'error');
+            
+            // Also display in main content area for critical errors
+            const appointmentsList = document.getElementById('appointmentsList');
+            appointmentsList.innerHTML = `
+                <div class="error-message">
+                    <h3>❌ Error</h3>
+                    <p><strong>Error:</strong> ${message}</p>
+                    <p><button onclick="loadAppointments()" class="btn">🔄 Retry</button></p>
+                    <p><a href="./doctor_home.html" class="btn btn-secondary">🏠 Back to Dashboard</a></p>
+                </div>
+            `;
+        }
+
+        // Show success message
+        function showSuccess(message) {
+            showMessage(message, 'success');
+        }
+        
+        // Universal message display function
+        function showMessage(message, type = 'info') {
+            // Create message container if it doesn't exist
+            let container = document.querySelector('.message-container');
+            if (!container) {
+                container = document.createElement('div');
+                container.className = 'message-container';
+                document.body.appendChild(container);
+            }
+            
+            // Create message element
+            const messageEl = document.createElement('div');
+            messageEl.className = `message ${type}`;
+            messageEl.textContent = message;
+            
+            // Add close functionality
+            messageEl.addEventListener('click', () => {
+                messageEl.style.animation = 'slideInRight 0.3s ease-out reverse';
+                setTimeout(() => messageEl.remove(), 300);
+            });
+            
+            // Auto-remove after 5 seconds
+            setTimeout(() => {
+                if (messageEl.parentNode) {
+                    messageEl.style.animation = 'slideInRight 0.3s ease-out reverse';
+                    setTimeout(() => messageEl.remove(), 300);
+                }
+            }, 5000);
+            
+            container.appendChild(messageEl);
+        }
+        
+        // Initialize when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM loaded, initializing app...');
+            initializeApp().catch(error => {
+                console.error('Failed to initialize app:', error);
+                showError(error.message);
+            });
+        });
+    </script>
+</body>
+</html>

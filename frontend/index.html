@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home - Isercom Clinic</title>
+    <link rel="stylesheet" href="./css/style.css" />
+    <link rel="stylesheet" href="./css/header_footer.css" />
+    <link rel="stylesheet" href="./css/body.css" />
+    <script src="./js/script.js" defer></script>
+    <script src="./js/animations.js" defer></script>
+    <script src="./js/api-client.js" defer></script>
+  </head>
+  <body>
+
+    <!-- Header -->
+    <header>
+      <div class="top-bar">
+        <div class="top-fill">
+          <p><strong>Email:</strong> itsercom@gmail.com</p>
+          <p><strong>Phone:</strong> 0202640514</p>
+        </div>
+      </div>
+
+      <nav class="navbar">
+        <div class="nav-logo">
+          <img src="./images/logo.png" alt="iSercom" />
+        </div>
+        <button class="hamburger" id="hamburger">&#9776;</button>
+        <div class="nav-links" id="navLinks">
+          <a href="./index.html">Home</a>
+          <a href="./pages/about_us.html">About Us</a>
+          <a href="./pages/contact.html">Contact Us</a>
+          <div class="nav-dropdown">
+            <a href="#" id="services-link">Services ▼</a>
+            <ul class="dropdown-menu" id="services-dropdown" style="display:none; position:absolute; background:#fff; box-shadow:0 2px 8px rgba(0,0,0,0.15); z-index:1000; list-style:none; margin:0; padding:10px 0;">
+              <li><a href="./pages/gynaecology.html">Obstetrics and Gynaecological Services</a></li>
+              <li><a href="./pages/consultation.html">Consultation & Specialised Clinics</a></li>
+              <li><a href="./pages/Antenatal.html">Antenatal Care</a></li>
+              <li><a href="./pages/fertility.html">Fertility/IVF</a></li>
+              
+            </ul>
+          </div>
+
+          <a href="./pages/logout.html" class="appointment" data-auth-required style="display:none;">Sign Out</a>
+          <a href="./pages/login.html" class="appointment" data-guest-only>Login</a>
+          
+        </div>
+      </nav>
+    </header>
+
+    <!-- Hero Section -->
+<section class="hero">
+  <div class="slideshow-container">
+
+    <!-- Slide 1 -->
+    <div class="slide">
+      <img src="./images/homepage/hpdoctor1.jpg" alt="Medical Service">
+      <div class="overlay">
+        <div class="hero-text">
+          <h1>We Provide Medical Services That You Can Trust!</h1>
+          <p>
+            Our dedicated team of experienced medical professionals is committed to providing
+             compassionate, patient-centered care in a safe and welcoming environment. 
+             From routine check-ups to specialized treatments, we prioritize your well-being every step of the way. 
+             With state-of-the-art facilities and a personalized approach, you can count on us for reliable, respectful,
+              and responsive medical services — because your health deserves nothing less.
+          </p>
+          <div class="hero-buttons">
+            <a href="./pages/appointment_form.html">
+              <button class="btn-primary">Get Appointment</button>
+            </a>
+            <button data-auth-required="display:none;" onclick="profilePage()" class="profile">Profile</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2 -->
+    <div class="slide">
+      <img src="./images/homepage/slidepic2.jpg" alt="Health and Life">
+      <div class="overlay">
+        <div class="hero-text">
+          <h1>A Matter of Health and Life</h1>
+          <p>
+            We are dedicated to providing compassionate care and support to improve your well-being. 
+            Our expert team works tirelessly to offer personalized health solutions for you and your family.
+          </p>
+          <div class="hero-buttons">
+            <a href="./pages/appointment_form.html">
+              <button class="btn-primary">Get Appointment</button>
+            </a>
+            <button data-auth-required="display:none;" onclick="profilePage()" class="profile">Profile</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3 -->
+    <div class="slide">
+      <img src="./images/homepage/slidepic3.jpg" alt="Fertility Center">
+      <div class="overlay">
+        <div class="hero-text">
+          <h1>iSecorm Medical & Fertility Center</h1>
+          <p>
+            services focus on helping individuals and couples who are facing challenges in conceiving naturally. 
+            Fertility care involves diagnosing and treating underlying issues such as hormonal imbalances, ovulation disorders, or low sperm count. 
+            IVF is an advanced assisted reproductive technique where eggs and sperm are combined outside the body, and the resulting embryo is transferred to the uterus. 
+            These services may include ovulation stimulation.
+          </p>
+          <div class="hero-buttons">
+            <a href="./pages/appointment_form.html">
+              <button class="btn-primary">Get Appointment</button>
+            </a>
+            <button data-auth-required="display:none;" onclick="profilePage()" class="profile">Profile</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Arrows -->
+    <div class="prev">
+      <a>&#10094;</a>
+    </div>
+    <div class="next">
+      <a>&#10095;</a>
+    </div>
+
+    <!-- Dots -->
+    <div class="dots"></div>
+  </div>
+</section>
+
+
+    <!-- Why Choose Us Section -->
+    <section class="why-choose-us">
+      <h5 class="subtitle">WHY CHOOSE US?</h5>
+      <h2 class="main-title">
+        Harbor Health Anchored in<br />Care And Commitment
+      </h2>
+
+      <div class="features">
+        <!-- Card 1 -->
+        <div class="feature-card">
+          <img src="./images/homepage/cp2.jpg" alt="Specialized Doctors" />
+          <h4>Specialized Doctors</h4>
+          <p>
+            Our team of specialized doctors brings advanced training,
+            cutting-edge education, and a patient-centered approach to every
+            diagnosis and treatment.
+          </p>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="feature-card">
+          <img src="./images/homepage/card2.jpg" alt="Standard Facilities" />
+          <h4>Standard Facilities</h4>
+          <p>
+            We are committed to delivering exceptional medical services with
+            state-of-the-art equipment, integrity, and compassion.
+          </p>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="feature-card">
+          <img
+            src="./images/homepage/card3.jpg"
+            alt="Professional Health Care"
+          />
+          <h4>Professional Health Care</h4>
+          <p>
+            We are committed to delivering exceptional medical care guided by
+            experience, integrity, and compassion.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Our Services Section -->
+    <section id="services-section">
+      <h2 class="services-title">OUR SERVICES</h2>
+      <div class="services-grid">
+        <div class="services-box">
+          <h3>Consultation & Specialized Clinics</h3>
+          <p>
+            OPD consultations serve as the first point of contact, offering
+            general medical care for common illnesses, preventive check-ups, and
+            basic treatments. Specialized Clinic consultations are conducted by
+            expert doctors for occupation-specific medical needs.
+          </p>
+        </div>
+        <div class="services-box">
+          <h3>Antenatal Care</h3>
+          <p>
+            Medical and supportive care given to women throughout their
+            pregnancy. This aims to monitor the health of both mother and the
+            developing baby to ensure a safe pregnancy and delivery.
+          </p>
+        </div>
+        <div class="services-box">
+          <h3>Obstetrics & Gynaecological Service</h3>
+          <p>
+            Obstetrics and Gynaecological (OB/GYN) services focus on women’s
+            reproductive health, pregnancy, and childbirth. It includes
+            diagnosis and treatment of conditions, and professional support for
+            both men and women.
+          </p>
+        </div>
+        <div class="services-box">
+          <h3>Fertility & IVF</h3>
+          <p>
+            IVF is an advanced assisted reproductive technique where eggs and
+            sperm are collected outside the body, and the resulting embryo is
+            transferred to the uterus.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-top">
+        <img src="./images/logo.png" alt="iSecorm Logo" class="logo" />
+        <button class="back-to-top" onclick="scrollToTop()">Back to top</button>
+      </div>
+
+      <div class="footer-content">
+        <div class="related-pages">
+          <h3>Related Pages</h3>
+          <ul>
+            <li><a href="./pages/about_us.html">About Us</a></li>
+            <li><a href="./pages/contact.html">Contact Us</a></li>
+            <li><a href="./pages/terms.html">Learn More</a></li>
+          </ul>
+        </div>
+
+        <div class="quick-links">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="./pages/gynaecology.html">Obstetrics and Gynaecological Services</a></li>
+            <li><a href="./pages/consultation.html">Consultation & Specialised Clinics</a></li>
+            <li><a href="./pages/Antenatal.html">Antenatal Care</a></li>
+            <li><a href="./pages/fertility.html">Fertility/IVF</a></li>
+          </ul>
+        </div>
+
+        <div class="follow-us">
+          <h3>Follow Us</h3>
+          <div class="icons">
+            <a href="https://www.facebook.com/share/1GGg69Cv1C/"><img src="./images/facebook.png" alt="Facebook" /></a>
+            <a href="https://www.tiktok.com/@isaac_secorm?_t=ZM-8yv6UjvY3yH&_r=1"><img src="./images/tiktok.png" alt="TikTok" /></a>
+            <a href="https://www.instagram.com/"><img src="./images/instagram.png" alt="instagram" /></a>
+            <a href="https://twitter.com/"><img src="./images/x.png" alt="X" /></a>
+          </div>
+
+          <form class="feedback-form">
+            <textarea name="message" placeholder="Feedback"></textarea>
+            <div class="form-row">
+              <input type="text" name="name" placeholder="Name" />
+              <input type="email" name="email" placeholder="Email" />
+            </div>
+            <button type="submit">Submit</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2025 iSecorm Clinic. All rights reserved.</p>
+      </div>
+    </footer>
+    
+    <!-- API Integration Script -->
+    <script>
+      // Initialize homepage with API data
+      document.addEventListener('DOMContentLoaded', async function() {
+        try {
+          // Check authentication status
+          const authStatus = await window.apiClient.checkAuth();
+          window.updateAuthUI(authStatus.is_authenticated, authStatus.user);
+          
+          // Load homepage data
+          const homeData = await window.apiClient.getHomeData();
+          
+          // Update page content with API data if needed
+          if (homeData.message) {
+            console.log('Homepage loaded successfully:', homeData.message);
+          }
+          
+        } catch (error) {
+          console.error('Failed to load homepage data:', error);
+        }
+        
+        const learnMoreButtons = document.querySelectorAll('.btn-secondary');
+        learnMoreButtons.forEach(function(button) {
+          button.addEventListener('click', function() {
+            window.location.href = './pages/terms.html';
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

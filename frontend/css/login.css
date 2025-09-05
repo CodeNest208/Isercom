@@ -1,0 +1,507 @@
+
+/* Login Page Styles - Cleaned and Consolidated */
+
+/* Override body padding to fix spacing at top */
+body {
+    padding-top: 0 !important;
+}
+
+.login-wrapper {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+    position: relative;
+}
+
+.home-button-container {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 100;
+}
+
+.home-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: #04332A;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.home-btn:hover {
+    background: #006b50;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.home-btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+.login-form-section {
+    flex: 1;
+    max-width: 50%;
+    padding: 80px 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: #f8f9fa;
+}
+
+.logo-section {
+    flex: 1;
+    max-width: 50%;
+    background: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(30px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.clinic-logo {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.clinic-logo h1 {
+    color: #4a5568;
+    font-size: 2em;
+    margin-bottom: 5px;
+}
+
+.clinic-logo p {
+    color: #718096;
+    font-size: 0.9em;
+}
+
+.form-title {
+    color: #333;
+    font-size: 50px;
+    font-weight: 600;
+    margin-bottom: 40px;
+    line-height: 1.2;
+}
+
+h2 {
+    color: #2d3748;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.form-group {
+    margin-bottom: 24px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: #666;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+/* Consistent input field styling */
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-size: 16px;
+    background-color: #fff;
+    transition: border-color 0.3s ease;
+    font-family: inherit;
+    outline: none;
+    box-sizing: border-box;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+input[type="email"]::placeholder,
+input[type="password"]::placeholder {
+    color: #999;
+    font-size: 14px;
+}
+
+.login-btn {
+    width: 100%;
+    background: #204F3F;
+    color: white;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin-top: 16px;
+    font-family: inherit;
+}
+
+.login-btn:hover {
+    background: #218838;
+}
+
+.login-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.isercom-logo {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+}
+
+.isercom-logo img {
+    max-width: 350px;
+    width: 80%;
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+}
+
+.isercom-text {
+    font-size: 42px;
+    font-weight: 700;
+    color: #e91e63;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+}
+
+.isercom-tagline {
+    font-size: 14px;
+    color: #666;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.social-login {
+    margin-top: 32px;
+    width: 100%;
+    text-align: center;
+}
+
+.social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+}
+
+/* Desktop social icons - hidden by default, will be shown in logo section */
+.desktop-social {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.mobile-social {
+    display: none;
+}
+
+.social-text {
+    margin-top: 15px;
+    display: flex;
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.social-text p {
+    margin-right: 10px;
+}
+
+.social-text a {
+    color: #204F3F;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.social-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 18px;
+    font-weight: 600;
+    text-decoration: none;
+    color: inherit;
+    gap: 8px;
+    padding: 8px 16px;
+    width: auto;
+    border-radius: 8px;
+    min-width: 120px;
+}
+
+.google { 
+    background: #db4437; 
+    color: white; 
+}
+
+.google:hover {
+    background: #c23321;
+    color: white;
+}
+
+.facebook { 
+    background: #3b5998; 
+    color: white; 
+}
+
+.twitter { 
+    background: #1da1f2; 
+    color: white; 
+}
+
+.social-icon:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    text-decoration: none;
+}
+
+/* Message styles */
+.error-message {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    padding: 12px 16px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.success-message {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    padding: 12px 16px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.field-error {
+    color: #dc3545;
+    font-size: 13px;
+    margin-top: 6px;
+}
+
+.note {
+    color: #718096;
+    font-size: 0.9em;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    body {
+        flex-direction: column;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    }
+
+    .login-wrapper {
+        flex-direction: column;
+        min-height: 100vh;
+    }
+
+    .logo-section {
+        order: 1;
+        min-height: 250px;
+        max-width: 100%;
+        border-left: none;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .login-form-section {
+        order: 2;
+        padding: 40px 20px 50px;
+        max-width: 100%;
+        margin: 0;
+        background: white;
+    }
+
+    .form-title {
+        font-size: 32px;
+        margin-bottom: 30px;
+    }
+
+    input[type="email"],
+    input[type="password"] {
+        padding: 16px 20px;
+        font-size: 16px;
+        border-radius: 12px;
+    }
+
+    .login-btn {
+        padding: 16px;
+        font-size: 18px;
+        border-radius: 12px;
+        margin-top: 20px;
+    }
+
+    .isercom-logo img {
+        max-width: 250px;
+        width: 70%;
+    }
+
+    .desktop-social {
+        display: none;
+    }
+
+    .mobile-social {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 32px;
+        background: white;
+        padding: 20px;
+        border-radius: 15px;
+        border: 1px solid #e2e8f0;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo-section {
+        min-height: 200px;
+    }
+
+    .login-form-section {
+        padding: 30px 15px;
+        max-width: 95%;
+        margin: 20px auto;
+    }
+
+    .form-title {
+        font-size: 30px;
+    }
+
+    /* Even wider fields and button for small phones */
+    input[type="email"],
+    input[type="password"] {
+        padding: 18px 20px;
+        font-size: 16px;
+        border-radius: 12px;
+    }
+
+    .login-btn {
+        padding: 18px;
+        font-size: 18px;
+        border-radius: 12px;
+        margin-top: 24px;
+    }
+
+    .isercom-logo img {
+        max-width: 200px;
+        width: 60%;
+    }
+
+    .mobile-social {
+        margin-top: 20px;
+        padding: 15px;
+        margin-bottom: 30px;
+    }
+}
+
+/* Message styling to match the page design */
+.message-container {
+    margin: 15px 0;
+}
+
+.message {
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    animation: slideIn 0.3s ease-out;
+}
+
+.message.success {
+    background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    box-shadow: 0 2px 8px rgba(21, 87, 36, 0.1);
+}
+
+.message.error {
+    background: linear-gradient(135deg, #f8d7da 0%, #f1aeb5 100%);
+    color: #721c24;
+    border: 1px solid #f1aeb5;
+    box-shadow: 0 2px 8px rgba(114, 28, 36, 0.1);
+}
+
+.message.info {
+    background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+    box-shadow: 0 2px 8px rgba(12, 84, 96, 0.1);
+}
+
+.field-error {
+    color: #dc3545;
+    font-size: 12px;
+    margin-top: 5px;
+    padding: 5px 0;
+    font-weight: 500;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Enhanced form styling */
+.login-btn:disabled {
+    background: #6c757d;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.form-group input:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+}

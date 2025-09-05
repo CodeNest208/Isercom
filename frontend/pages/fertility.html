@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fetility - Isercom</title>
+    <link rel="stylesheet" href="../css/header_footer.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/body.css">
+    <link rel="stylesheet" href="../css/fertility.css">
+    <script src="../js/script.js" defer></script>
+    <!-- <link rel="stylesheet" href="CSS/appoint.css"> -->
+    <script src="JS/contact.js"></script>
+    <script src="JS/animations.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Add click event for the Talk to doctor button
+        var talkToDoctorBtn = document.querySelector('.ferbtn');
+        if (talkToDoctorBtn) {
+          talkToDoctorBtn.addEventListener('click', function() {
+            window.location.href = "./appointment_form.html";
+          });
+        }
+
+        // Scroll animation observer
+        const observerOptions = {
+          threshold: 0.1,
+          rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+            }
+          });
+        }, observerOptions);
+
+        // Observe all elements with animation classes
+        const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right, .scale-in');
+        animatedElements.forEach(el => observer.observe(el));
+      });
+    </script>
+</head>
+<body>
+    <header>
+      <div class="top-bar">
+        <div class="top-fill">
+          <p><strong>Email:</strong> itsercom@gmail.com</p>
+          <p><strong>Phone:</strong> 0202640514</p>
+        </div>
+      </div>
+
+      <nav class="navbar">
+        <div class="nav-logo">
+          <img src="../images/logo.png" alt="iSercom" />
+        </div>
+        <button class="hamburger" id="hamburger">&#9776;</button>
+        <div class="nav-links" id="navLinks">
+          <a href="../index.html">Home</a>
+          <a href="./about_us.html">About Us</a>
+          <a href="./contact.html">Contact Us</a>
+           <div class="nav-dropdown">
+            <a href="#" id="services-link">Services ▼</a>
+            <ul class="dropdown-menu" id="services-dropdown" style="display:none; position:absolute; background:#fff; box-shadow:0 2px 8px rgba(0,0,0,0.15); z-index:1000; list-style:none; margin:0; padding:10px 0;">
+              <li><a href="./gynaecology.html">Obstetrics and Gynaecological Services</a></li>
+              <li><a href="./consultation.html">Consultation & Specialised Clinics</a></li>
+              <li><a href="./Antenatal.html">Antenatal Care</a></li>
+              <li><a href="./fertility.html">Fertility/IVF</a></li>
+              
+            </ul>
+          </div>
+
+          <a href="./appointment_form.html" class="appointment">Appointment</a>
+          
+        </div>
+      </nav>
+    </header>
+    <main class="fertility-page">
+       <section class="section" style=" background-image: linear-gradient(360deg, rgba(46, 44, 44, 0.95) 0%, rgba(255,255,255,0.0) 100%),url('../images/fertility/new.avif');">
+        <h1 style="color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); font-size: 60px;">Fertility and IVF</h1>
+       </section>
+       
+       <div class="content-card">
+         <div class="fer fade-in">
+        <h1 class="slide-in-left">Fertility and IVF</h1>
+        <p class="fade-in">At ISECORM clicinic, we understand that the journey to parenthood can be deeply personal-and sometimes challenging.
+          Our fertility and IVf service are designed to offer hope, expert care, and advanced reproduction solutions to individuals and couples facing fertility concerns.
+          <br>
+          We provide comprehensive fertilityevaluations,personalized treatment plans and emotional support in a confidential and compassionate setting. Whether you're just beginning your journey or to explore your fertility options or have been on this journey for some time, our team of experienced fertilityspecialist is here to guide you with care and expertise.
+          <br>
+          <br>
+          Our services include:
+          <br>
+          <li class="slide-in-right">Fertility assessments for both men and women</li>
+          <li class="slide-in-right">Ovulation monitoring and hormonal evaluation</li>
+          <li class="slide-in-right">Assisted reproductive technology (ART)</li>
+          <li class="slide-in-right">Intrauterine insemination (IUI)</li>
+          <li class="slide-in-right">Counseling and suppport through the treatment process</li>
+          <br>
+          
+        </p>
+       </div>
+       <div class="ferimg scale-in">
+        <img src="../images/fertility/fereg.webp" alt="fertility">
+       </div>
+       <div style="margin: 20px;" class="fade-in">
+        <p>
+          At ISECOM Clinic, we conbine medical exelence with a patient-centered approach- because we know this is more than just a procedure; it's about your future, your family, and your 
+          dream. Our goal is to offer the most advanced treatment in a setting that values your comfort, trust, and dignity.<br>
+          No matter where you are in your fertility journey, we are here to walk with you, offering care, and the confidence to take the next step
+        </p>
+       </div>
+       <div class="ferimg scale-in">
+        <img src="../images/fertility/fue.png" alt="fue">
+       </div>
+      <button class="ferbtn fade-in">Talk to doctor</button>
+       </div>
+    <footer class="footer">
+      <div class="footer-top">
+        <img src="../images/logo.png" alt="iSecorm Logo" class="logo" />
+        <button class="back-to-top" onclick="scrollToTop()">Back to top</button>
+      </div>
+
+      <div class="footer-content">
+        <div class="related-pages">
+          <h3>Related Pages</h3>
+          <ul>
+            <li><a href="./about_us.html">About Us</a></li>
+            <li><a href="./contact.html">Contact Us</a></li>
+            <li><a href="../pages/terms.html">Learn More</a></li>
+          </ul>
+        </div>
+
+        <div class="quick-links">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="./gynaecology.html">Obstetrics and Gynaecological Services</a></li>
+            <li><a href="./consultation.html">Consultation & Specialised Clinics</a></li>
+            <li><a href="./Antenatal.html">Antenatal Care</a></li>
+            <li><a href="./fertility.html">Fertility/IVF</a></li>
+            
+          </ul>
+        </div>
+
+        <div class="follow-us">
+          <h3>Follow Us</h3>
+          <div class="icons">
+            <a href="https://www.facebook.com/share/1GGg69Cv1C/"><img src="../images/facebook.png" alt="Facebook" /></a>
+            <a href="https://www.tiktok.com/@isaac_secorm?_t=ZM-8yv6UjvY3yH&_r=1"><img src="../images/tiktok.png" alt="TikTok" /></a>
+            <a href="https://www.instagram.com/"><img src="../images/instagram.png" alt="Instagram" /></a>
+            <a href="https://twitter.com/"><img src="../images/x.png" alt="X" /></a>
+          </div>
+
+          <form class="feedback-form">
+            <textarea placeholder="Feedback"></textarea>
+            <div class="form-row">
+              <input type="text" placeholder="Name" />
+              <input type="email" placeholder="Email" />
+            </div>
+            <button type="submit">Submit</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2025 iSecorm Clinic. All rights reserved.</p>
+      </div>
+    </footer>
+</body>
+</html>

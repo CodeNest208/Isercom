@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Dashboard - Isercom Clinic</title>
+    <link rel="stylesheet" href="../css/doctor_home.css"/>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo-area">
+                <h1>🏥 Isercom Clinic</h1>
+                <p>Doctor Portal</p>
+            </div>
+            <a href="./logout.html" class="logout-btn">🚪 Sign Out</a>
+        </div>
+
+        <div class="welcome-card">
+            <h2 id="welcomeMessage">👨‍⚕️ Welcome, Doctor!</h2>
+            <p id="doctorInfo">Specialty: Loading... | Today's date: <span id="currentDate"></span></p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="icon">📊</div>
+                <h3 id="totalAppointments">0</h3>
+                <p>Total Appointments</p>
+            </div>
+            <div class="stat-card">
+                <div class="icon">⏳</div>
+                <h3 id="scheduledAppointments">0</h3>
+                <p>Scheduled</p>
+            </div>
+            <div class="stat-card">
+                <div class="icon">✅</div>
+                <h3 id="confirmedAppointments">0</h3>
+                <p>Confirmed</p>
+            </div>
+            <div class="stat-card">
+                <div class="icon">🏆</div>
+                <h3 id="completedAppointments">0</h3>
+                <p>Completed</p>
+            </div>
+        </div>
+
+        <div class="action-section">
+            <h3>Quick Actions</h3>
+            <div class="action-buttons">
+                <a href="./doctor_schedule.html" class="btn btn-primary">📅 View My Schedule</a>
+                <a href="./doctor_appointments.html" class="btn">📋 All Appointments</a>
+                <a href="/admin/" class="btn">⚙️ Admin Panel</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Self-contained API client
+        class SimpleAPIClient {
+            constructor() {
+                this.baseURL = '';
+                this.csrfToken = null;
+            }
+
+            async getCSRFToken() {
+                if (!this.csrfToken) {
+                    try {
+                        const response = await fetch('/api/check_auth/');
+                        const csrfToken = response.headers.get('X-CSRFToken') || 
+                                        document.querySelector('[name=csrfmiddlewaretoken]')?.value ||
+                                        this.getCookieValue('csrftoken');
+                        this.csrfToken = csrfToken;
+                    } catch (error) {
+                        console.error('Error getting CSRF token:', error);
+                    }
+                }
+                return this.csrfToken;
+            }
+
+            getCookieValue(name) {
+                const value = `; ${document.cookie}`;
+                const parts = value.split(`; ${name}=`);
+                if (parts.length === 2) return parts.pop().split(';').shift();
+                return null;
+            }
+
+            async checkAuth() {
+                try {
+                    const response = await fetch('/api/check_auth/', {
+                        method: 'GET',
+                        credentials: 'include',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    });
+                    return await response.json();
+                } catch (error) {
+                    throw new Error(`Network error: ${error.message}`);
+                }
+            }
+
+            async getDoctorAppointments() {
+                try {
+                    const response = await fetch('/api/doctor_appointments/', {
+                        method: 'GET',
+                        credentials: 'include',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    });
+                    return await response.json();
+                } catch (error) {
+                    throw new Error(`Network error: ${error.message}`);
+                }
+            }
+        }
+
+        // Initialize API client
+        const apiClient = new SimpleAPIClient();
+        
+        // Make it available globally for compatibility
+        window.apiClient = apiClient;
+
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                // Set current date
+                const today = new Date();
+                const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                document.getElementById('currentDate').textContent = today.toLocaleDateString('en-US', options);
+                
+                // Check authentication and get user info
+                const authResponse = await apiClient.checkAuth();
+                
+                if (authResponse.is_authenticated && authResponse.user.user_type === 'doctor') {
+                    // Update welcome message with doctor's name
+                    const welcomeHeader = document.getElementById('welcomeMessage');
+                    const doctorInfo = document.getElementById('doctorInfo');
+                    
+                    if (welcomeHeader) {
+                        welcomeHeader.textContent = `👨‍⚕️ Welcome, ${authResponse.user.profile.full_name}!`;
+                    }
+                    
+                    if (doctorInfo) {
+                        const specialty = authResponse.user.profile.speciality || 'General Practice';
+                        doctorInfo.innerHTML = `Specialty: ${specialty} | Today's date: <span id="currentDate">${today.toLocaleDateString('en-US', options)}</span>`;
+                    }
+                    
+                    // Load appointment statistics with real data
+                    await loadAppointmentStats();
+                    
+                } else if (authResponse.is_authenticated && authResponse.user.user_type === 'patient') {
+                    // Redirect patients to home page
+                    window.location.href = '../index.html';
+                } else {
+                    // Redirect unauthenticated users to login
+                    window.location.href = './login.html';
+                }
+            } catch (error) {
+                console.error('Error loading doctor info:', error);
+                // Redirect to login on error
+                window.location.href = './login.html';
+            }
+        });
+        
+        // Function to load appointment statistics from API
+        async function loadAppointmentStats() {
+            try {
+                console.log('Loading appointment statistics...');
+                
+                // Fetch real appointment data from API
+                const response = await window.apiClient.getDoctorAppointments();
+                console.log('Stats API Response:', response);
+                
+                if (response.success && response.appointments) {
+                    const appointments = response.appointments;
+                    
+                    // Calculate statistics from real data
+                    const stats = {
+                        total: appointments.length,
+                        scheduled: appointments.filter(a => a.status === 'scheduled').length,
+                        confirmed: appointments.filter(a => a.status === 'confirmed').length,
+                        completed: appointments.filter(a => a.status === 'completed').length
+                    };
+                    
+                    console.log('Calculated stats:', stats);
+                    
+                    // Update the UI with real statistics
+                    document.getElementById('totalAppointments').textContent = stats.total;
+                    document.getElementById('scheduledAppointments').textContent = stats.scheduled;
+                    document.getElementById('confirmedAppointments').textContent = stats.confirmed;
+                    document.getElementById('completedAppointments').textContent = stats.completed;
+                    
+                } else {
+                    console.log('No appointments found or API error:', response);
+                    // Show zeros if no appointments found
+                    document.getElementById('totalAppointments').textContent = '0';
+                    document.getElementById('scheduledAppointments').textContent = '0';
+                    document.getElementById('confirmedAppointments').textContent = '0';
+                    document.getElementById('completedAppointments').textContent = '0';
+                }
+            } catch (error) {
+                console.error('Error loading appointment statistics:', error);
+                // Show error state or fallback to zeros
+                document.getElementById('totalAppointments').textContent = '?';
+                document.getElementById('scheduledAppointments').textContent = '?';
+                document.getElementById('confirmedAppointments').textContent = '?';
+                document.getElementById('completedAppointments').textContent = '?';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Isercom Clinic</title>
+    <link rel="stylesheet" href="../css/login.css">
+    <link rel="stylesheet" href="../css/body.css">
+
+</head>
+<body>
+    <div class="login-wrapper">
+        <div class="home-button-container">
+            <a href="../index.html" class="home-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                </svg>
+                Home
+            </a>
+        </div>
+        <div class="login-form-section">
+            <h1 class="form-title">Sign into your account</h1>
+
+            <form method="post" id="loginForm">
+                <div class="message-container" id="messageContainer"></div>
+
+                <!-- {# Email Field #} -->
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                    <div class="field-error" id="emailError"></div>
+                </div>
+
+                <!-- {# Password Field #} -->
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+                    <div class="field-error" id="passwordError"></div>
+                </div>
+
+                <button type="submit" class="login-btn">Sign in</button>
+            </form>
+            
+            <div class="social-login mobile-social">
+                <div class="social-text">
+                    <p>Don't have an account?</p>
+                    <a href="./register.html">Sign up</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="logo-section">
+            <div class="isercom-logo">
+                <img src="../images/logo.png" alt="Isercom Medical and Fertility Centre">
+                <div class="desktop-social">
+                    <div class="social-text">
+                        <p>Don't have an account?</p>
+                        <a href="./register.html">Sign up</a>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Self-contained Login Script -->
+    <script>
+        // Simple API client for login
+        class LoginAPIClient {
+            constructor() {
+                this.baseURL = '';
+                this.csrfToken = null;
+            }
+
+            async getCSRFToken() {
+                if (!this.csrfToken) {
+                    try {
+                        const response = await fetch('/api/check_auth/');
+                        const csrfToken = response.headers.get('X-CSRFToken') || 
+                                        document.querySelector('[name=csrfmiddlewaretoken]')?.value ||
+                                        this.getCookieValue('csrftoken');
+                        this.csrfToken = csrfToken;
+                    } catch (error) {
+                        console.error('Error getting CSRF token:', error);
+                    }
+                }
+                return this.csrfToken;
+            }
+
+            getCookieValue(name) {
+                const value = `; ${document.cookie}`;
+                const parts = value.split(`; ${name}=`);
+                if (parts.length === 2) return parts.pop().split(';').shift();
+                return null;
+            }
+
+            async login(email, password) {
+                try {
+                    const csrfToken = await this.getCSRFToken();
+                    const response = await fetch('/api/login/', {
+                        method: 'POST',
+                        credentials: 'include',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': csrfToken,
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        body: JSON.stringify({ email, password })
+                    });
+                    return await response.json();
+                } catch (error) {
+                    throw new Error(`Network error: ${error.message}`);
+                }
+            }
+        }
+
+        const apiClient = new LoginAPIClient();
+
+        // Show message function
+        function showMessage(message, type = 'info') {
+            const messageContainer = document.getElementById('messageContainer');
+            messageContainer.innerHTML = `<div class="message ${type}">${message}</div>`;
+            messageContainer.style.display = 'block';
+        }
+
+        // Clear message function
+        function clearMessage() {
+            const messageContainer = document.getElementById('messageContainer');
+            messageContainer.innerHTML = '';
+            messageContainer.style.display = 'none';
+        }
+
+        // Login form handler
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.getElementById('loginForm');
+            
+            loginForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                // Clear previous errors
+                document.getElementById('emailError').textContent = '';
+                document.getElementById('passwordError').textContent = '';
+                clearMessage();
+                
+                // Get form data
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                
+                // Disable submit button
+                const submitBtn = loginForm.querySelector('.login-btn');
+                const originalText = submitBtn.textContent;
+                submitBtn.textContent = 'Signing in...';
+                submitBtn.disabled = true;
+                
+                try {
+                    const response = await apiClient.login(email, password);
+                    
+                    if (response.success) {
+                        // Show role-specific success message
+                        const userType = response.user?.user_type || 'user';
+                        let message = 'Login successful! Redirecting...';
+                        let redirectUrl = '/frontend/index.html';
+                        
+                        if (userType === 'doctor') {
+                            message = 'Welcome Doctor! Redirecting to your dashboard...';
+                            redirectUrl = './doctor_home.html';
+                        } else if (userType === 'patient') {
+                            message = 'Welcome! Redirecting to homepage...';
+                            redirectUrl = '../index.html';
+                        }
+                        
+                        showMessage(message, 'success');
+                        
+                        // Use the redirect URL from the backend response or fallback
+                        setTimeout(() => {
+                            window.location.href = response.redirect_url || redirectUrl;
+                        }, 1500);
+                    } else {
+                        // Display field-specific errors
+                        if (response.errors) {
+                            if (response.errors.email) {
+                                document.getElementById('emailError').textContent = response.errors.email.join(', ');
+                            }
+                            if (response.errors.password) {
+                                document.getElementById('passwordError').textContent = response.errors.password.join(', ');
+                            }
+                            if (response.errors.non_field_errors) {
+                                showMessage(response.errors.non_field_errors.join(', '), 'error');
+                            }
+                        } else {
+                            showMessage(response.error || 'Login failed. Please check your credentials.', 'error');
+                        }
+                    }
+                } catch (error) {
+                    console.error('Login error:', error);
+                    showMessage('Login failed. Please try again.', 'error');
+                }
+                
+                // Re-enable submit button
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            });
+        });
+
+        // Make showMessage available globally for compatibility
+        window.showMessage = showMessage;
+    </script>
+
+</body>
+</html>

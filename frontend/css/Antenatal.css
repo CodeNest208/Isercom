@@ -1,0 +1,180 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background-color: #f7f7f7;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: white;
+  padding: 20px;
+}
+
+.section {
+  margin-bottom: 40px;
+}
+
+.section h2 {
+  color: #006666;
+  margin-bottom: 15px;
+  font-size: 20px;
+}
+
+.text-full {
+  margin-bottom: 20px;
+}
+
+ul {
+  padding-left: 20px;
+  margin-top: 10px;
+}
+
+ul li {
+  margin-bottom: 6px;
+}
+
+.placeholder-full {
+  width: 100%;
+  height: 400px;
+  background-color: #d9d9d9;
+  margin: 20px 0;
+  background-image: url(../images/Antenatal/pregnant-2568594_1280.jpg);
+  background-size: cover;
+}
+
+.content-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.text {
+  flex: 2;
+  min-width: 250px;
+}
+
+.placeholder {
+  flex: 1;
+  min-width: 200px;
+  background-color: #d9d9d9;
+  height: 200px;
+  background-image: url(../images/Antenatal/pregnant-2635034_1280.jpg);
+  background-size: cover;
+
+  
+}
+
+.cta {
+  text-align: left;
+  margin-top: 30px;
+}
+
+.antenatal-page{
+    background-color: #f5f5f5;
+    height: 100vh;
+
+
+  }
+
+
+
+.cta button {
+  background-color: #004d40;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.cta button:hover {
+  background-color: #00695c;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .content-row {
+    flex-direction: column;
+  }
+
+  .placeholder {
+    height: 150px;
+  }
+
+  .cta {
+    text-align: center;
+  }
+}
+/* Responsive Rules */
+@media (max-width: 768px) {
+  .hero-overlay h1 {
+    font-size: 18px;
+  }
+
+  .hero-overlay p {
+    font-size: 12px;
+  }
+
+  .content-row {
+    flex-direction: column;
+  }
+
+  .placeholder {
+    height: 150px;
+  }
+
+  .cta {
+    text-align: center;
+  }
+}
+
+
+.hero {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  color: white;
+}
+
+/* Blurred background image */
+.hero::before {
+  content: "";
+  background: url('../images/Antenatal/antenatal-care-1.jpg') no-repeat left bottom/cover;
+  position: absolute;
+  top: 0; 
+  left: 0;
+  width: 100%;
+  height: 100%;
+  filter: blur(1px); /* adjust blur amount */
+  transform: scale(1.1); /* prevents edge cutoff from blur */
+  z-index: 1;
+}
+
+/* Dark overlay for readability */
+.hero::after {
+  content: "";
+  position: absolute;
+  top: 0; 
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4); /* dim background */
+  z-index: 2;
+}
+
+/* Text content */
+.hero-overlay {
+  text-align: left;
+  z-index: 3;
+}
+

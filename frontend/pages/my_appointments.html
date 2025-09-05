@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Appointments - Isercom</title>
+    <link rel="stylesheet" href="../css/header_footer.css">
+    <link rel="stylesheet" href="../css/my_appointments_enhanced.css">
+    <link rel="stylesheet" href="../css/body.css">
+    <script src="../js/script.js" defer></script>
+</head>
+<body>
+    <header>
+      <div class="top-bar">
+        <div class="top-fill">
+          <p><strong>Email:</strong> itsercom@gmail.com</p>
+          <p><strong>Phone:</strong> 0202640514</p>
+        </div>
+      </div>
+
+      <nav class="navbar">
+        <div class="nav-logo">
+          <img src="../images/logo.png" alt="iSercom" />
+        </div>
+        <button class="hamburger" id="hamburger">&#9776;</button>
+        <div class="nav-links" id="navLinks">
+          <a href="../index.html">Home</a>
+          <a href="./about_us.html">About Us</a>
+          <a href="./contact.html">Contact Us</a>
+           <div class="nav-dropdown">
+            <a href="#" id="services-link">Services ▼</a>
+            <ul class="dropdown-menu" id="services-dropdown" style="display:none; position:absolute; background:#fff; box-shadow:0 2px 8px rgba(0,0,0,0.15); z-index:1000; list-style:none; margin:0; padding:10px 0;">
+              <li><a href="./gynaecology.html">Obstetrics and Gynaecological Services</a></li>
+              <li><a href="./consultation.html">Consultation & Specialised Clinics</a></li>
+              <li><a href="./Antenatal.html">Antenatal Care</a></li>
+              <li><a href="./fertility.html">Fertility/IVF</a></li>
+              
+            </ul>
+          </div>
+
+          <a href="./appointment_form.html" class="appointment">Appointment</a>
+          
+        </div>
+      </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="appointments-container">
+            <div class="appointments-header">
+                <h1>My Appointments</h1>
+                <p>Manage your upcoming and past medical appointments</p>
+            </div>
+
+            <!-- Filters Section -->
+            <div id="filters-section" class="filters-section" style="display: none;">
+                <div class="filters-container">
+                    <div class="filter-row">
+                        <div class="filter-group">
+                            <label for="status-filter">Status:</label>
+                            <select id="status-filter" class="filter-select">
+                                <option value="">All Statuses</option>
+                                <option value="scheduled">Scheduled</option>
+                                <option value="confirmed">Confirmed</option>
+                                <option value="completed">Completed</option>
+                                <option value="cancelled">Cancelled</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="service-filter">Service:</label>
+                            <select id="service-filter" class="filter-select">
+                                <option value="">All Services</option>
+                                <option value="consultation">General Consultation</option>
+                                <option value="gynaecology">Gynaecology</option>
+                                <option value="antenatal">Antenatal Care</option>
+                                <option value="fertility">Fertility Services</option>
+                                <option value="checkup">Health Checkup</option>
+                                <option value="followup">Follow-up</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="date-filter">Date Range:</label>
+                            <select id="date-filter" class="filter-select">
+                                <option value="">All Dates</option>
+                                <option value="upcoming">Upcoming</option>
+                                <option value="past">Past</option>
+                                <option value="this-week">This Week</option>
+                                <option value="this-month">This Month</option>
+                                <option value="last-month">Last Month</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <button id="clear-filters" class="clear-filters-btn">Clear Filters</button>
+                        </div>
+                    </div>
+                    <div class="filter-results">
+                        <span id="filter-count" class="filter-count"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading indicator -->
+            <div id="loading-indicator" class="loading">
+                <div class="spinner"></div>
+                <p>Loading your appointments...</p>
+            </div>
+
+            <!-- Error message -->
+            <div id="error-message" class="error-message" style="display: none;">
+                <div class="error-content">
+                    <h3>Unable to Load Appointments</h3>
+                    <p id="error-text">Please try again later or contact support if the problem persists.</p>
+                    <button onclick="loadAppointments()" class="retry-btn">Retry</button>
+                </div>
+            </div>
+
+            <!-- No appointments message -->
+            <div id="no-appointments" class="no-appointments" style="display: none;">
+                <div class="no-appointments-content">
+                    <h3>No Appointments Found</h3>
+                    <p>You don't have any appointments scheduled yet.</p>
+                    <a href="appointment_form.html" class="book-appointment-btn">Book Your First Appointment</a>
+                </div>
+            </div>
+
+            <!-- Appointments grid -->
+            <div id="appointments-grid" class="appointments-grid" style="display: none;">
+                <!-- Appointments will be loaded here dynamically -->
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-top">
+        <img src="../images/logo.png" alt="iSecorm Logo" class="logo" />
+        <button class="back-to-top" onclick="scrollToTop()">Back to top</button>
+      </div>
+
+      <div class="footer-content">
+        <div class="related-pages">
+          <h3>Related Pages</h3>
+          <ul>
+            <li><a href="./about_us.html">About Us</a></li>
+            <li><a href="./contact.html">Contact Us</a></li>
+            <li><a href="#">Learn More</a></li>
+          </ul>
+        </div>
+
+        <div class="quick-links">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="./gynaecology.html">Obstetrics and Gynaecological Services</a></li>
+            <li><a href="./consultation.html">Consultation & Specialised Clinics</a></li>
+            <li><a href="./Antenatal.html">Antenatal Care</a></li>
+            <li><a href="./fertility.html">Fertility/IVF</a></li>
+            
+          </ul>
+        </div>
+
+        <div class="follow-us">
+          <h3>Follow Us</h3>
+          <div class="icons">
+            <a href="https://www.facebook.com/share/1GGg69Cv1C/"><img src="../images/facebook.png" alt="Facebook" /></a>
+            <a href="https://www.tiktok.com/@isaac_secorm?_t=ZM-8yv6UjvY3yH&_r=1"><img src="../images/tiktok.png" alt="TikTok" /></a>
+            <a href="#"><img src="../images/instagram.png" alt="Instagram" /></a>
+            <a href="#"><img src="../images/x.png" alt="X" /></a>
+          </div>
+
+          <form class="feedback-form">
+            <textarea placeholder="Feedback"></textarea>
+            <div class="form-row">
+              <input type="text" placeholder="Name" />
+              <input type="email" placeholder="Email" />
+            </div>
+            <button type="submit">Submit</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2025 iSecorm Clinic. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script>
+        // Function to get CSRF token
+        function getCSRFToken() {
+            const cookies = document.cookie.split(';');
+            for (let cookie of cookies) {
+                const [name, value] = cookie.trim().split('=');
+                if (name === 'csrftoken') {
+                    return value;
+                }
+            }
+            return null;
+        }
+
+        // Function to format date
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+
+        // Function to format time
+        function formatTime(timeString) {
+            const time = new Date(`2000-01-01T${timeString}`);
+            return time.toLocaleTimeString('en-US', {
+                hour: 'numeric',
+                minute: '2-digit',
+                hour12: true
+            });
+        }
+
+        // Function to get status badge class
+        function getStatusBadgeClass(status) {
+            switch (status.toLowerCase()) {
+                case 'confirmed':
+                    return 'status-confirmed';
+                case 'scheduled':
+                    return 'status-scheduled';
+                case 'cancelled':
+                    return 'status-cancelled';
+                case 'completed':
+                    return 'status-completed';
+                default:
+                    return 'status-scheduled';
+            }
+        }
+
+        // Function to create appointment card
+        function createAppointmentCard(appointment) {
+            const card = document.createElement('div');
+            card.className = 'appointment-card';
+            
+            const statusClass = getStatusBadgeClass(appointment.status);
+            
+            // Get service icon based on service name
+            const serviceIcon = getServiceIcon(appointment.service?.name || 'General Consultation');
+            
+            card.innerHTML = `
+                <div class="appointment-card-header">
+                    <h3>${serviceIcon} ${appointment.service?.name || 'General Consultation'}</h3>
+                    <span class="appointment-status ${statusClass}">${appointment.status}</span>
+                </div>
+                <div class="appointment-card-body">
+                    <div class="appointment-info">
+                        <div class="info-row">
+                            <span class="info-label">📅 Date:</span>
+                            <span class="info-value">${formatDate(appointment.date)}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">🕐 Time:</span>
+                            <span class="info-value">${formatTime(appointment.time)}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">👨‍⚕️ Doctor:</span>
+                            <span class="info-value">Dr. ${appointment.doctor?.name || 'TBA'}</span>
+                        </div>
+                        ${appointment.doctor?.speciality ? `
+                        <div class="info-row">
+                            <span class="info-label">🎯 Specialty:</span>
+                            <span class="info-value">${appointment.doctor.speciality}</span>
+                        </div>
+                        ` : ''}
+                        ${appointment.notes ? `
+                        <div class="info-row">
+                            <span class="info-label">📝 Notes:</span>
+                            <span class="info-value">${appointment.notes}</span>
+                        </div>
+                        ` : ''}
+                    </div>
+                    <div class="appointment-actions">
+                        ${appointment.status.toLowerCase() === 'confirmed' || appointment.status.toLowerCase() === 'scheduled' ? `
+                            <button class="action-btn reschedule-btn" 
+                                    data-appointment-id="${appointment.id}" 
+                                    data-action="reschedule"
+                                    onclick="rescheduleAppointment(${appointment.id})">
+                                📅 Reschedule
+                            </button>
+                            <button class="action-btn cancel-btn" 
+                                    data-appointment-id="${appointment.id}" 
+                                    data-action="cancel"
+                                    onclick="cancelAppointment(${appointment.id})">
+                                ❌ Cancel
+                            </button>
+                        ` : ''}
+                        <button class="action-btn details-btn" 
+                                data-appointment-id="${appointment.id}" 
+                                data-action="details"
+                                onclick="viewAppointmentDetails(${appointment.id})">
+                            👁️ Details
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            return card;
+        }
+
+        // Function to get service icon
+        function getServiceIcon(serviceName) {
+            const icons = {
+                'General Consultation': '🩺',
+                'Gynaecology': '🌸',
+                'Antenatal Care': '🤱',
+                'Fertility Services': '🌱',
+                'Cardiology': '❤️',
+                'Dermatology': '🧴',
+                'Pediatrics': '👶',
+                'Orthopedics': '🦴',
+                'Mental Health': '🧠',
+                'Dental': '🦷'
+            };
+            
+            // Try to match service name (case insensitive)
+            for (const [service, icon] of Object.entries(icons)) {
+                if (serviceName.toLowerCase().includes(service.toLowerCase())) {
+                    return icon;
+                }
+            }
+            
+            return '🩺'; // Default icon
+        }
+
+        // Function to display appointments
+        function displayAppointments(appointments) {
+            console.log('Displaying appointments:', appointments);
+            
+            const grid = document.getElementById('appointments-grid');
+            const noAppointments = document.getElementById('no-appointments');
+            const loading = document.getElementById('loading-indicator');
+            const filtersSection = document.getElementById('filters-section');
+            
+            // Hide loading
+            loading.style.display = 'none';
+            
+            // Store appointments globally for filtering
+            allAppointments = appointments || [];
+            
+            if (!appointments || appointments.length === 0) {
+                noAppointments.style.display = 'block';
+                grid.style.display = 'none';
+                filtersSection.style.display = 'none';
+                return;
+            }
+            
+            // Show filters section
+            filtersSection.style.display = 'block';
+            
+            // Display all appointments initially
+            displayFilteredAppointments(allAppointments);
+            updateFilterCount(allAppointments.length, allAppointments.length);
+        }
+
+        // Global variable to store all appointments
+        let allAppointments = [];
+
+        // Function to filter appointments based on current filter values
+        function filterAppointments() {
+            const statusFilter = document.getElementById('status-filter').value;
+            const serviceFilter = document.getElementById('service-filter').value;
+            const dateFilter = document.getElementById('date-filter').value;
+            
+            let filteredAppointments = allAppointments.filter(appointment => {
+                // Status filter
+                if (statusFilter && appointment.status.toLowerCase() !== statusFilter) {
+                    return false;
+                }
+                
+                // Service filter
+                if (serviceFilter) {
+                    const serviceName = appointment.service?.name?.toLowerCase() || 'consultation';
+                    if (!serviceName.includes(serviceFilter)) {
+                        return false;
+                    }
+                }
+                
+                // Date filter
+                if (dateFilter) {
+                    const appointmentDate = new Date(appointment.date);
+                    const today = new Date();
+                    const startOfToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+                    
+                    switch (dateFilter) {
+                        case 'upcoming':
+                            if (appointmentDate < startOfToday) return false;
+                            break;
+                        case 'past':
+                            if (appointmentDate >= startOfToday) return false;
+                            break;
+                        case 'this-week':
+                            const startOfWeek = new Date(today);
+                            startOfWeek.setDate(today.getDate() - today.getDay());
+                            const endOfWeek = new Date(startOfWeek);
+                            endOfWeek.setDate(startOfWeek.getDate() + 6);
+                            if (appointmentDate < startOfWeek || appointmentDate > endOfWeek) return false;
+                            break;
+                        case 'this-month':
+                            if (appointmentDate.getMonth() !== today.getMonth() || 
+                                appointmentDate.getFullYear() !== today.getFullYear()) return false;
+                            break;
+                        case 'last-month':
+                            const lastMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+                            const lastMonthEnd = new Date(today.getFullYear(), today.getMonth(), 0);
+                            if (appointmentDate < lastMonth || appointmentDate > lastMonthEnd) return false;
+                            break;
+                    }
+                }
+                
+                return true;
+            });
+            
+            // Update the display
+            displayFilteredAppointments(filteredAppointments);
+            updateFilterCount(filteredAppointments.length, allAppointments.length);
+        }
+
+        // Function to display filtered appointments
+        function displayFilteredAppointments(appointments) {
+            const grid = document.getElementById('appointments-grid');
+            const noAppointments = document.getElementById('no-appointments');
+            
+            if (appointments.length === 0) {
+                grid.style.display = 'none';
+                noAppointments.style.display = 'block';
+                // Update no appointments message for filtered results
+                const noAppointmentsContent = noAppointments.querySelector('.no-appointments-content h3');
+                noAppointmentsContent.textContent = 'No appointments match your filters';
+                const noAppointmentsText = noAppointments.querySelector('.no-appointments-content p');
+                noAppointmentsText.textContent = 'Try adjusting your filters to see more results.';
+            } else {
+                grid.innerHTML = '';
+                appointments.forEach(appointment => {
+                    const card = createAppointmentCard(appointment);
+                    grid.appendChild(card);
+                });
+                grid.style.display = 'flex';
+                noAppointments.style.display = 'none';
+            }
+        }
+
+        // Function to update filter count
+        function updateFilterCount(filteredCount, totalCount) {
+            const filterCount = document.getElementById('filter-count');
+            if (filteredCount === totalCount) {
+                filterCount.textContent = `Showing all ${totalCount} appointments`;
+            } else {
+                filterCount.textContent = `Showing ${filteredCount} of ${totalCount} appointments`;
+            }
+        }
+
+        // Function to clear all filters
+        function clearAllFilters() {
+            document.getElementById('status-filter').value = '';
+            document.getElementById('service-filter').value = '';
+            document.getElementById('date-filter').value = '';
+            
+            // Show all appointments
+            displayFilteredAppointments(allAppointments);
+            updateFilterCount(allAppointments.length, allAppointments.length);
+        }
+
+        // Function to setup filter event listeners
+        function setupFilterListeners() {
+            const statusFilter = document.getElementById('status-filter');
+            const serviceFilter = document.getElementById('service-filter');
+            const dateFilter = document.getElementById('date-filter');
+            const clearButton = document.getElementById('clear-filters');
+            
+            statusFilter.addEventListener('change', filterAppointments);
+            serviceFilter.addEventListener('change', filterAppointments);
+            dateFilter.addEventListener('change', filterAppointments);
+            clearButton.addEventListener('click', clearAllFilters);
+        }
+
+        // Function to show error
+        function showError(message) {
+            console.error('Error:', message);
+            
+            const loading = document.getElementById('loading-indicator');
+            const errorDiv = document.getElementById('error-message');
+            const errorText = document.getElementById('error-text');
+            
+            loading.style.display = 'none';
+            errorText.textContent = message;
+            errorDiv.style.display = 'block';
+        }
+
+        // Function to load appointments
+        async function loadAppointments() {
+            console.log('Loading appointments...');
+            
+            // Show loading, hide others
+            document.getElementById('loading-indicator').style.display = 'block';
+            document.getElementById('error-message').style.display = 'none';
+            document.getElementById('no-appointments').style.display = 'none';
+            document.getElementById('appointments-grid').style.display = 'none';
+            
+            try {
+                const response = await fetch('/api/user/appointments/', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCSRFToken() || ''
+                    },
+                    credentials: 'include'
+                });
+                
+                console.log('Response status:', response.status);
+                console.log('Response headers:', response.headers);
+                
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        window.location.href = 'login.html';
+                        return;
+                    }
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                console.log('Received data:', data);
+                
+                if (data.success) {
+                    displayAppointments(data.appointments);
+                } else {
+                    throw new Error(data.message || 'Failed to load appointments');
+                }
+                
+            } catch (error) {
+                console.error('Error loading appointments:', error);
+                showError(error.message || 'Unable to load appointments. Please try again.');
+            }
+        }
+
+        // Appointment action functions
+        async function rescheduleAppointment(appointmentId) {
+            const appointment = allAppointments.find(apt => apt.id === appointmentId);
+            if (!appointment) {
+                alert('Appointment not found.');
+                return;
+            }
+
+            // Create a modal for reschedule form
+            const modal = createRescheduleModal(appointment);
+            document.body.appendChild(modal);
+            modal.style.display = 'flex';
+        }
+
+        async function cancelAppointment(appointmentId) {
+            const appointment = allAppointments.find(apt => apt.id === appointmentId);
+            if (!appointment) {
+                alert('Appointment not found.');
+                return;
+            }
+
+            // Show confirmation dialog
+            const confirmed = confirm(`Are you sure you want to cancel your appointment on ${formatDate(appointment.date)} at ${formatTime(appointment.time)} with Dr. ${appointment.doctor?.name || 'TBA'}?`);
+            
+            if (!confirmed) return;
+
+            try {
+                // Show loading state - find button by data attribute for better targeting
+                const cancelButtons = document.querySelectorAll(`[data-appointment-id="${appointmentId}"][data-action="cancel"]`);
+                const cancelButton = cancelButtons[0]; // Get first matching button
+                
+                if (cancelButton) {
+                    const originalText = cancelButton.innerHTML;
+                    cancelButton.innerHTML = '<span style="display: flex; align-items: center; gap: 4px;"><span class="loading-spinner"></span>Cancelling...</span>';
+                    cancelButton.disabled = true;
+                }
+
+                const response = await fetch(`/api/user/appointments/${appointmentId}/cancel/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCSRFToken() || ''
+                    },
+                    credentials: 'include'
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    // Update the appointment status in the local array
+                    const appointmentIndex = allAppointments.findIndex(apt => apt.id === appointmentId);
+                    if (appointmentIndex !== -1) {
+                        allAppointments[appointmentIndex].status = 'cancelled';
+                    }
+
+                    // Refresh the display
+                    filterAppointments();
+                    
+                    // Show success message
+                    showSuccessMessage('Appointment cancelled successfully!');
+                } else {
+                    throw new Error(data.message || 'Failed to cancel appointment');
+                }
+            } catch (error) {
+                console.error('Error cancelling appointment:', error);
+                showErrorMessage(`Error cancelling appointment: ${error.message}`);
+                
+                // Restore button state
+                const cancelButtons = document.querySelectorAll(`[data-appointment-id="${appointmentId}"][data-action="cancel"]`);
+                const cancelButton = cancelButtons[0];
+                if (cancelButton) {
+                    cancelButton.innerHTML = '❌ Cancel';
+                    cancelButton.disabled = false;
+                }
+            }
+        }
+
+        function viewAppointmentDetails(appointmentId) {
+            const appointment = allAppointments.find(apt => apt.id === appointmentId);
+            if (!appointment) {
+                alert('Appointment not found.');
+                return;
+            }
+
+            // Create a modal for appointment details
+            const modal = createDetailsModal(appointment);
+            document.body.appendChild(modal);
+            modal.style.display = 'flex';
+        }
+
+        // Helper function to create reschedule modal
+        function createRescheduleModal(appointment) {
+            const modal = document.createElement('div');
+            modal.className = 'modal-overlay';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>Reschedule Appointment</h2>
+                        <button class="modal-close" onclick="closeModal(this)">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="current-appointment">
+                            <h3>Current Appointment</h3>
+                            <p><strong>Date:</strong> ${formatDate(appointment.date)}</p>
+                            <p><strong>Time:</strong> ${formatTime(appointment.time)}</p>
+                            <p><strong>Doctor:</strong> Dr. ${appointment.doctor?.name || 'TBA'}</p>
+                            <p><strong>Service:</strong> ${appointment.service?.name || 'General Consultation'}</p>
+                        </div>
+                        <div class="reschedule-form">
+                            <h3>Select New Date & Time</h3>
+                            <div class="form-group">
+                                <label for="new-date">New Date:</label>
+                                <input type="date" id="new-date" min="${new Date().toISOString().split('T')[0]}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="new-time">New Time:</label>
+                                <select id="new-time" required>
+                                    <option value="">Select Time</option>
+                                    <option value="09:00">9:00 AM</option>
+                                    <option value="10:00">10:00 AM</option>
+                                    <option value="11:00">11:00 AM</option>
+                                    <option value="14:00">2:00 PM</option>
+                                    <option value="15:00">3:00 PM</option>
+                                    <option value="16:00">4:00 PM</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="reschedule-reason">Reason for Reschedule (Optional):</label>
+                                <textarea id="reschedule-reason" placeholder="Please provide a reason for rescheduling..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn-secondary" onclick="closeModal(this)">Cancel</button>
+                        <button class="btn-primary" onclick="submitReschedule(${appointment.id})">Reschedule Appointment</button>
+                    </div>
+                </div>
+            `;
+            return modal;
+        }
+
+        // Helper function to create details modal
+        function createDetailsModal(appointment) {
+            const modal = document.createElement('div');
+            modal.className = 'modal-overlay';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>Appointment Details</h2>
+                        <button class="modal-close" onclick="closeModal(this)">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="appointment-details">
+                            <div class="detail-group">
+                                <h3>📅 Appointment Information</h3>
+                                <div class="detail-row">
+                                    <span class="detail-label">Date:</span>
+                                    <span class="detail-value">${formatDate(appointment.date)}</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Time:</span>
+                                    <span class="detail-value">${formatTime(appointment.time)}</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Status:</span>
+                                    <span class="detail-value">
+                                        <span class="appointment-status ${getStatusBadgeClass(appointment.status)}">
+                                            ${appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1)}
+                                        </span>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="detail-group">
+                                <h3>👨‍⚕️ Doctor Information</h3>
+                                <div class="detail-row">
+                                    <span class="detail-label">Doctor:</span>
+                                    <span class="detail-value">Dr. ${appointment.doctor?.name || 'TBA'}</span>
+                                </div>
+                                ${appointment.doctor?.speciality ? `
+                                <div class="detail-row">
+                                    <span class="detail-label">Specialty:</span>
+                                    <span class="detail-value">${appointment.doctor.speciality}</span>
+                                </div>
+                                ` : ''}
+                            </div>
+
+                            <div class="detail-group">
+                                <h3>🩺 Service Information</h3>
+                                <div class="detail-row">
+                                    <span class="detail-label">Service:</span>
+                                    <span class="detail-value">${appointment.service?.name || 'General Consultation'}</span>
+                                </div>
+                                ${appointment.service?.description ? `
+                                <div class="detail-row">
+                                    <span class="detail-label">Description:</span>
+                                    <span class="detail-value">${appointment.service.description}</span>
+                                </div>
+                                ` : ''}
+                            </div>
+
+                            ${appointment.notes ? `
+                            <div class="detail-group">
+                                <h3>📝 Notes</h3>
+                                <div class="detail-row">
+                                    <span class="detail-value">${appointment.notes}</span>
+                                </div>
+                            </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn-secondary" onclick="closeModal(this)">Close</button>
+                        ${appointment.status.toLowerCase() === 'confirmed' || appointment.status.toLowerCase() === 'scheduled' ? `
+                            <button class="btn-warning" onclick="closeModal(this); rescheduleAppointment(${appointment.id})">Reschedule</button>
+                            <button class="btn-danger" onclick="closeModal(this); cancelAppointment(${appointment.id})">Cancel</button>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+            return modal;
+        }
+
+        // Helper functions for modal management
+        function closeModal(element) {
+            const modal = element.closest('.modal-overlay');
+            if (modal) {
+                modal.remove();
+            }
+        }
+
+        function submitReschedule(appointmentId) {
+            const newDate = document.getElementById('new-date').value;
+            const newTime = document.getElementById('new-time').value;
+            const reason = document.getElementById('reschedule-reason').value;
+
+            if (!newDate || !newTime) {
+                alert('Please select both date and time for rescheduling.');
+                return;
+            }
+
+            // For now, show a message that this feature will be implemented
+            alert(`Reschedule request submitted for appointment ${appointmentId}\\nNew Date: ${newDate}\\nNew Time: ${newTime}\\nReason: ${reason || 'No reason provided'}\\n\\nThis feature will be fully implemented soon.`);
+            
+            // Close the modal
+            const modal = document.querySelector('.modal-overlay');
+            if (modal) modal.remove();
+        }
+
+        // Helper function to show success messages
+        function showSuccessMessage(message) {
+            const successDiv = document.createElement('div');
+            successDiv.className = 'success-message';
+            successDiv.innerHTML = `
+                <div class="success-content">
+                    <span class="success-icon">✅</span>
+                    <span class="success-text">${message}</span>
+                </div>
+            `;
+            document.body.appendChild(successDiv);
+
+            // Auto-remove after 3 seconds
+            setTimeout(() => {
+                if (successDiv.parentNode) {
+                    successDiv.remove();
+                }
+            }, 3000);
+        }
+
+        // Helper function to show error messages
+        function showErrorMessage(message) {
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-toast';
+            errorDiv.innerHTML = `
+                <div class="error-content">
+                    <span class="error-icon">❌</span>
+                    <span class="error-text">${message}</span>
+                </div>
+            `;
+            document.body.appendChild(errorDiv);
+
+            // Auto-remove after 4 seconds
+            setTimeout(() => {
+                if (errorDiv.parentNode) {
+                    errorDiv.remove();
+                }
+            }, 4000);
+        }
+
+        // Function to load appointments directly - let the API handle authentication
+        async function loadAppointments() {
+            console.log('Loading appointments...');
+            
+            // Show loading, hide others
+            document.getElementById('loading-indicator').style.display = 'block';
+            document.getElementById('error-message').style.display = 'none';
+            document.getElementById('no-appointments').style.display = 'none';
+            document.getElementById('appointments-grid').style.display = 'none';
+            
+            try {
+                const response = await fetch('/api/user/appointments/', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCSRFToken() || ''
+                    },
+                    credentials: 'include'
+                });
+                
+                console.log('Response status:', response.status);
+                console.log('Response headers:', response.headers);
+                
+                if (response.status === 401) {
+                    // User not authenticated
+                    showError('Please log in to view your appointments. Redirecting to login page...');
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 2000);
+                    return;
+                }
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                console.log('Received data:', data);
+                
+                if (data.success) {
+                    displayAppointments(data.appointments);
+                } else {
+                    throw new Error(data.message || 'Failed to load appointments');
+                }
+                
+            } catch (error) {
+                console.error('Error loading appointments:', error);
+                showError(error.message || 'Unable to load appointments. Please try again.');
+            }
+        }
+
+        // Load appointments when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Page loaded, loading appointments...');
+            setupFilterListeners();
+            loadAppointments();
+        });
+    </script>
+</body>
+</html>

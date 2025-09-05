@@ -1,0 +1,273 @@
+
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+main {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: Arial, sans-serif;
+    background-color: #D9D9D9;
+    padding: 20px;
+    width: 100%;
+}
+
+.select {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
+}
+
+.form-row {
+    display: flex;
+    gap: 15px;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-size: 14px;
+    color: #014421;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.select input[type="date"],
+.select input[type="time"],
+.select select {
+    width: 100%;
+    height: 50px;
+    padding: 10px 15px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+}
+
+.select select {
+    cursor: pointer;
+}
+
+.select textarea {
+    width: 100%;
+    min-height: 120px;
+    padding: 15px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    resize: vertical;
+}
+
+.pick-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.pick {
+    padding: 12px 25px;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 120px;
+    text-align: center;
+}
+
+#sent {
+    background-color: #04332A;
+    color: white;
+}
+
+#sent:hover {
+    background-color: #007a5e;
+}
+
+#appbook {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+#appbook:hover {
+    background-color: #d0d0d0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .form-row {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .select {
+        margin: 10px;
+        padding: 20px 15px;
+    }
+    
+    .select h1 {
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+    
+    .select input[type="date"],
+    .select input[type="time"],
+    .select select {
+        height: 45px;
+        font-size: 15px;
+    }
+    
+    .pick {
+        width: 100%;
+        max-width: 200px;
+    }
+}
+
+@media (max-width: 480px) {
+    .select {
+        padding: 15px 10px;
+    }
+    
+    .select h1 {
+        font-size: 18px;
+    }
+    
+    .select input[type="date"] {
+        height: 42px;
+        font-size: 14px;
+    }
+    
+    .pick {
+        padding: 10px 15px;
+        font-size: 15px;
+    }
+}
+
+/* Enhanced Message Styling */
+.message-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    max-width: 400px;
+}
+
+.message, .alert, .notification {
+    padding: 15px 20px;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    animation: slideInRight 0.3s ease-out;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.message:hover, .alert:hover, .notification:hover {
+    transform: translateX(-5px);
+}
+
+.message.success, .alert.success, .notification.success {
+    background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+    color: #155724;
+    border-left: 5px solid #28a745;
+}
+
+.message.error, .alert.error, .notification.error {
+    background: linear-gradient(135deg, #f8d7da 0%, #f1aeb5 100%);
+    color: #721c24;
+    border-left: 5px solid #dc3545;
+}
+
+.message.info, .alert.info, .notification.info {
+    background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
+    color: #0c5460;
+    border-left: 5px solid #17a2b8;
+}
+
+.message.warning, .alert.warning, .notification.warning {
+    background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+    color: #856404;
+    border-left: 5px solid #ffc107;
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(100px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Form validation styling */
+#formErrors {
+    background: linear-gradient(135deg, #f8d7da 0%, #f1aeb5 100%);
+    color: #721c24;
+    padding: 20px;
+    border-radius: 12px;
+    border-left: 5px solid #dc3545;
+    margin: 20px 0;
+}
+
+.success-message {
+    background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+    color: #155724;
+    padding: 20px;
+    border-radius: 12px;
+    border-left: 5px solid #28a745;
+    margin: 20px 0;
+    text-align: center;
+}
+
+.error-message {
+    background: linear-gradient(135deg, #f8d7da 0%, #f1aeb5 100%);
+    color: #721c24;
+    padding: 20px;
+    border-radius: 12px;
+    border-left: 5px solid #dc3545;
+    margin: 20px 0;
+    text-align: center;
+}
+
+/* Enhanced form styling */
+.select {
+    transition: all 0.3s ease;
+}
+
+.select:focus-within {
+    box-shadow: 0 8px 30px rgba(102, 126, 234, 0.15);
+}
+
+.pick:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background: #6c757d !important;
+}
