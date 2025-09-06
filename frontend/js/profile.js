@@ -50,12 +50,8 @@ document.addEventListener('DOMContentLoaded', function() {
             credentials: 'include'
         })
         .then(response => {
-            console.log('Profile API response status:', response.status);
-            console.log('Profile API response headers:', [...response.headers.entries()]);
-            
             if (!response.ok) {
                 if (response.status === 401) {
-                    console.log('User not authenticated, redirecting to login');
                     // User not authenticated, redirect to login
                     window.location.href = './login.html';
                     return;
@@ -65,10 +61,6 @@ document.addEventListener('DOMContentLoaded', function() {
             return response.json();
         })
         .then(data => {
-            console.log('Profile data received:', data);
-            console.log('Data type:', typeof data);
-            console.log('Data keys:', Object.keys(data || {}));
-            
             if (data && data.success !== false) {
                 currentUserData = data;
                 populateFields(data);
@@ -78,14 +70,11 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch(error => {
             console.error('Error loading profile:', error);
-            console.error('Error stack:', error.stack);
             showMessage('Error loading profile data: ' + error.message, 'error');
         });
     }
 
     function populateFields(userData) {
-        console.log('populateFields called with:', userData);
-        
         // Helper function to safely set element content
         function safeSetContent(elementId, content) {
             const element = document.getElementById(elementId);
@@ -143,8 +132,6 @@ document.addEventListener('DOMContentLoaded', function() {
         safeSetValue('phoneEdit', userData.phone || '');
         safeSetValue('dobEdit', userData.date_of_birth || '');
         safeSetValue('addressEdit', userData.address || '');
-        
-        console.log('Profile fields populated successfully');
     }
 
     function toggleEditMode(editing) {

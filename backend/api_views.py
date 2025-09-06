@@ -510,15 +510,12 @@ def csrf_token_api(request):
     })
 
 @require_http_methods(["GET"])
-@require_http_methods(["GET"])
 def my_appointments_api(request):
     """
     API endpoint to get the patient's appointments
     """
     try:
-        print(f"DEBUG: my_appointments_api called by user: {request.user}")
         if not request.user.is_authenticated:
-            print("DEBUG: User not authenticated")
             return JsonResponse({
                 'success': False,
                 'message': "Authentication required"
@@ -526,9 +523,7 @@ def my_appointments_api(request):
         
         try:
             patient = Patient.objects.get(user=request.user)
-            print(f"DEBUG: Found patient: {patient}")
         except Patient.DoesNotExist:
-            print("DEBUG: Patient not found")
             return JsonResponse({
                 'success': False,
                 'message': 'Patient profile not found. Please complete your profile first.'
@@ -536,7 +531,6 @@ def my_appointments_api(request):
         
         # Get appointments for the patient
         appointments = Appointment.objects.filter(patient=patient).select_related('doctor__user', 'service').order_by('-date', '-time')
-        print(f"DEBUG: Found {appointments.count()} appointments for patient {patient.user.username}")
         appointments_data = []
 
         for appointment in appointments:
@@ -560,21 +554,16 @@ def my_appointments_api(request):
                     'can_cancel': appointment.status in ['scheduled', 'confirmed']
                 }
                 appointments_data.append(appointment_dict)
-                print(f"DEBUG: Added appointment {appointment.pk}: {appointment.date} {appointment.time}")
             except Exception as appointment_error:
-                print(f"DEBUG: Error processing appointment {appointment.pk}: {appointment_error}")
                 continue
 
         response_data = {
             'success': True,
             'appointments': appointments_data
         }
-        print(f"DEBUG: Returning {len(appointments_data)} appointments")
-        print(f"DEBUG: Response data keys: {response_data.keys()}")
         return JsonResponse(response_data)
         
     except Exception as e:
-        print(f"DEBUG: API Error: {str(e)}")
         return JsonResponse({
             'success': False,
             'message': f'Error retrieving appointments: {str(e)}'
@@ -897,11 +886,7 @@ def user_profile_api(request):
     """
     Get or update user profile information
     """
-    print(f"DEBUG: user_profile_api called by user: {request.user}")
-    print(f"DEBUG: user is authenticated: {request.user.is_authenticated}")
-    
     if not request.user.is_authenticated:
-        print("DEBUG: User not authenticated, returning 401")
         return JsonResponse({
             'success': False,
             'message': 'Authentication required.'
@@ -911,7 +896,6 @@ def user_profile_api(request):
     
     if request.method == 'GET':
         try:
-            print(f"DEBUG: Getting profile for user: {user.username}")
             # Get user profile data
             profile_data = {
                 'first_name': user.first_name,
@@ -921,12 +905,10 @@ def user_profile_api(request):
                 'date_joined': user.date_joined.isoformat() if user.date_joined else None,
                 'last_login': user.last_login.isoformat() if user.last_login else None,
             }
-            print(f"DEBUG: Basic profile data: {profile_data}")
             
             # Check if user is a patient and get additional info
             try:
                 patient = Patient.objects.get(user=user)
-                print(f"DEBUG: Found patient record: {patient}")
                 profile_data.update({
                     'phone': patient.phone,
                     'date_of_birth': patient.date_of_birth.isoformat() if patient.date_of_birth else None,
@@ -934,27 +916,19 @@ def user_profile_api(request):
                     'user_type': 'patient'
                 })
             except Patient.DoesNotExist:
-                print("DEBUG: No patient record found, checking for doctor")
                 # Check if user is a doctor
                 try:
                     doctor = Doctor.objects.get(user=user)
-                    print(f"DEBUG: Found doctor record: {doctor}")
                     profile_data.update({
                         'speciality': doctor.speciality,
                         'user_type': 'doctor'
                     })
                 except Doctor.DoesNotExist:
-                    print("DEBUG: No doctor record found, setting user_type to 'user'")
                     profile_data['user_type'] = 'user'
             
-            print(f"DEBUG: Final profile data: {profile_data}")
             return JsonResponse(profile_data)
             
         except Exception as e:
-            print(f"DEBUG: Exception in user_profile_api: {str(e)}")
-            print(f"DEBUG: Exception type: {type(e)}")
-            import traceback
-            print(f"DEBUG: Traceback: {traceback.format_exc()}")
             return JsonResponse({
                 'success': False,
                 'message': f'Error retrieving profile: {str(e)}'
