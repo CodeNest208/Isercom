@@ -897,7 +897,11 @@ def user_profile_api(request):
     """
     Get or update user profile information
     """
+    print(f"DEBUG: user_profile_api called by user: {request.user}")
+    print(f"DEBUG: user is authenticated: {request.user.is_authenticated}")
+    
     if not request.user.is_authenticated:
+        print("DEBUG: User not authenticated, returning 401")
         return JsonResponse({
             'success': False,
             'message': 'Authentication required.'
@@ -907,6 +911,7 @@ def user_profile_api(request):
     
     if request.method == 'GET':
         try:
+            print(f"DEBUG: Getting profile for user: {user.username}")
             # Get user profile data
             profile_data = {
                 'first_name': user.first_name,
@@ -916,10 +921,12 @@ def user_profile_api(request):
                 'date_joined': user.date_joined.isoformat() if user.date_joined else None,
                 'last_login': user.last_login.isoformat() if user.last_login else None,
             }
+            print(f"DEBUG: Basic profile data: {profile_data}")
             
             # Check if user is a patient and get additional info
             try:
                 patient = Patient.objects.get(user=user)
+                print(f"DEBUG: Found patient record: {patient}")
                 profile_data.update({
                     'phone': patient.phone,
                     'date_of_birth': patient.date_of_birth.isoformat() if patient.date_of_birth else None,
@@ -927,19 +934,27 @@ def user_profile_api(request):
                     'user_type': 'patient'
                 })
             except Patient.DoesNotExist:
+                print("DEBUG: No patient record found, checking for doctor")
                 # Check if user is a doctor
                 try:
                     doctor = Doctor.objects.get(user=user)
+                    print(f"DEBUG: Found doctor record: {doctor}")
                     profile_data.update({
                         'speciality': doctor.speciality,
                         'user_type': 'doctor'
                     })
                 except Doctor.DoesNotExist:
+                    print("DEBUG: No doctor record found, setting user_type to 'user'")
                     profile_data['user_type'] = 'user'
             
+            print(f"DEBUG: Final profile data: {profile_data}")
             return JsonResponse(profile_data)
             
         except Exception as e:
+            print(f"DEBUG: Exception in user_profile_api: {str(e)}")
+            print(f"DEBUG: Exception type: {type(e)}")
+            import traceback
+            print(f"DEBUG: Traceback: {traceback.format_exc()}")
             return JsonResponse({
                 'success': False,
                 'message': f'Error retrieving profile: {str(e)}'

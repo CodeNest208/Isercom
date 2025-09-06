@@ -50,8 +50,12 @@ document.addEventListener('DOMContentLoaded', function() {
             credentials: 'include'
         })
         .then(response => {
+            console.log('Profile API response status:', response.status);
+            console.log('Profile API response headers:', [...response.headers.entries()]);
+            
             if (!response.ok) {
                 if (response.status === 401) {
+                    console.log('User not authenticated, redirecting to login');
                     // User not authenticated, redirect to login
                     window.location.href = './login.html';
                     return;
@@ -61,45 +65,86 @@ document.addEventListener('DOMContentLoaded', function() {
             return response.json();
         })
         .then(data => {
-            currentUserData = data;
-            populateFields(data);
+            console.log('Profile data received:', data);
+            console.log('Data type:', typeof data);
+            console.log('Data keys:', Object.keys(data || {}));
+            
+            if (data && data.success !== false) {
+                currentUserData = data;
+                populateFields(data);
+            } else {
+                throw new Error(data.message || 'Unknown error occurred');
+            }
         })
         .catch(error => {
             console.error('Error loading profile:', error);
-            showMessage('Error loading profile data. Please try again.', 'error');
+            console.error('Error stack:', error.stack);
+            showMessage('Error loading profile data: ' + error.message, 'error');
         });
     }
 
     function populateFields(userData) {
+        console.log('populateFields called with:', userData);
+        
+        // Helper function to safely set element content
+        function safeSetContent(elementId, content) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.textContent = content;
+            } else {
+                console.warn(`Element with ID '${elementId}' not found`);
+            }
+        }
+        
+        // Helper function to safely set element value
+        function safeSetValue(elementId, value) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.value = value;
+            } else {
+                console.warn(`Element with ID '${elementId}' not found`);
+            }
+        }
+        
+        // Safely get full name
+        const firstName = userData.first_name || '';
+        const lastName = userData.last_name || '';
+        const fullName = (firstName + ' ' + lastName).trim() || 'User';
+        
         // Update header info
-        document.getElementById('userName').textContent = userData.first_name + ' ' + userData.last_name || 'User';
-        document.getElementById('userEmail').textContent = userData.email || '';
+        safeSetContent('userName', fullName);
+        safeSetContent('userEmail', userData.email || '');
         
         // Update display fields
-        document.getElementById('fullNameDisplay').textContent = (userData.first_name + ' ' + userData.last_name) || 'Not provided';
-        document.getElementById('emailDisplay').textContent = userData.email || 'Not provided';
-        document.getElementById('phoneDisplay').textContent = userData.phone || 'Not provided';
+        safeSetContent('fullNameDisplay', fullName !== 'User' ? fullName : 'Not provided');
+        safeSetContent('phoneDisplay', userData.phone || 'Not provided');
         
         // Format date of birth
         if (userData.date_of_birth) {
-            const dobDate = new Date(userData.date_of_birth);
-            document.getElementById('dobDisplay').textContent = dobDate.toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            });
+            try {
+                const dobDate = new Date(userData.date_of_birth);
+                safeSetContent('dobDisplay', dobDate.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                }));
+            } catch (e) {
+                console.error('Error formatting date:', e);
+                safeSetContent('dobDisplay', userData.date_of_birth);
+            }
         } else {
-            document.getElementById('dobDisplay').textContent = 'Not provided';
+            safeSetContent('dobDisplay', 'Not provided');
         }
         
-        document.getElementById('addressDisplay').textContent = userData.address || 'Not provided';
+        safeSetContent('addressDisplay', userData.address || 'Not provided');
         
         // Update edit fields
-        document.getElementById('fullNameEdit').value = (userData.first_name + ' ' + userData.last_name) || '';
-        document.getElementById('emailEdit').value = userData.email || '';
-        document.getElementById('phoneEdit').value = userData.phone || '';
-        document.getElementById('dobEdit').value = userData.date_of_birth || '';
-        document.getElementById('addressEdit').value = userData.address || '';
+        safeSetValue('fullNameEdit', fullName !== 'User' ? fullName : '');
+        safeSetValue('phoneEdit', userData.phone || '');
+        safeSetValue('dobEdit', userData.date_of_birth || '');
+        safeSetValue('addressEdit', userData.address || '');
+        
+        console.log('Profile fields populated successfully');
     }
 
     function toggleEditMode(editing) {
@@ -129,15 +174,14 @@ document.addEventListener('DOMContentLoaded', function() {
         const formData = {
             first_name: firstName,
             last_name: lastName,
-            email: document.getElementById('emailEdit').value.trim(),
             phone: document.getElementById('phoneEdit').value.trim(),
             date_of_birth: document.getElementById('dobEdit').value,
             address: document.getElementById('addressEdit').value.trim()
         };
 
         // Validate required fields
-        if (!formData.first_name || !formData.email) {
-            showMessage('Please fill in all required fields.', 'error');
+        if (!formData.first_name) {
+            showMessage('Please fill in your name.', 'error');
             return;
         }
 
