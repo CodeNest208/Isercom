@@ -46,11 +46,16 @@
 .hero-text h1 {
   font-size: 40px;
   font-weight: bold;
-  margin-bottom: 20px;
+  /* margin-bottom: 10px; */
 }
 
 .hero-text p {
   font-size: 16px;
+  margin-bottom: 30px;
+}
+
+.hero-text span{
+  font-size: 18px;
   margin-bottom: 30px;
 }
 
@@ -258,7 +263,7 @@
 
 .hero-text h1 {
   font-size: 2.5rem;
-  margin-bottom: 20px;
+  /* margin-bottom: 20px; */
 }
 
 .hero-text p {

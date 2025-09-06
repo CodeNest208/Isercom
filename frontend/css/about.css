@@ -261,14 +261,55 @@ main {
 
 @media (max-width: 768px) {
     .back {
-        min-height: 300px;
-        padding: 30px 15px;
+        min-height: 100vh;
+        padding: 15px;
+        padding-bottom: 50px;
         font-size: 10px;
+        justify-content: flex-end;
+        align-items: flex-start;
     }
     
     .back h1 {
         font-size: 28px !important;
-        margin-bottom: 10px !important;
+        margin-bottom: 0px !important;
+        margin-top: 0px;
+    }
+    
+    .back br {
+        display: none;
+    }
+    
+    .back p{
+        display: none;
+    }
+    .back span{
+        display: block;
+        margin-bottom: 20px;
+        position: relative;
+    }
+    
+    .words {
+        width: 100% !important;
+        font-size: 18px !important;
+        margin-top: 10px;
+    }
+    
+    /* Button container for mobile */
+    .hero-buttons {
+        display: flex;
+        flex-direction: row;
+        gap: 15px;
+        margin-top: 20px;
+        justify-content: center;
+        width: 100%;
+    }
+    
+    .back button{
+        flex: 1;
+        max-width: 150px;
+        padding: 10px 15px;
+        font-size: 14px;
+        margin: 0;
     }
     
     .per p {
@@ -289,8 +330,58 @@ main {
     .per p {
         font-size: 15px !important;
     }
+    
+    /* Adjust button spacing for smaller screens */
+    .hero-buttons {
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+    
+    .back button {
+        font-size: 12px;
+        padding: 8px 12px;
+        min-width: 120px;
+    }
 }
 
 .nav-links a:hover {
     color: #04332A;
+}
+
+.back button {
+  padding: 12px 24px;
+  margin-right: 0;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 1rem;
+  margin: 5px;
+}
+
+.btn-primary {
+  background: #04332A;
+  color: white;
+}
+
+.btn-secondary {
+  background: #fff;
+  color: #04332A;
+}
+
+/* Button container styles */
+.hero-buttons {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+  align-items: center;
+}
+
+.hero-buttons a {
+  text-decoration: none;
+}
+
+
+
+.back a{
+    text-decoration: none;
 }
