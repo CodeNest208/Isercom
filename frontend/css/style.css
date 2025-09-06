@@ -358,6 +358,9 @@
     height: 85vh;
     position: relative;
   }
+  .hero-text p{
+    display: none;
+  }
   
   .overlay {
     justify-content: flex-end;
@@ -375,6 +378,7 @@
   
   .hero-text h1 {
     font-size: 1.8rem;
+    margin-bottom: 0px;
   }
   
   .hero-text p {
@@ -387,8 +391,9 @@
     gap: 10px;
     flex-wrap: wrap;
     justify-content: center;
-    margin-bottom: 60px;
+    margin-bottom: 50px;
     order: 2;
+    margin-top: 20px;
   }
   
   .hero-buttons button {
