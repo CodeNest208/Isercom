@@ -263,3 +263,52 @@ INFO 2025-08-31 19:13:07,613 email_utils 31780 28004 Email queued for async send
 INFO 2025-08-31 19:13:07,614 email_utils 31780 28004 Both appointment emails queued for appointment 6
 INFO 2025-08-31 19:13:12,507 email_utils 31780 29500 Email sent successfully to christiantano@gmail.com in 4.89s
 INFO 2025-08-31 19:13:12,735 email_utils 31780 34068 Email sent successfully to isaacsercom@gmail.com in 5.13s
+INFO 2025-09-07 22:48:44,223 email_utils 28888 8104 Sending appointment reminder to felixasante2005@gmail.com for appointment on September 07, 2025 at 11:52 PM
+INFO 2025-09-07 22:48:54,883 email_utils 28888 8104 Email sent successfully to felixasante2005@gmail.com in 10.66s
+INFO 2025-09-07 22:58:51,245 email_utils 11340 4512 Sending appointment reminder to felixasante2005@gmail.com for appointment on September 08, 2025 at 12:00 AM
+INFO 2025-09-07 22:58:51,279 email_utils 11340 4512 Email queued for async sending to felixasante2005@gmail.com
+INFO 2025-09-07 22:58:54,576 email_utils 11340 25744 Email sent successfully to felixasante2005@gmail.com in 3.30s
+INFO 2025-09-07 23:07:51,690 email_utils 28756 24728 Sending appointment reminder to felixasante2005@gmail.com for appointment on September 08, 2025 at 12:07 AM
+INFO 2025-09-07 23:07:54,938 email_utils 28756 24728 Email sent successfully to felixasante2005@gmail.com in 3.25s
+INFO 2025-09-07 23:07:54,957 email_utils 28756 24728 Sending appointment reminder to felixasante2005@gmail.com for appointment on September 08, 2025 at 12:04 AM
+INFO 2025-09-07 23:07:57,970 email_utils 28756 24728 Email sent successfully to felixasante2005@gmail.com in 3.01s
+INFO 2025-09-07 23:17:58,374 email_utils 28756 24728 Sending appointment reminder to felixasante2005@gmail.com for appointment on September 08, 2025 at 12:20 AM
+INFO 2025-09-07 23:18:01,634 email_utils 28756 24728 Email sent successfully to felixasante2005@gmail.com in 3.26s
+INFO 2025-09-07 23:26:46,156 email_utils 9476 24876 Sending appointment reminder to felixasante2005@gmail.com for appointment on September 08, 2025 at 12:25 AM
+INFO 2025-09-07 23:26:46,746 email_utils 24896 16292 Sending appointment reminder to felixasante2005@gmail.com for appointment on September 08, 2025 at 12:25 AM
+INFO 2025-09-07 23:26:49,246 email_utils 9476 24876 Email sent successfully to felixasante2005@gmail.com in 3.09s
+INFO 2025-09-07 23:26:49,762 email_utils 24896 16292 Email sent successfully to felixasante2005@gmail.com in 3.02s
+INFO 2025-09-07 23:27:54,406 email_utils 26592 28840 Found logo at: C:\Users\temp\websites\isercom_website\frontend\images\logo.png
+INFO 2025-09-07 23:27:54,407 email_utils 26592 28840 Successfully encoded logo as base64
+INFO 2025-09-07 23:27:54,408 email_utils 26592 28840 Found logo at: C:\Users\temp\websites\isercom_website\frontend\images\logo.png
+INFO 2025-09-07 23:27:54,409 email_utils 26592 28840 Successfully encoded logo as base64
+INFO 2025-09-07 23:28:34,222 email_utils 15784 22416 Found logo at: C:\Users\temp\websites\isercom_website\frontend\images\logo.png
+INFO 2025-09-07 23:28:34,223 email_utils 15784 22416 Successfully encoded logo as base64
+INFO 2025-09-07 23:28:34,223 email_utils 15784 22416 Sending appointment reminder to felixasante2005@gmail.com for appointment on September 08, 2025 at 12:25 AM
+INFO 2025-09-07 23:28:37,348 email_utils 15784 22416 Email sent successfully to felixasante2005@gmail.com in 3.12s
+INFO 2025-09-07 23:29:40,516 email_utils 18208 13424 Found logo at: C:\Users\temp\websites\isercom_website\frontend\images\logo.png
+INFO 2025-09-07 23:29:40,516 email_utils 18208 13424 Using static URL: https://*.isercom.com/static/images/logo.png
+INFO 2025-09-07 23:30:22,960 email_utils 18968 1832 Found logo at: C:\Users\temp\websites\isercom_website\frontend\images\logo.png
+INFO 2025-09-07 23:30:22,961 email_utils 18968 1832 Successfully encoded logo as base64 for email
+INFO 2025-09-07 23:30:22,961 email_utils 18968 1832 Sending appointment reminder to felixasante2005@gmail.com for appointment on September 08, 2025 at 12:25 AM
+INFO 2025-09-07 23:30:25,989 email_utils 18968 1832 Email sent successfully to felixasante2005@gmail.com in 3.03s
+INFO 2025-09-07 23:30:39,038 email_utils 22708 14900 Found logo at: C:\Users\temp\websites\isercom_website\frontend\images\logo.png
+INFO 2025-09-07 23:30:39,039 email_utils 22708 14900 Successfully encoded logo as base64 for email
+INFO 2025-09-07 23:41:28,430 email_utils 22856 6772 Found logo at: C:\Users\temp\websites\isercom_website\frontend\images\logo.png
+INFO 2025-09-07 23:41:28,430 email_utils 22856 6772 Successfully encoded logo as base64 for email
+INFO 2025-09-07 23:41:28,431 email_utils 22856 6772 Sending appointment reminder to felixasante2005@gmail.com for appointment on September 08, 2025 at 12:45 AM
+INFO 2025-09-07 23:41:31,479 email_utils 22856 6772 Email sent successfully to felixasante2005@gmail.com in 3.05s
+INFO 2025-09-07 23:43:22,605 email_utils 7604 27772 Found logo at: C:\Users\temp\websites\isercom_website\frontend\images\logo.png
+INFO 2025-09-07 23:43:22,606 email_utils 7604 27772 Successfully encoded logo as base64 for email
+INFO 2025-09-07 23:45:59,248 email_utils 21728 19640 Found logo at: C:\Users\temp\websites\isercom_website\frontend\images\logo.png
+INFO 2025-09-07 23:45:59,249 email_utils 21728 19640 Successfully encoded logo as base64 for email
+INFO 2025-09-07 23:53:54,050 email_utils 12828 11820 Sending appointment reminder to felixasante2005@gmail.com for appointment on September 08, 2025 at 12:55 AM
+INFO 2025-09-07 23:53:54,061 email_utils 12828 11820 Logo attached as CID from: C:\Users\temp\websites\isercom_website\frontend\images\logo.png
+INFO 2025-09-07 23:53:57,299 email_utils 12828 11820 Email with logo attachment sent successfully to felixasante2005@gmail.com in 3.24s
+INFO 2025-09-07 23:56:52,477 email_utils 18264 29188 Logo embedded inline from: C:\Users\temp\websites\isercom_website\frontend\images\logo.png
+ERROR 2025-09-07 23:56:53,839 email_utils 18264 29188 Error sending email with inline logo to test@example.com: 'MIMEMultipart' object has no attribute 'recipients'
+INFO 2025-09-07 23:59:17,250 email_utils 14712 19984 Logo embedded inline from: C:\Users\temp\websites\isercom_website\frontend\images\logo.png
+INFO 2025-09-07 23:59:20,584 email_utils 14712 19984 Email with inline logo sent successfully to test@example.com in 3.33s
+INFO 2025-09-08 00:02:34,248 email_utils 27952 12532 Sending appointment reminder to felixasante2005@gmail.com for appointment on September 08, 2025 at 01:03 AM
+INFO 2025-09-08 00:02:34,250 email_utils 27952 12532 Logo embedded inline from: C:\Users\temp\websites\isercom_website\frontend\images\logo.png
+INFO 2025-09-08 00:02:37,587 email_utils 27952 12532 Email with inline logo sent successfully to felixasante2005@gmail.com in 3.34s

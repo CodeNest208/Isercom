@@ -22,6 +22,30 @@ services:
           name: isercom-clinic-db
           property: connectionString
 
+  - type: cron
+    name: appointment-reminders
+    env: python
+    buildCommand: "./build.sh"
+    schedule: "*/5 * * * *"  # Every 5 minutes
+    startCommand: "python manage.py send_appointment_reminders"
+    envVars:
+      - key: SECRET_KEY
+        value: isercom-clinic-2025-super-secret-key-with-more-than-50-characters-and-unique-symbols!@#$%^&*()_+-=[]{}|;:,.<>?
+      - key: DEBUG
+        value: False
+      - key: EMAIL_HOST_USER
+        value: felixasante2005@gmail.com
+      - key: EMAIL_HOST_PASSWORD
+        value: oqpv sihg fjhn nyws
+      - key: CONTACT_EMAIL
+        value: felixasante2005@gmail.com
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: DATABASE_URL
+        fromDatabase:
+          name: isercom-clinic-db
+          property: connectionString
+
 databases:
   - name: isercom-clinic-db
     databaseName: isercom_clinic

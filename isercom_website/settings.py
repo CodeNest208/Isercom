@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_crontab',
     'backend',
 ]
 
@@ -256,6 +257,10 @@ SESSION_COOKIE_SECURE = False  # Set to True in production with HTTPS
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_AGE = 3600  # 1 hour session timeout
 
+# Session settings to keep users signed in until they log out
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False  # Do not expire session when browser closes
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 30   # 30 days (in seconds)
+
 # HTTPS Security (for production)
 # SECURE_SSL_REDIRECT = True  # Uncomment in production
 # SECURE_HSTS_SECONDS = 31536000  # 1 year - Uncomment in production
@@ -279,3 +284,54 @@ X_FRAME_OPTIONS = 'DENY'
 # 3. Enable HTTPS security settings above (uncomment SSL lines)
 # 4. Use environment variables for sensitive data like SECRET_KEY
 # 5. Set CSRF_COOKIE_SECURE = True and SESSION_COOKIE_SECURE = True
+
+# Cron job configuration for appointment reminders
+CRONJOBS = [
+    # Run appointment reminder check every 5 minutes
+    ('*/5 * * * *', 'django.core.management.call_command', ['send_appointment_reminders'], {'verbosity': 1}),
+]
+
+# Cron job logging
+CRONTAB_COMMAND_SUFFIX = '2>&1'
+CRONTAB_DJANGO_MANAGE_PATH = os.path.join(BASE_DIR, 'manage.py')
+
+# Logging configuration for cron jobs
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'email.log'),
+            'formatter': 'verbose',
+        },
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+        },
+    },
+    'loggers': {
+        'backend.email_utils': {
+            'handlers': ['file', 'console'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'backend.management.commands.send_appointment_reminders': {
+            'handlers': ['file', 'console'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    },
+}

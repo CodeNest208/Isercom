@@ -127,6 +127,8 @@ class Appointment(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE) 
     service = models.ForeignKey(Service, on_delete=models.PROTECT)
     notes = models.TextField(blank=True, null=True, help_text="Additional notes or specific concerns")
+    reminder_sent = models.BooleanField(default=False, help_text="Whether reminder email has been sent")
+    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         ordering = ['-date', '-time']
@@ -136,7 +138,14 @@ class Appointment(models.Model):
             models.Index(fields=['date', 'status']),   # For status-based queries
             models.Index(fields=['doctor', 'status']), # For doctor status filtering
             models.Index(fields=['patient', 'status']), # For patient status filtering
+            models.Index(fields=['reminder_sent', 'date', 'time']), # For reminder queries
         ]
+
+    @property
+    def appointment_datetime(self):
+        """Return appointment date and time as datetime object"""
+        from datetime import datetime, timezone
+        return datetime.combine(self.date, self.time)
 
     def __str__(self) -> str:
         return f"{self.patient.full_name} - {self.doctor.full_name} - {self.date} {self.time}"

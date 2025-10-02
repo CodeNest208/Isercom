@@ -994,3 +994,97 @@ def user_profile_api(request):
                 'success': False,
                 'error': f'Error updating profile: {str(e)}'
             }, status=500)
+
+
+@require_http_methods(["GET"])
+def reminder_scheduler_status(request):
+    """
+    API endpoint to check reminder scheduler status
+    """
+    try:
+        from .reminder_service import is_scheduler_running, get_scheduler
+        
+        scheduler = get_scheduler()
+        status = {
+            'scheduler_running': is_scheduler_running(),
+            'scheduler_exists': scheduler is not None,
+            'message': 'Automatic reminder system status'
+        }
+        
+        if scheduler:
+            status['interval_minutes'] = scheduler.interval_minutes
+            status['last_check'] = 'Running continuously every 5 minutes'
+        
+        return JsonResponse({
+            'success': True,
+            'data': status
+        })
+        
+    except Exception as e:
+        return JsonResponse({
+            'success': False,
+            'error': f'Error checking scheduler status: {str(e)}'
+        }, status=500)
+
+
+@csrf_exempt
+@require_http_methods(["POST"])
+def control_reminder_scheduler(request):
+    """
+    API endpoint to start/stop reminder scheduler
+    Requires admin privileges
+    """
+    if not request.user.is_authenticated or not request.user.is_staff:
+        return JsonResponse({
+            'success': False,
+            'error': 'Admin privileges required'
+        }, status=403)
+    
+    try:
+        data = json.loads(request.body)
+        action = data.get('action')  # 'start' or 'stop'
+        
+        from .reminder_service import start_reminder_scheduler, stop_reminder_scheduler, is_scheduler_running
+        
+        if action == 'start':
+            if is_scheduler_running():
+                return JsonResponse({
+                    'success': False,
+                    'message': 'Scheduler is already running'
+                })
+            
+            start_reminder_scheduler()
+            return JsonResponse({
+                'success': True,
+                'message': 'Reminder scheduler started successfully'
+            })
+            
+        elif action == 'stop':
+            if not is_scheduler_running():
+                return JsonResponse({
+                    'success': False,
+                    'message': 'Scheduler is not running'
+                })
+            
+            stop_reminder_scheduler()
+            return JsonResponse({
+                'success': True,
+                'message': 'Reminder scheduler stopped successfully'
+            })
+            
+        else:
+            return JsonResponse({
+                'success': False,
+                'error': 'Invalid action. Use "start" or "stop"'
+            }, status=400)
+            
+    except json.JSONDecodeError:
+        return JsonResponse({
+            'success': False,
+            'error': 'Invalid JSON data'
+        }, status=400)
+    except Exception as e:
+        return JsonResponse({
+            'success': False,
+            'error': f'Error controlling scheduler: {str(e)}'
+        }, status=500)

@@ -30,4 +30,8 @@ urlpatterns = [
     path('user/profile/', api_views.user_profile_api, name='api_user_profile'),
     path('user/appointments/', api_views.my_appointments_api, name='api_my_appointments'),
     path('user/appointments/<int:appointment_id>/cancel/', api_views.cancel_appointment_api, name='api_cancel_appointment'),
+    
+    # Reminder scheduler management
+    path('scheduler/status/', api_views.reminder_scheduler_status, name='api_scheduler_status'),
+    path('scheduler/control/', api_views.control_reminder_scheduler, name='api_scheduler_control'),
 ]
