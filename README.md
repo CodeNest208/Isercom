@@ -2,18 +2,18 @@
 
 Welcome to **Isecorm** — your trusted platform for secure communication and information management.
 
-🌐 **Website:** [https://isecorm.onrender.com/]
+ **Website:** [https://isecorm.onrender.com/]
 
 ---
 
-## 📖 About
+##  About
 
 Isecorm is a web-based platform designed to enhance secure interactions, protect sensitive data, and simplify communication processes.  
 It provides users with a reliable and intuitive interface for managing information safely and efficiently.
 
 ---
 
-## 🚀 Features
+##  Features
  
 - User authentication and access control  
 - Responsive and user-friendly design  
@@ -21,7 +21,7 @@ It provides users with a reliable and intuitive interface for managing informati
 
 ---
 
-## 🛠️ Technologies Used
+##  Technologies Used
 
 - **Frontend:** HTML, CSS, JavaScript 
 - **Backend:** Django 
@@ -30,10 +30,10 @@ It provides users with a reliable and intuitive interface for managing informati
 
 ---
 
-## 📬 Contact
+##  Contact
 
 For support or inquiries, please reach out to:  
-📧 **Email:** [www.codenest@gmail.com]
+ **Email:** [www.codenest@gmail.com]
 
 ---
 
