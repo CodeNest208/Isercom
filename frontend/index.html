@@ -10,8 +10,222 @@
     <script src="./js/script.js" defer></script>
     <script src="./js/animations.js" defer></script>
     <script src="./js/api-client.js" defer></script>
+    <style>
+      /* Holiday Greeting Card Overlay */
+      .holiday-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 9999;
+        justify-content: center;
+        align-items: center;
+        animation: fadeIn 0.5s ease;
+      }
+      .holiday-overlay.show {
+        display: flex;
+      }
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+      .holiday-card {
+        display: flex;
+        background: #ffffff;
+        border-radius: 20px;
+        max-width: 800px;
+        width: 90%;
+        min-height: 400px;
+        position: relative;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        overflow: hidden;
+        animation: slideIn 0.6s ease;
+      }
+      @keyframes slideIn {
+        from { transform: scale(0.8) translateY(-50px); opacity: 0; }
+        to { transform: scale(1) translateY(0); opacity: 1; }
+      }
+      /* Left side - Content */
+      .holiday-content {
+        flex: 1;
+        padding: 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        background: #ffffff;
+      }
+      .holiday-content h2 {
+        color: #04332A;
+        font-size: 2rem;
+        margin: 0 0 10px 0;
+        font-weight: 600;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+      }
+      .holiday-content .holiday-subtitle {
+        color: #c41e3a;
+        font-size: 1.1rem;
+        margin-bottom: 20px;
+        font-weight: 500;
+      }
+      .holiday-content .user-greeting {
+        color: #04332A;
+        font-size: 1.1rem;
+        font-weight: 500;
+        margin-bottom: 15px;
+      }
+      .holiday-content p {
+        color: #555;
+        font-size: 0.95rem;
+        line-height: 1.7;
+        margin-bottom: 25px;
+      }
+      .holiday-content .holiday-icons {
+        font-size: 24px;
+        margin-bottom: 20px;
+      }
+      .holiday-close-btn {
+        background: #04332A;
+        color: white;
+        border: none;
+        padding: 12px 30px;
+        font-size: 1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        align-self: flex-start;
+        font-weight: 500;
+      }
+      .holiday-close-btn:hover {
+        background: #006b50;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      }
+      /* Right side - Logo */
+      .holiday-logo-section {
+        flex: 1;
+        background: #ffffff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 40px;
+        position: relative;
+        overflow: hidden;
+        border-left: 1px solid #e0e0e0;
+      }
+      .holiday-logo-section::before {
+        content: "❄️ ❄️ ❄️";
+        position: absolute;
+        top: 20px;
+        font-size: 20px;
+        opacity: 0.7;
+        animation: snowfall 2s ease-in-out infinite;
+      }
+      .holiday-logo-section::after {
+        content: "❄️ ❄️ ❄️";
+        position: absolute;
+        bottom: 20px;
+        font-size: 20px;
+        opacity: 0.7;
+        animation: snowfall 2s ease-in-out infinite reverse;
+      }
+      @keyframes snowfall {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+      }
+      .holiday-logo-section img {
+        max-width: 250px;
+        height: auto;
+        filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+        margin-bottom: 20px;
+      }
+      .holiday-decorations {
+        font-size: 40px;
+        margin-top: 15px;
+      }
+      .holiday-logo-text {
+        color: #04332A;
+        font-size: 1rem;
+        text-align: center;
+        font-weight: 500;
+        margin-top: 10px;
+      }
+      /* Close X button */
+      .holiday-close-x {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: rgba(0,0,0,0.1);
+        border: none;
+        color: #04332A;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        z-index: 10;
+      }
+      .holiday-close-x:hover {
+        background: rgba(0,0,0,0.15);
+        transform: scale(1.1);
+      }
+      /* Responsive */
+      @media (max-width: 768px) {
+        .holiday-card {
+          flex-direction: column-reverse;
+          max-width: 95%;
+          min-height: auto;
+        }
+        .holiday-content {
+          padding: 30px 25px;
+        }
+        .holiday-logo-section {
+          padding: 30px;
+        }
+        .holiday-logo-section img {
+          max-width: 150px;
+        }
+        .holiday-content h2 {
+          font-size: 1.5rem;
+        }
+      }
+    </style>
   </head>
   <body>
+
+    <!-- Holiday Greeting Overlay -->
+    <div class="holiday-overlay" id="holidayOverlay">
+      <div class="holiday-card">
+        <!-- Left side - Content -->
+        <div class="holiday-content">
+          <h2>Merry Christmas!</h2>
+          <p class="holiday-subtitle">🎄 Season's Greetings from iSecorm Clinic 🎄</p>
+          <p class="user-greeting" id="holidayUserGreeting">Dear Valued Patient,</p>
+          <p>
+            Wishing you a season filled with joy, peace, and good health! 
+            Thank you for trusting iSecorm Clinic with your care. 
+            May this holiday bring warmth and happiness to you and your loved ones.
+          </p>
+          <div class="holiday-icons">🎁 ⭐ 🔔 ⭐ 🎁</div>
+          <button class="holiday-close-btn" onclick="closeHolidayCard()">Continue to Website</button>
+        </div>
+        <!-- Right side - Logo -->
+        <div class="holiday-logo-section">
+          <button class="holiday-close-x" onclick="closeHolidayCard()">✕</button>
+          <img src="./images/logo.png" alt="iSecorm Clinic Logo">
+          <div class="holiday-decorations">🎅 🎄 🎅</div>
+          <p class="holiday-logo-text">Wishing You Health & Happiness</p>
+        </div>
+      </div>
+    </div>
 
     <!-- Header -->
     <header>
@@ -278,12 +492,59 @@
     
     <!-- API Integration Script -->
     <script>
+      // Holiday Card Functions
+      function showHolidayCard(userName) {
+        const overlay = document.getElementById('holidayOverlay');
+        const greeting = document.getElementById('holidayUserGreeting');
+        
+        // Check if already shown this session
+        if (sessionStorage.getItem('holidayCardShown')) {
+          return;
+        }
+        
+        // Personalize the greeting
+        if (userName) {
+          greeting.textContent = `Dear ${userName},`;
+        }
+        
+        overlay.classList.add('show');
+        sessionStorage.setItem('holidayCardShown', 'true');
+      }
+      
+      function closeHolidayCard() {
+        const overlay = document.getElementById('holidayOverlay');
+        overlay.classList.remove('show');
+      }
+      
+      // Close on overlay click (outside card)
+      document.getElementById('holidayOverlay').addEventListener('click', function(e) {
+        if (e.target === this) {
+          closeHolidayCard();
+        }
+      });
+      
+      // Close on Escape key
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          closeHolidayCard();
+        }
+      });
+
       // Initialize homepage with API data
       document.addEventListener('DOMContentLoaded', async function() {
         try {
           // Check authentication status
           const authStatus = await window.apiClient.checkAuth();
           window.updateAuthUI(authStatus.is_authenticated, authStatus.user);
+          
+          // Show holiday card for all visitors
+          if (authStatus.is_authenticated && authStatus.user) {
+            const userName = authStatus.user.first_name || authStatus.user.username || 'Valued Patient';
+            showHolidayCard(userName);
+          } else {
+            // Show for non-logged-in users too
+            showHolidayCard(null);
+          }
           
           // Load homepage data
           const homeData = await window.apiClient.getHomeData();
