@@ -179,22 +179,103 @@
       }
       /* Responsive */
       @media (max-width: 768px) {
+        .holiday-overlay {
+          padding: 10px;
+          align-items: flex-start;
+          overflow-y: auto;
+        }
         .holiday-card {
           flex-direction: column-reverse;
-          max-width: 95%;
+          max-width: 100%;
+          width: 100%;
           min-height: auto;
+          margin: 10px 0;
+          border-radius: 15px;
         }
         .holiday-content {
-          padding: 30px 25px;
-        }
-        .holiday-logo-section {
-          padding: 30px;
-        }
-        .holiday-logo-section img {
-          max-width: 150px;
+          padding: 20px 18px;
         }
         .holiday-content h2 {
-          font-size: 1.5rem;
+          font-size: 1.3rem;
+          margin-bottom: 5px;
+        }
+        .holiday-content .holiday-subtitle {
+          font-size: 0.9rem;
+          margin-bottom: 12px;
+        }
+        .holiday-content .user-greeting {
+          font-size: 0.95rem;
+          margin-bottom: 10px;
+        }
+        .holiday-content p {
+          font-size: 0.85rem;
+          line-height: 1.5;
+          margin-bottom: 15px;
+        }
+        .holiday-content .holiday-icons {
+          font-size: 18px;
+          margin-bottom: 15px;
+        }
+        .holiday-close-btn {
+          padding: 10px 20px;
+          font-size: 0.9rem;
+          width: 100%;
+          text-align: center;
+        }
+        .holiday-logo-section {
+          padding: 20px 15px;
+          border-left: none;
+          border-bottom: 1px solid #e0e0e0;
+        }
+        .holiday-logo-section img {
+          max-width: 100px;
+          margin-bottom: 10px;
+        }
+        .holiday-logo-section::before,
+        .holiday-logo-section::after {
+          font-size: 14px;
+        }
+        .holiday-logo-section::before {
+          top: 8px;
+        }
+        .holiday-logo-section::after {
+          bottom: 8px;
+        }
+        .holiday-decorations {
+          font-size: 24px;
+          margin-top: 8px;
+        }
+        .holiday-logo-text {
+          font-size: 0.85rem;
+          margin-top: 5px;
+        }
+        .holiday-close-x {
+          top: 8px;
+          right: 8px;
+          width: 26px;
+          height: 26px;
+          font-size: 14px;
+        }
+      }
+      /* Extra small devices */
+      @media (max-width: 400px) {
+        .holiday-content {
+          padding: 15px 12px;
+        }
+        .holiday-content h2 {
+          font-size: 1.1rem;
+        }
+        .holiday-content .holiday-subtitle {
+          font-size: 0.8rem;
+        }
+        .holiday-content p {
+          font-size: 0.8rem;
+        }
+        .holiday-logo-section img {
+          max-width: 80px;
+        }
+        .holiday-decorations {
+          font-size: 20px;
         }
       }
     </style>
